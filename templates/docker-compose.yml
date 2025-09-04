@@ -1,0 +1,84 @@
+# Docker Compose for local development and testing
+# Agentic Data Scraper Lambda with Playwright
+
+version: '3.8'
+
+services:
+  lambda-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.lambda-base
+      target: builder  # Use builder stage for development
+    container_name: agentic-scraper-lambda-dev
+    ports:
+      - "9000:8080"  # Lambda Runtime Interface Emulator port
+    environment:
+      # Python 3.12+ optimizations
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      # Playwright configuration
+      - PLAYWRIGHT_BROWSERS_PATH=/var/task/browsers
+      - PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+      - PLAYWRIGHT_HEADED=false  # Set to 'true' for headed mode debugging
+      # Display configuration for headed mode
+      - DISPLAY=:99
+      # AWS Lambda emulation
+      - AWS_LAMBDA_FUNCTION_NAME=agentic-scraper-dev
+      - AWS_LAMBDA_FUNCTION_VERSION=latest
+      - AWS_LAMBDA_FUNCTION_MEMORY_SIZE=1024
+      - AWS_LAMBDA_RUNTIME_API=localhost:9000
+    volumes:
+      # Mount local code for development
+      - .:/var/task:ro
+      # Shared memory for browser processes
+      - /dev/shm:/dev/shm
+    networks:
+      - lambda-net
+    healthcheck:
+      test: ["CMD", "python3", "/var/task/healthcheck.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # AWS Lambda Runtime Interface Emulator for local testing
+  lambda-rie:
+    image: public.ecr.aws/lambda/provided:al2
+    container_name: agentic-scraper-lambda-rie
+    ports:
+      - "9001:8080"
+    environment:
+      - AWS_LAMBDA_FUNCTION_NAME=agentic-scraper-rie
+    volumes:
+      - .:/var/task
+    command: ["lambda_function.lambda_handler"]
+    networks:
+      - lambda-net
+    depends_on:
+      - lambda-dev
+
+  # X11 server for headed browser mode (development only)
+  xvfb:
+    image: jlesage/firefox:latest
+    container_name: agentic-scraper-xvfb
+    environment:
+      - DISPLAY_WIDTH=1920
+      - DISPLAY_HEIGHT=1080
+      - VNC_PASSWORD=playwright
+    ports:
+      - "5800:5800"  # Web interface
+      - "5900:5900"  # VNC
+    volumes:
+      - ./xvfb-data:/config
+    networks:
+      - lambda-net
+    profiles:
+      - debug  # Only start with --profile debug
+
+networks:
+  lambda-net:
+    driver: bridge
+
+volumes:
+  xvfb-data:
