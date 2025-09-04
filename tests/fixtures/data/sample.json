@@ -1,0 +1,19 @@
+{
+  "title": "Sample Web Page",
+  "description": "This is a sample web page for testing",
+  "links": [
+    {
+      "text": "Example Link 1",
+      "url": "https://example.com/page1"
+    },
+    {
+      "text": "Example Link 2", 
+      "url": "https://example.com/page2"
+    }
+  ],
+  "metadata": {
+    "scraped_at": "2024-01-01T12:00:00Z",
+    "source_url": "https://example.com",
+    "page_type": "article"
+  }
+}

@@ -1,0 +1,31 @@
+scraper:
+  name: "test_scraper"
+  strategy: "standard"
+  browser:
+    browser_type: "chromium"
+    headless: true
+    timeout: 30000
+  http:
+    timeout: 30
+    verify_ssl: true
+  rate_limit:
+    enabled: true
+    requests_per_second: 2.0
+  retry:
+    max_attempts: 3
+    base_delay: 1.0
+
+pipeline:
+  name: "test_pipeline"
+  tasks:
+    - name: "scrape_data"
+      type: "scraper"
+      config:
+        url: "https://example.com"
+    - name: "parse_data"
+      type: "parser"
+      depends_on: ["scrape_data"]
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
