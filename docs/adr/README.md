@@ -48,9 +48,12 @@ Use the template file `adr-template.md` as a starting point for new ADRs. The te
 
 | Number | Title | Status | Date |
 |--------|--------|--------|------|
-| [001](./ADR-001-project-structure-and-uv.md) | Project Structure and Dependency Management with uv | Proposed | 2025-09-04 |
+| [001](./ADR-001-project-structure-and-uv.md) | Project Structure and Dependency Management with uv | Accepted | 2025-09-04 |
 | [002](./ADR-002-docker-lambda-playwright.md) | Docker-based AWS Lambda with Playwright and Python 3.12+ | Accepted | 2025-09-04 |
 | [003](./ADR-003-baml-agent-architecture.md) | BAML Multi-Agent Architecture for Pipeline Generation | Proposed | 2025-09-04 |
+| [004](./ADR-004-semantic-sow-data-contracts.md) | Semantic SOW and Data Contract Architecture | Proposed | 2025-09-04 |
+| [005](./ADR-005-spatio-temporal-sow-architecture.md) | KuzuDB Graph Database with Geospatial Semantic Integration | Accepted | 2025-09-05 |
+| [006](./ADR-006-etkl-semantic-first-pattern.md) | ET(K)L Pattern - Semantic-First Data Acquisition | Accepted | 2025-09-05 |
 
 ## Implementation Process
 

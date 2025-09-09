@@ -1,8 +1,8 @@
 # ADR-001: Project Structure and Dependency Management with uv
 
-**Status:** Proposed  
+**Status:** Accepted  
 **Date:** 2025-09-04  
-**Authors:** Development Team  
+**Authors:** François Rosselet, Claude (Anthropic)
 **Reviewers:** TBD  
 **Implementation Branch:** `adr-001-project-structure-and-uv`
 

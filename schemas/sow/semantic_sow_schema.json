@@ -1,0 +1,624 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.agentic-data-scraper.com/sow/semantic/v1",
+  "title": "Semantic Statement of Work Schema",
+  "description": "Revolutionary semantic SOW schema that captures explicit business needs while intelligently inferring implicit requirements for 4D analytical platforms",
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": "object",
+      "description": "Rich JSON-LD context for semantic web compatibility and 4D reasoning",
+      "properties": {
+        "@base": {
+          "type": "string",
+          "format": "uri",
+          "default": "https://agentic-data-scraper.com/sow/"
+        },
+        "business": {
+          "type": "string",
+          "format": "uri",
+          "default": "https://schema.org/"
+        },
+        "supply": {
+          "type": "string",
+          "format": "uri", 
+          "default": "https://gs1.org/ontology/"
+        },
+        "finance": {
+          "type": "string",
+          "format": "uri",
+          "default": "https://spec.edmcouncil.org/fibo/"
+        },
+        "commodities": {
+          "type": "string",
+          "format": "uri",
+          "default": "https://ontology.commodities.org/"
+        },
+        "geo": {
+          "type": "string",
+          "format": "uri",
+          "default": "http://www.geonames.org/ontology#"
+        },
+        "time": {
+          "type": "string", 
+          "format": "uri",
+          "default": "http://www.w3.org/2006/time#"
+        },
+        "owl": {
+          "type": "string",
+          "format": "uri",
+          "default": "http://www.w3.org/2002/07/owl#"
+        },
+        "rdf": {
+          "type": "string",
+          "format": "uri",
+          "default": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        },
+        "rdfs": {
+          "type": "string",
+          "format": "uri",
+          "default": "http://www.w3.org/2000/01/rdf-schema#"
+        },
+        "skos": {
+          "type": "string",
+          "format": "uri",
+          "default": "http://www.w3.org/2004/02/skos/core#"
+        },
+        "dct": {
+          "type": "string",
+          "format": "uri",
+          "default": "http://purl.org/dc/terms/"
+        },
+        "foaf": {
+          "type": "string",
+          "format": "uri",
+          "default": "http://xmlns.com/foaf/0.1/"
+        },
+        "prov": {
+          "type": "string",
+          "format": "uri",
+          "default": "http://www.w3.org/ns/prov#"
+        }
+      },
+      "required": ["@base", "business"]
+    },
+    "@type": {
+      "type": "string",
+      "const": "SemanticStatementOfWork",
+      "description": "JSON-LD type identifier for semantic SOW"
+    },
+    "explicit_requirements": {
+      "type": "object",
+      "description": "Business requirements explicitly stated by stakeholders",
+      "properties": {
+        "business_challenge": {
+          "type": "object",
+          "description": "The core business challenge to solve",
+          "properties": {
+            "description": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 1000,
+              "description": "Natural language description of the challenge"
+            },
+            "entities_to_track": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "entity": {"type": "string"},
+                  "importance": {"type": "string", "enum": ["critical", "high", "medium", "low"]},
+                  "semantic_type": {"type": "string"},
+                  "business_context": {"type": "string"}
+                },
+                "required": ["entity", "importance"]
+              },
+              "minItems": 1,
+              "description": "What entities the business wants to track"
+            },
+            "spatial_context": {
+              "type": "object", 
+              "description": "Where this business challenge occurs",
+              "properties": {
+                "locations_mentioned": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "location": {"type": "string"},
+                      "type": {"type": "string", "enum": ["country", "region", "city", "facility", "route", "market"]},
+                      "relevance": {"type": "string"}
+                    }
+                  }
+                },
+                "geographic_scope": {
+                  "type": "string",
+                  "enum": ["local", "regional", "national", "international", "global"]
+                }
+              }
+            },
+            "temporal_context": {
+              "type": "object",
+              "description": "When this business challenge is important",
+              "properties": {
+                "time_horizons": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": ["real-time", "daily", "weekly", "monthly", "quarterly", "yearly", "historical"]
+                  }
+                },
+                "critical_periods": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "period": {"type": "string"},
+                      "description": {"type": "string"},
+                      "business_impact": {"type": "string"}
+                    }
+                  }
+                },
+                "seasonality_mentioned": {"type": "boolean", "default": false}
+              }
+            },
+            "stakeholders_involved": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "role": {"type": "string"},
+                  "department": {"type": "string"},
+                  "responsibilities": {"type": "array", "items": {"type": "string"}},
+                  "decision_authority": {"type": "string", "enum": ["high", "medium", "low", "none"]}
+                }
+              }
+            }
+          },
+          "required": ["description", "entities_to_track"]
+        },
+        "desired_outcomes": {
+          "type": "array",
+          "items": {
+            "type": "object", 
+            "properties": {
+              "outcome": {"type": "string"},
+              "success_metrics": {"type": "array", "items": {"type": "string"}},
+              "business_value": {"type": "string"},
+              "priority": {"type": "string", "enum": ["must-have", "should-have", "nice-to-have"]}
+            },
+            "required": ["outcome", "priority"]
+          },
+          "minItems": 1,
+          "description": "What the business explicitly wants to achieve"
+        },
+        "constraints_and_limitations": {
+          "type": "object",
+          "properties": {
+            "budget_constraints": {"type": "string"},
+            "timeline_constraints": {"type": "string"}, 
+            "technical_constraints": {"type": "array", "items": {"type": "string"}},
+            "regulatory_constraints": {"type": "array", "items": {"type": "string"}},
+            "organizational_constraints": {"type": "array", "items": {"type": "string"}}
+          }
+        }
+      },
+      "required": ["business_challenge", "desired_outcomes"]
+    },
+    "inferred_context": {
+      "type": "object",
+      "description": "Context and requirements inferred through OWL reasoning and domain knowledge",
+      "properties": {
+        "spatial_inferences": {
+          "type": "object",
+          "description": "Spatial analysis opportunities inferred from explicit requirements",
+          "properties": {
+            "geographic_analysis_opportunities": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "analysis_type": {"type": "string"},
+                  "reasoning": {"type": "string"},
+                  "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+                  "potential_value": {"type": "string"},
+                  "required_data": {"type": "array", "items": {"type": "string"}}
+                }
+              }
+            },
+            "multi_scale_considerations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "scale": {"type": "string", "enum": ["local", "regional", "national", "global"]},
+                  "relevance": {"type": "string"},
+                  "analysis_needs": {"type": "array", "items": {"type": "string"}}
+                }
+              }
+            }
+          }
+        },
+        "temporal_inferences": {
+          "type": "object",
+          "description": "Temporal analysis patterns inferred from business context",
+          "properties": {
+            "time_series_opportunities": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "pattern_type": {"type": "string", "enum": ["trend", "seasonality", "cycles", "anomalies"]},
+                  "reasoning": {"type": "string"},
+                  "business_relevance": {"type": "string"},
+                  "analysis_methods": {"type": "array", "items": {"type": "string"}}
+                }
+              }
+            },
+            "bi_temporal_needs": {
+              "type": "object",
+              "properties": {
+                "transaction_time_needed": {"type": "boolean"},
+                "valid_time_needed": {"type": "boolean"}, 
+                "reasoning": {"type": "string"}
+              }
+            }
+          }
+        },
+        "domain_inferences": {
+          "type": "object",
+          "description": "Domain-specific analysis opportunities discovered through semantic reasoning",
+          "properties": {
+            "supply_chain_analytics": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "opportunity": {"type": "string"},
+                  "reasoning": {"type": "string"},
+                  "stakeholder_value": {"type": "string"},
+                  "complexity": {"type": "string", "enum": ["low", "medium", "high"]}
+                }
+              }
+            },
+            "financial_analytics": {
+              "type": "array", 
+              "items": {
+                "type": "object",
+                "properties": {
+                  "opportunity": {"type": "string"},
+                  "reasoning": {"type": "string"},
+                  "risk_considerations": {"type": "string"},
+                  "regulatory_implications": {"type": "array", "items": {"type": "string"}}
+                }
+              }
+            },
+            "compliance_analytics": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "framework": {"type": "string"},
+                  "analysis_type": {"type": "string"},
+                  "automation_potential": {"type": "string"},
+                  "risk_mitigation": {"type": "string"}
+                }
+              }
+            }
+          }
+        },
+        "graph_inferences": {
+          "type": "object",
+          "description": "Relationship and network analysis opportunities discovered through graph reasoning",
+          "properties": {
+            "relationship_networks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "network_type": {"type": "string"},
+                  "entities_involved": {"type": "array", "items": {"type": "string"}},
+                  "analysis_value": {"type": "string"},
+                  "centrality_insights": {"type": "string"}
+                }
+              }
+            },
+            "dependency_analysis": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "dependency_type": {"type": "string"},
+                  "impact_assessment": {"type": "string"},
+                  "mitigation_strategies": {"type": "array", "items": {"type": "string"}}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "analytical_opportunities": {
+      "type": "object",
+      "description": "Discovered analytical opportunities that extend beyond explicit requirements",
+      "properties": {
+        "cross_domain_opportunities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "opportunity_id": {"type": "string"},
+              "title": {"type": "string"},
+              "description": {"type": "string"},
+              "primary_domain": {"type": "string"},
+              "connected_domains": {"type": "array", "items": {"type": "string"}},
+              "business_value_proposition": {"type": "string"},
+              "surprise_factor": {"type": "string", "description": "Why this would surprise and delight the business"},
+              "implementation_complexity": {"type": "string", "enum": ["low", "medium", "high"]},
+              "confidence_level": {"type": "number", "minimum": 0, "maximum": 1},
+              "required_capabilities": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "capability": {"type": "string"},
+                    "justification": {"type": "string"}
+                  }
+                }
+              }
+            },
+            "required": ["opportunity_id", "title", "description", "business_value_proposition"]
+          }
+        },
+        "predictive_opportunities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "prediction_target": {"type": "string"},
+              "prediction_horizon": {"type": "string"},
+              "input_signals": {"type": "array", "items": {"type": "string"}},
+              "business_impact": {"type": "string"},
+              "accuracy_requirements": {"type": "string"}
+            }
+          }
+        },
+        "optimization_opportunities": {
+          "type": "array",
+          "items": {
+            "type": "object", 
+            "properties": {
+              "optimization_target": {"type": "string"},
+              "constraints": {"type": "array", "items": {"type": "string"}},
+              "decision_variables": {"type": "array", "items": {"type": "string"}},
+              "expected_improvement": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "four_dimensional_context": {
+      "type": "object",
+      "description": "Complete 4D context expansion for ET(K)L platform capabilities",
+      "properties": {
+        "time_dimension": {
+          "type": "object",
+          "properties": {
+            "temporal_granularities": {
+              "type": "array",
+              "items": {"type": "string", "enum": ["millisecond", "second", "minute", "hour", "day", "week", "month", "quarter", "year"]}
+            },
+            "temporal_patterns": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "pattern": {"type": "string"},
+                  "frequency": {"type": "string"},
+                  "business_relevance": {"type": "string"}
+                }
+              }
+            },
+            "versioning_strategy": {
+              "type": "object",
+              "properties": {
+                "bi_temporal_required": {"type": "boolean"},
+                "audit_trail_depth": {"type": "string"},
+                "historical_analysis_needs": {"type": "array", "items": {"type": "string"}}
+              }
+            }
+          }
+        },
+        "space_dimension": {
+          "type": "object",
+          "properties": {
+            "spatial_scales": {
+              "type": "array",
+              "items": {"type": "string", "enum": ["point", "local", "regional", "national", "continental", "global"]}
+            },
+            "coordinate_systems": {
+              "type": "array", 
+              "items": {"type": "string"}
+            },
+            "spatial_relationships": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "relationship": {"type": "string"},
+                  "entities": {"type": "array", "items": {"type": "string"}},
+                  "analysis_value": {"type": "string"}
+                }
+              }
+            }
+          }
+        },
+        "domain_dimension": {
+          "type": "object",
+          "properties": {
+            "primary_domains": {"type": "array", "items": {"type": "string"}},
+            "connected_domains": {"type": "array", "items": {"type": "string"}},
+            "ontology_mappings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_concept": {"type": "string"},
+                  "target_concept": {"type": "string"},
+                  "mapping_type": {"type": "string"},
+                  "confidence": {"type": "number"}
+                }
+              }
+            }
+          }
+        },
+        "knowledge_dimension": {
+          "type": "object",
+          "properties": {
+            "implicit_knowledge_captured": {
+              "type": "array",
+              "items": {
+                "type": "object", 
+                "properties": {
+                  "knowledge_type": {"type": "string"},
+                  "source": {"type": "string"},
+                  "application": {"type": "string"},
+                  "validation_method": {"type": "string"}
+                }
+              }
+            },
+            "learning_opportunities": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "learning_target": {"type": "string"},
+                  "data_sources": {"type": "array", "items": {"type": "string"}},
+                  "methodology": {"type": "string"},
+                  "business_application": {"type": "string"}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "inference_metadata": {
+      "type": "object",
+      "description": "Metadata about the inference process and reasoning applied",
+      "properties": {
+        "reasoning_engine_version": {"type": "string"},
+        "ontologies_used": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ontology_name": {"type": "string"},
+              "version": {"type": "string"},
+              "coverage": {"type": "string"}
+            }
+          }
+        },
+        "inference_confidence": {
+          "type": "object",
+          "properties": {
+            "spatial_inferences": {"type": "number", "minimum": 0, "maximum": 1},
+            "temporal_inferences": {"type": "number", "minimum": 0, "maximum": 1},
+            "domain_inferences": {"type": "number", "minimum": 0, "maximum": 1},
+            "cross_domain_inferences": {"type": "number", "minimum": 0, "maximum": 1}
+          }
+        },
+        "reasoning_trace": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "step": {"type": "integer"},
+              "rule_applied": {"type": "string"},
+              "input": {"type": "string"},
+              "output": {"type": "string"},
+              "confidence": {"type": "number"}
+            }
+          }
+        }
+      }
+    },
+    "elicitation_session": {
+      "type": "object",
+      "description": "Metadata about the business elicitation session",
+      "properties": {
+        "session_id": {"type": "string", "format": "uuid"},
+        "timestamp": {"type": "string", "format": "date-time"},
+        "participants": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "role": {"type": "string"},
+              "expertise_areas": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        },
+        "elicitation_flow": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "step": {"type": "integer"},
+              "question_type": {"type": "string"},
+              "question": {"type": "string"},
+              "response": {"type": "string"},
+              "inferences_triggered": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        },
+        "business_validation": {
+          "type": "object",
+          "properties": {
+            "opportunities_presented": {"type": "integer"},
+            "opportunities_accepted": {"type": "integer"},
+            "opportunities_modified": {"type": "integer"},
+            "opportunities_rejected": {"type": "integer"},
+            "business_feedback": {"type": "array", "items": {"type": "string"}}
+          }
+        }
+      }
+    }
+  },
+  "required": ["@context", "@type", "explicit_requirements", "inferred_context", "analytical_opportunities", "four_dimensional_context", "inference_metadata"],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "@context": {
+        "@base": "https://agentic-data-scraper.com/sow/",
+        "business": "https://schema.org/",
+        "supply": "https://gs1.org/ontology/",
+        "finance": "https://spec.edmcouncil.org/fibo/",
+        "geo": "http://www.geonames.org/ontology#",
+        "time": "http://www.w3.org/2006/time#"
+      },
+      "@type": "SemanticStatementOfWork",
+      "explicit_requirements": {
+        "business_challenge": {
+          "description": "We need to track supplier performance across our global supply chain to reduce costs and improve quality.",
+          "entities_to_track": [
+            {
+              "entity": "suppliers",
+              "importance": "critical",
+              "semantic_type": "supply:Supplier",
+              "business_context": "Performance evaluation and risk assessment"
+            }
+          ]
+        },
+        "desired_outcomes": [
+          {
+            "outcome": "Reduce supplier costs by 15%",
+            "priority": "must-have",
+            "business_value": "Direct cost savings"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "@context": {
+    "@base": "https://agentic-data-scraper.com/sow/finance/",
+    "@vocab": "https://spec.edmcouncil.org/fibo/",
+    "business": "https://schema.org/",
+    "geo": "http://www.geonames.org/ontology#",
+    "time": "http://www.w3.org/2006/time#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    
+    "FinancialInstrument": {
+      "@id": "fibo:FinancialInstrument",
+      "@type": "@id"
+    },
+    "CostTracking": {
+      "@id": "finance:CostTracking", 
+      "@type": "@id"
+    },
+    "RevenueAnalysis": {
+      "@id": "finance:RevenueAnalysis",
+      "@type": "@id"
+    },
+    "ProfitabilityAnalysis": {
+      "@id": "finance:ProfitabilityAnalysis",
+      "@type": "@id"
+    },
+    "CashFlow": {
+      "@id": "fibo:CashFlow",
+      "@type": "@id"
+    },
+    "FinancialRisk": {
+      "@id": "fibo:Risk",
+      "@type": "@id"
+    },
+    "ComplianceReporting": {
+      "@id": "finance:ComplianceReporting",
+      "@type": "@id"
+    },
+    "AuditTrail": {
+      "@id": "finance:AuditTrail",
+      "@type": "@id"
+    },
+    "BudgetVariance": {
+      "@id": "finance:BudgetVariance",
+      "@type": "@id"
+    },
+    "FinancialForecast": {
+      "@id": "finance:Forecast",
+      "@type": "@id"
+    },
+    
+    "hasFinancialMetric": {
+      "@id": "finance:hasMetric",
+      "@type": "@id"
+    },
+    "costAmount": {
+      "@id": "finance:amount",
+      "@type": "xsd:decimal"
+    },
+    "currency": {
+      "@id": "finance:currency",
+      "@type": "xsd:string"
+    },
+    "reportingPeriod": {
+      "@id": "finance:period", 
+      "@type": "time:Interval"
+    },
+    "riskScore": {
+      "@id": "finance:riskScore",
+      "@type": "xsd:decimal"
+    },
+    "complianceFramework": {
+      "@id": "finance:framework",
+      "@type": "xsd:string"
+    },
+    "auditability": {
+      "@id": "finance:auditability",
+      "@type": "xsd:boolean"
+    },
+    
+    "RegulatoryFramework": {
+      "@id": "finance:RegulatoryFramework",
+      "@type": "@id"
+    },
+    "SOX": {
+      "@id": "finance:SarbanesOxley",
+      "@type": "@id"
+    },
+    "IFRS": {
+      "@id": "finance:IFRS",
+      "@type": "@id"
+    },
+    "GAAP": {
+      "@id": "finance:GAAP",
+      "@type": "@id"
+    },
+    "BaselIII": {
+      "@id": "finance:BaselIII",
+      "@type": "@id"
+    },
+    "MiFID": {
+      "@id": "finance:MiFID",
+      "@type": "@id"
+    },
+    
+    "TradingBook": {
+      "@id": "fibo:TradingBook",
+      "@type": "@id"
+    },
+    "Portfolio": {
+      "@id": "fibo:Portfolio",
+      "@type": "@id"
+    },
+    "MarketData": {
+      "@id": "finance:MarketData",
+      "@type": "@id"
+    },
+    "PricingModel": {
+      "@id": "finance:PricingModel",
+      "@type": "@id"
+    },
+    "VolatilityAnalysis": {
+      "@id": "finance:VolatilityAnalysis",
+      "@type": "@id"
+    },
+    "CreditRisk": {
+      "@id": "fibo:CreditRisk",
+      "@type": "@id"
+    },
+    "MarketRisk": {
+      "@id": "fibo:MarketRisk",
+      "@type": "@id"
+    },
+    "OperationalRisk": {
+      "@id": "fibo:OperationalRisk",
+      "@type": "@id"
+    },
+    
+    "GeographicExposure": {
+      "@id": "finance:GeographicExposure", 
+      "@type": "@id"
+    },
+    "CurrencyRisk": {
+      "@id": "fibo:CurrencyRisk",
+      "@type": "@id"
+    },
+    "CountryRisk": {
+      "@id": "finance:CountryRisk",
+      "@type": "@id"
+    },
+    "PoliticalRisk": {
+      "@id": "finance:PoliticalRisk",
+      "@type": "@id"
+    },
+    
+    "TemporalFinancialPattern": {
+      "@id": "finance:TemporalPattern",
+      "@type": "@id"
+    },
+    "QuarterlyReporting": {
+      "@id": "finance:QuarterlyReporting",
+      "@type": "@id"
+    },
+    "YearEndClosing": {
+      "@id": "finance:YearEndClosing",
+      "@type": "@id"
+    },
+    "MonthEndReconciliation": {
+      "@id": "finance:MonthEndReconciliation",
+      "@type": "@id"
+    },
+    
+    "infers_temporal_trends": {
+      "@id": "finance:infersTemporalTrends",
+      "@type": "@id",
+      "reasoning": "Cost tracking implies temporal trend analysis needs"
+    },
+    "infers_spatial_cost_variations": {
+      "@id": "finance:infersSpatialCostVariations",
+      "@type": "@id", 
+      "reasoning": "Financial operations have geographic cost variations"
+    },
+    "infers_regulatory_network": {
+      "@id": "finance:infersRegulatoryNetwork",
+      "@type": "@id",
+      "reasoning": "Compliance reporting requires regulatory network analysis"
+    },
+    "infers_supply_chain_impact": {
+      "@id": "finance:infersSupplyChainImpact",
+      "@type": "@id",
+      "reasoning": "Financial analysis reveals supply chain cost impacts"
+    },
+    "infers_risk_correlation": {
+      "@id": "finance:infersRiskCorrelation",
+      "@type": "@id",
+      "reasoning": "Financial risk analysis uncovers cross-domain correlations"
+    },
+    "infers_predictive_modeling": {
+      "@id": "finance:infersPredictiveModeling",
+      "@type": "@id",
+      "reasoning": "Financial data enables predictive analytics opportunities"
+    }
+  }
+}

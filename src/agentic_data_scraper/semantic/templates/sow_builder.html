@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOW Graph Builder - Real-time Opportunity Discovery</title>
+    
+    <!-- External libraries -->
+    <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
+    <script src="https://unpkg.com/cytoscape-cose-bilkent@4.1.0/cytoscape-cose-bilkent.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    
+    <!-- Bootstrap and icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Animation library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="/static/sow_graph.css">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        body {
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .hero-section {
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .workflow-step {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .workflow-step:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .workflow-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .workflow-step:hover::before {
+            left: 100%;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .btn-magic {
+            background: var(--success-gradient);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-magic:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(17, 153, 142, 0.4);
+            color: white;
+        }
+        
+        .btn-magic::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-magic:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .opportunity-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 15px 0;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .opportunity-card.high-value {
+            border-left-color: #e74c3c;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            background-size: 100% 100%;
+            background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
+        }
+        
+        .opportunity-card.high-confidence {
+            border-left-color: #2ecc71;
+        }
+        
+        .opportunity-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .value-indicator {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .confidence-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .confidence-high { background: #d4edda; color: #155724; }
+        .confidence-medium { background: #fff3cd; color: #856404; }
+        .confidence-low { background: #f8d7da; color: #721c24; }
+        
+        .discovery-animation {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .discovery-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: discovery-spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes discovery-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .requirement-form {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .project-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 30px;
+            border-radius: 20px 20px 0 0;
+            margin: -20px -20px 30px -20px;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .metric-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+        
+        .roadmap-phase {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+            position: relative;
+        }
+        
+        .roadmap-phase::before {
+            content: attr(data-phase);
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .graph-preview {
+            background: white;
+            border-radius: 15px;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+        
+        .discovery-insight {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            animation: slideInRight 0.5s ease;
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .floating-action {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .floating-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--success-gradient);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .floating-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast container for notifications -->
+    <div class="toast-container" id="toast-container"></div>
+    
+    <!-- Main container -->
+    <div class="container-fluid py-4">
+        <!-- Hero section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="glass-card hero-section">
+                    <div class="hero-content">
+                        <h1 class="display-4 mb-4">
+                            <i class="bi bi-diagram-3 me-3"></i>
+                            <strong>SOW Graph Builder</strong>
+                        </h1>
+                        <p class="lead mb-4">
+                            Build intelligent Statements of Work with real-time opportunity discovery
+                        </p>
+                        <div class="row text-center mt-5">
+                            <div class="col-md-4">
+                                <div class="workflow-step">
+                                    <div class="step-number">1</div>
+                                    <h5>Define Requirements</h5>
+                                    <p class="text-muted">Describe your business needs and project requirements</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="workflow-step">
+                                    <div class="step-number">2</div>
+                                    <h5>Discover Opportunities</h5>
+                                    <p class="text-muted">AI discovers implicit analytical opportunities in real-time</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="workflow-step">
+                                    <div class="step-number">3</div>
+                                    <h5>Optimize Value</h5>
+                                    <p class="text-muted">Review business impact and implementation roadmap</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Project creation / selection -->
+        <div class="row mb-4" id="project-setup" style="display: none;">
+            <div class="col-12">
+                <div class="glass-card p-4">
+                    <h3><i class="bi bi-folder-plus me-2"></i>Create New SOW Project</h3>
+                    <form id="project-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="project-name" class="form-label">Project Name</label>
+                                    <input type="text" class="form-control" id="project-name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="client-name" class="form-label">Client Name</label>
+                                    <input type="text" class="form-control" id="client-name" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="industry" class="form-label">Industry</label>
+                                    <select class="form-select" id="industry" required>
+                                        <option value="">Select Industry</option>
+                                        <option value="finance">Finance</option>
+                                        <option value="healthcare">Healthcare</option>
+                                        <option value="manufacturing">Manufacturing</option>
+                                        <option value="retail">Retail</option>
+                                        <option value="technology">Technology</option>
+                                        <option value="logistics">Logistics</option>
+                                        <option value="energy">Energy</option>
+                                        <option value="government">Government</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="project-type" class="form-label">Project Type</label>
+                                    <select class="form-select" id="project-type" required>
+                                        <option value="">Select Type</option>
+                                        <option value="analytics_platform">Analytics Platform</option>
+                                        <option value="data_governance">Data Governance</option>
+                                        <option value="business_intelligence">Business Intelligence</option>
+                                        <option value="data_migration">Data Migration</option>
+                                        <option value="process_automation">Process Automation</option>
+                                        <option value="predictive_analytics">Predictive Analytics</option>
+                                        <option value="compliance_reporting">Compliance Reporting</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-magic">
+                            <i class="bi bi-rocket-takeoff me-2"></i>Create Project
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main project interface -->
+        <div class="row" id="project-interface" style="display: none;">
+            <!-- Left column - Requirements and Discovery -->
+            <div class="col-lg-8">
+                <!-- Project header -->
+                <div class="glass-card mb-4">
+                    <div class="project-header">
+                        <h2 id="project-title">Project Name</h2>
+                        <p class="mb-0" id="project-details">Client • Industry • Type</p>
+                    </div>
+                    
+                    <!-- Project metrics -->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="metric-card">
+                                <div class="metric-value" id="requirements-count">0</div>
+                                <div class="metric-label">Requirements</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="metric-card">
+                                <div class="metric-value" id="opportunities-count">0</div>
+                                <div class="metric-label">Opportunities</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="metric-card">
+                                <div class="metric-value" id="total-value">$0</div>
+                                <div class="metric-label">Total Value</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="metric-card">
+                                <div class="metric-value" id="avg-confidence">0%</div>
+                                <div class="metric-label">Avg Confidence</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Requirement input form -->
+                <div class="glass-card mb-4">
+                    <div class="p-4">
+                        <h4><i class="bi bi-plus-circle me-2"></i>Add Business Requirement</h4>
+                        <form id="requirement-form">
+                            <div class="mb-3">
+                                <label for="req-description" class="form-label">Requirement Description</label>
+                                <textarea class="form-control" id="req-description" rows="3" 
+                                         placeholder="Describe the business requirement in detail..." required></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="req-priority" class="form-label">Priority</label>
+                                        <select class="form-select" id="req-priority" required>
+                                            <option value="1">1 - Critical</option>
+                                            <option value="2">2 - High</option>
+                                            <option value="3" selected>3 - Medium</option>
+                                            <option value="4">4 - Low</option>
+                                            <option value="5">5 - Nice to Have</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="req-domain" class="form-label">Domain</label>
+                                        <select class="form-select" id="req-domain" required>
+                                            <option value="finance">Finance</option>
+                                            <option value="operations">Operations</option>
+                                            <option value="marketing">Marketing</option>
+                                            <option value="hr">Human Resources</option>
+                                            <option value="it">Information Technology</option>
+                                            <option value="sales">Sales</option>
+                                            <option value="compliance">Compliance</option>
+                                            <option value="customer_service">Customer Service</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="req-complexity" class="form-label">Complexity</label>
+                                        <select class="form-select" id="req-complexity" required>
+                                            <option value="low">Low</option>
+                                            <option value="medium" selected>Medium</option>
+                                            <option value="high">High</option>
+                                            <option value="very_high">Very High</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="req-hours" class="form-label">Estimated Hours (Optional)</label>
+                                        <input type="number" class="form-control" id="req-hours" min="1">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="req-value" class="form-label">Business Value (Optional)</label>
+                                        <input type="number" class="form-control" id="req-value" min="0" step="100">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-magic" id="discover-btn">
+                                <i class="bi bi-lightbulb me-2"></i>Add & Discover Opportunities
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Discovery animation -->
+                <div class="discovery-animation glass-card" id="discovery-animation">
+                    <div class="discovery-spinner"></div>
+                    <h5>Discovering Opportunities...</h5>
+                    <p class="text-muted">AI is analyzing your requirement and finding implicit opportunities</p>
+                </div>
+                
+                <!-- Discovered opportunities -->
+                <div id="opportunities-section" style="display: none;">
+                    <div class="glass-card mb-4">
+                        <div class="p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4><i class="bi bi-stars me-2"></i>Discovered Opportunities</h4>
+                                <span class="badge bg-success" id="discovery-badge">New discoveries!</span>
+                            </div>
+                            <div id="opportunities-list"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Implementation roadmap -->
+                    <div class="glass-card mb-4">
+                        <div class="p-4">
+                            <h4><i class="bi bi-map me-2"></i>Implementation Roadmap</h4>
+                            <div id="roadmap-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right column - Graph visualization and insights -->
+            <div class="col-lg-4">
+                <div class="sidebar">
+                    <h5><i class="bi bi-graph-up me-2"></i>Project Graph</h5>
+                    <div class="graph-preview mb-4" id="graph-preview">
+                        <p class="text-muted text-center" style="line-height: 400px;">
+                            Add requirements to see the graph
+                        </p>
+                    </div>
+                    
+                    <!-- Discovery insights -->
+                    <h5><i class="bi bi-lightbulb me-2"></i>Discovery Insights</h5>
+                    <div id="insights-container">
+                        <p class="text-muted">Insights will appear as you add requirements</p>
+                    </div>
+                    
+                    <!-- Discovery settings -->
+                    <h5 class="mt-4"><i class="bi bi-gear me-2"></i>Discovery Settings</h5>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="auto-discovery" checked>
+                        <label class="form-check-label" for="auto-discovery">Auto Discovery</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="cross-domain" checked>
+                        <label class="form-check-label" for="cross-domain">Cross-Domain</label>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="pattern-matching" checked>
+                        <label class="form-check-label" for="pattern-matching">Pattern Matching</label>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="confidence-threshold" class="form-label">Confidence Threshold</label>
+                        <input type="range" class="form-range" id="confidence-threshold" 
+                               min="0.3" max="1.0" step="0.1" value="0.6">
+                        <div class="text-center"><span id="confidence-value">60%</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Start button -->
+        <div class="row" id="start-section">
+            <div class="col-12 text-center">
+                <button class="btn btn-magic btn-lg pulse-animation" id="start-building">
+                    <i class="bi bi-play-circle me-2"></i>Start Building SOW
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating action button -->
+    <div class="floating-action">
+        <button class="floating-btn" id="add-requirement-fab" style="display: none;" title="Add Requirement">
+            <i class="bi bi-plus"></i>
+        </button>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="/static/sow_graph_utils.js"></script>
+    <script>
+        // Global state
+        let currentProject = null;
+        let cytoscapeInstance = null;
+        
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventHandlers();
+            loadDiscoverySettings();
+        });
+        
+        // Event handlers setup
+        function setupEventHandlers() {
+            // Start building button
+            document.getElementById('start-building').addEventListener('click', function() {
+                showProjectSetup();
+            });
+            
+            // Project form
+            document.getElementById('project-form').addEventListener('submit', handleProjectCreation);
+            
+            // Requirement form
+            document.getElementById('requirement-form').addEventListener('submit', handleRequirementAddition);
+            
+            // Discovery settings
+            document.getElementById('confidence-threshold').addEventListener('input', function() {
+                const value = Math.round(this.value * 100);
+                document.getElementById('confidence-value').textContent = value + '%';
+                updateDiscoverySettings();
+            });
+            
+            ['auto-discovery', 'cross-domain', 'pattern-matching'].forEach(id => {
+                document.getElementById(id).addEventListener('change', updateDiscoverySettings);
+            });
+            
+            // Floating action button
+            document.getElementById('add-requirement-fab').addEventListener('click', function() {
+                document.getElementById('req-description').focus();
+            });
+        }
+        
+        function showProjectSetup() {
+            // Hide start section
+            document.getElementById('start-section').style.display = 'none';
+            
+            // Show project setup with animation
+            const projectSetup = document.getElementById('project-setup');
+            projectSetup.style.display = 'block';
+            
+            anime({
+                targets: projectSetup,
+                opacity: [0, 1],
+                translateY: [50, 0],
+                duration: 800,
+                easing: 'easeOutQuart'
+            });
+        }
+        
+        async function handleProjectCreation(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const projectData = {
+                name: document.getElementById('project-name').value,
+                client: document.getElementById('client-name').value,
+                industry: document.getElementById('industry').value,
+                type: document.getElementById('project-type').value
+            };
+            
+            try {
+                showToast('Creating project...', 'info');
+                
+                const response = await fetch('/api/projects', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(projectData)
+                });
+                
+                const result = await response.json();
+                currentProject = result.project;
+                
+                showToast('Project created successfully!', 'success');
+                showProjectInterface();
+                
+            } catch (error) {
+                console.error('Project creation failed:', error);
+                showToast('Failed to create project', 'error');
+            }
+        }
+        
+        function showProjectInterface() {
+            // Hide project setup
+            document.getElementById('project-setup').style.display = 'none';
+            
+            // Show project interface
+            const projectInterface = document.getElementById('project-interface');
+            projectInterface.style.display = 'block';
+            
+            // Update project details
+            document.getElementById('project-title').textContent = currentProject.project_name;
+            document.getElementById('project-details').textContent = 
+                `${currentProject.client_name} • ${currentProject.industry} • ${currentProject.project_type}`;
+            
+            // Show floating action button
+            document.getElementById('add-requirement-fab').style.display = 'block';
+            
+            // Set industry as default domain
+            document.getElementById('req-domain').value = currentProject.industry;
+            
+            // Animate interface appearance
+            anime({
+                targets: projectInterface,
+                opacity: [0, 1],
+                translateY: [50, 0],
+                duration: 1000,
+                easing: 'easeOutQuart'
+            });
+        }
+        
+        async function handleRequirementAddition(event) {
+            event.preventDefault();
+            
+            if (!currentProject) {
+                showToast('No active project', 'error');
+                return;
+            }
+            
+            const reqData = {
+                description: document.getElementById('req-description').value,
+                priority: parseInt(document.getElementById('req-priority').value),
+                domain: document.getElementById('req-domain').value,
+                complexity: document.getElementById('req-complexity').value,
+                estimated_hours: document.getElementById('req-hours').value ? 
+                    parseInt(document.getElementById('req-hours').value) : null,
+                business_value: document.getElementById('req-value').value ? 
+                    parseFloat(document.getElementById('req-value').value) : null
+            };
+            
+            try {
+                // Show discovery animation
+                showDiscoveryAnimation();
+                
+                const response = await fetch(`/api/projects/${currentProject.project_id}/requirements`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(reqData)
+                });
+                
+                const result = await response.json();
+                
+                // Hide discovery animation
+                hideDiscoveryAnimation();
+                
+                // Show discovered opportunities
+                displayDiscoveredOpportunities(result);
+                
+                // Update project metrics
+                updateProjectMetrics();
+                
+                // Reset form
+                document.getElementById('requirement-form').reset();
+                document.getElementById('req-priority').value = '3';
+                document.getElementById('req-complexity').value = 'medium';
+                document.getElementById('req-domain').value = currentProject.industry;
+                
+                // Update graph
+                updateProjectGraph();
+                
+                showToast(`Discovered ${result.opportunities.length} opportunities!`, 'success');
+                
+            } catch (error) {
+                console.error('Requirement addition failed:', error);
+                hideDiscoveryAnimation();
+                showToast('Failed to add requirement', 'error');
+            }
+        }
+        
+        function showDiscoveryAnimation() {
+            const animation = document.getElementById('discovery-animation');
+            animation.style.display = 'block';
+            
+            anime({
+                targets: animation,
+                opacity: [0, 1],
+                scale: [0.8, 1],
+                duration: 500,
+                easing: 'easeOutQuart'
+            });
+        }
+        
+        function hideDiscoveryAnimation() {
+            const animation = document.getElementById('discovery-animation');
+            anime({
+                targets: animation,
+                opacity: 0,
+                scale: 0.8,
+                duration: 300,
+                easing: 'easeInQuart',
+                complete: () => {
+                    animation.style.display = 'none';
+                }
+            });
+        }
+        
+        function displayDiscoveredOpportunities(discoveryResult) {
+            const section = document.getElementById('opportunities-section');
+            const list = document.getElementById('opportunities-list');
+            
+            // Clear existing opportunities
+            list.innerHTML = '';
+            
+            // Display new opportunities
+            discoveryResult.opportunities.forEach((opp, index) => {
+                const oppCard = createOpportunityCard(opp, index);
+                list.appendChild(oppCard);
+            });
+            
+            // Display roadmap
+            displayImplementationRoadmap(discoveryResult.roadmap);
+            
+            // Display discovery insights
+            displayDiscoveryInsights(discoveryResult.summary);
+            
+            // Show section with animation
+            section.style.display = 'block';
+            anime({
+                targets: section,
+                opacity: [0, 1],
+                translateY: [30, 0],
+                duration: 800,
+                easing: 'easeOutQuart'
+            });
+        }
+        
+        function createOpportunityCard(opportunity, index) {
+            const card = document.createElement('div');
+            card.className = 'opportunity-card';
+            
+            // Add special styling for high-value or high-confidence opportunities
+            if (opportunity.business_value > 5000) {
+                card.classList.add('high-value');
+            }
+            if (opportunity.confidence_score > 0.8) {
+                card.classList.add('high-confidence');
+            }
+            
+            const confidenceClass = opportunity.confidence_score > 0.8 ? 'confidence-high' :
+                                  opportunity.confidence_score > 0.6 ? 'confidence-medium' : 'confidence-low';
+            
+            card.innerHTML = `
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="flex-grow-1">
+                        <h6 class="mb-2">${opportunity.description}</h6>
+                        <div class="small text-muted">
+                            <i class="bi bi-gear me-1"></i>${opportunity.discovery_method} • 
+                            <i class="bi bi-clock me-1"></i>${opportunity.estimated_hours || 200}h • 
+                            <i class="bi bi-layers me-1"></i>${opportunity.complexity}
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <div class="value-indicator">$${opportunity.business_value?.toLocaleString()}</div>
+                        <span class="confidence-badge ${confidenceClass}">
+                            ${Math.round(opportunity.confidence_score * 100)}% confidence
+                        </span>
+                    </div>
+                </div>
+                <div class="small">
+                    <strong>Implementation:</strong> ${opportunity.implementation_approach}
+                </div>
+            `;
+            
+            // Add click handler for more details
+            card.addEventListener('click', () => {
+                showOpportunityDetails(opportunity);
+            });
+            
+            // Animate card appearance
+            setTimeout(() => {
+                anime({
+                    targets: card,
+                    translateX: [100, 0],
+                    opacity: [0, 1],
+                    duration: 600,
+                    easing: 'easeOutQuart'
+                });
+            }, index * 100);
+            
+            return card;
+        }
+        
+        function displayImplementationRoadmap(roadmap) {
+            const container = document.getElementById('roadmap-content');
+            container.innerHTML = '';
+            
+            if (!roadmap || !roadmap.phases) {
+                container.innerHTML = '<p class="text-muted">No roadmap available</p>';
+                return;
+            }
+            
+            // Roadmap summary
+            const summary = document.createElement('div');
+            summary.className = 'mb-4 p-3 bg-light rounded';
+            summary.innerHTML = `
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <strong>${roadmap.total_phases}</strong><br>
+                        <small class="text-muted">Phases</small>
+                    </div>
+                    <div class="col-md-3">
+                        <strong>${roadmap.total_duration_weeks}</strong><br>
+                        <small class="text-muted">Weeks</small>
+                    </div>
+                    <div class="col-md-3">
+                        <strong>$${roadmap.total_investment?.toLocaleString()}</strong><br>
+                        <small class="text-muted">Investment</small>
+                    </div>
+                    <div class="col-md-3">
+                        <strong>${roadmap.overall_roi?.toFixed(1)}%</strong><br>
+                        <small class="text-muted">ROI</small>
+                    </div>
+                </div>
+            `;
+            container.appendChild(summary);
+            
+            // Phase details
+            roadmap.phases.forEach((phase, index) => {
+                const phaseCard = document.createElement('div');
+                phaseCard.className = 'roadmap-phase';
+                phaseCard.setAttribute('data-phase', `Phase ${phase.phase}`);
+                
+                phaseCard.innerHTML = `
+                    <h6 class="mt-2">Phase ${phase.phase} (${phase.duration_weeks} weeks)</h6>
+                    <div class="small mb-2">
+                        <strong>Value:</strong> $${phase.total_value?.toLocaleString()} • 
+                        <strong>Hours:</strong> ${phase.total_hours}
+                    </div>
+                    <div class="small">
+                        <strong>Opportunities:</strong> ${phase.opportunities.map(opp => opp.description.substring(0, 60) + '...').join(', ')}
+                    </div>
+                `;
+                
+                container.appendChild(phaseCard);
+            });
+        }
+        
+        function displayDiscoveryInsights(summary) {
+            const container = document.getElementById('insights-container');
+            container.innerHTML = '';
+            
+            if (summary.key_insights && summary.key_insights.length > 0) {
+                summary.key_insights.forEach((insight, index) => {
+                    const insightDiv = document.createElement('div');
+                    insightDiv.className = 'discovery-insight';
+                    insightDiv.innerHTML = `<i class="bi bi-lightbulb me-2"></i>${insight}`;
+                    
+                    setTimeout(() => {
+                        container.appendChild(insightDiv);
+                    }, index * 500);
+                });
+            }
+            
+            // Add summary stats
+            setTimeout(() => {
+                const statsDiv = document.createElement('div');
+                statsDiv.className = 'mt-3 p-3 bg-light rounded';
+                statsDiv.innerHTML = `
+                    <h6>Discovery Summary</h6>
+                    <div class="small">
+                        <div>Total Opportunities: ${summary.total_opportunities}</div>
+                        <div>Avg Value: $${summary.value_ranges?.average?.toLocaleString()}</div>
+                        <div>Avg Confidence: ${(summary.confidence_stats?.average * 100)?.toFixed(1)}%</div>
+                    </div>
+                `;
+                container.appendChild(statsDiv);
+            }, 2000);
+        }
+        
+        function updateProjectMetrics() {
+            // This would typically fetch updated project data
+            // For now, we'll increment the counters
+            const reqCount = document.getElementById('requirements-count');
+            const oppCount = document.getElementById('opportunities-count');
+            
+            reqCount.textContent = parseInt(reqCount.textContent) + 1;
+            oppCount.textContent = parseInt(oppCount.textContent) + 
+                document.querySelectorAll('.opportunity-card').length;
+            
+            // Animate metric updates
+            [reqCount, oppCount].forEach(element => {
+                element.classList.add('pulse-animation');
+                setTimeout(() => element.classList.remove('pulse-animation'), 2000);
+            });
+        }
+        
+        async function updateProjectGraph() {
+            if (!currentProject) return;
+            
+            try {
+                const response = await fetch(`/api/projects/${currentProject.project_id}/graph`);
+                const graphData = await response.json();
+                
+                const container = document.getElementById('graph-preview');
+                container.innerHTML = '';
+                
+                if (graphData.elements && graphData.elements.nodes.length > 0) {
+                    // Initialize small Cytoscape graph for preview
+                    cytoscapeInstance = cytoscape({
+                        container: container,
+                        elements: graphData.elements,
+                        layout: { name: 'circle' },
+                        style: graphData.style,
+                        userZoomingEnabled: false,
+                        userPanningEnabled: false,
+                        boxSelectionEnabled: false
+                    });
+                    
+                    // Fit to container
+                    cytoscapeInstance.fit();
+                    
+                } else {
+                    container.innerHTML = '<p class="text-muted text-center" style="line-height: 400px;">Building graph...</p>';
+                }
+                
+            } catch (error) {
+                console.error('Failed to update graph:', error);
+            }
+        }
+        
+        async function updateDiscoverySettings() {
+            const settings = {
+                auto_discovery_enabled: document.getElementById('auto-discovery').checked,
+                cross_domain_enabled: document.getElementById('cross-domain').checked,
+                pattern_matching_enabled: document.getElementById('pattern-matching').checked,
+                min_confidence_threshold: parseFloat(document.getElementById('confidence-threshold').value)
+            };
+            
+            try {
+                await fetch('/api/discovery-settings', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(settings)
+                });
+                
+            } catch (error) {
+                console.error('Failed to update settings:', error);
+            }
+        }
+        
+        async function loadDiscoverySettings() {
+            try {
+                const response = await fetch('/api/discovery-settings');
+                const settings = await response.json();
+                
+                document.getElementById('auto-discovery').checked = settings.auto_discovery_enabled;
+                document.getElementById('cross-domain').checked = settings.cross_domain_enabled;
+                document.getElementById('pattern-matching').checked = settings.pattern_matching_enabled;
+                document.getElementById('confidence-threshold').value = settings.min_confidence_threshold;
+                document.getElementById('confidence-value').textContent = 
+                    Math.round(settings.min_confidence_threshold * 100) + '%';
+                
+            } catch (error) {
+                console.error('Failed to load settings:', error);
+            }
+        }
+        
+        function showOpportunityDetails(opportunity) {
+            // Create modal or expanded view for opportunity details
+            showToast(`Opportunity Details: ${opportunity.description.substring(0, 50)}...`, 'info');
+        }
+        
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-white bg-${type === 'error' ? 'danger' : type === 'success' ? 'success' : 'primary'}`;
+            toast.setAttribute('role', 'alert');
+            
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+            
+            // Auto remove after shown
+            toast.addEventListener('hidden.bs.toast', () => {
+                toastContainer.removeChild(toast);
+            });
+        }
+        
+        // Handle window resize for graph
+        window.addEventListener('resize', () => {
+            if (cytoscapeInstance) {
+                cytoscapeInstance.resize();
+                cytoscapeInstance.fit();
+            }
+        });
+        
+    </script>
+</body>
+</html>

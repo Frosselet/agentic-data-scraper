@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mississippi River Crisis: Soybean Transportation Impact Analysis</title>
+    
+    <!-- Leaflet for geographic visualization -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Chart.js for analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Bootstrap for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c5530 0%, #3e7b3e 100%);
+            margin: 0;
+            padding: 15px;
+        }
+        
+        .demo-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        .demo-header {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .drought-banner {
+            background: linear-gradient(45deg, #D2691E 0%, #CD853F 50%, #D2691E 100%);
+            color: white;
+            padding: 18px;
+            text-align: center;
+            border-bottom: 4px solid #8B4513;
+            animation: droughtAlert 4s infinite;
+            position: relative;
+        }
+        
+        @keyframes droughtAlert {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.9; }
+        }
+        
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 500px;
+            gap: 0;
+            min-height: 900px;
+        }
+        
+        .map-section {
+            position: relative;
+            background: #e6f3ff;
+        }
+        
+        #river-map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .river-info-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.96);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            z-index: 1000;
+            min-width: 300px;
+            backdrop-filter: blur(10px);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .water-level-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.96);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            z-index: 1000;
+            min-width: 250px;
+        }
+        
+        .water-gauge {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .gauge-bar {
+            width: 100px;
+            height: 20px;
+            background: linear-gradient(to right, #dc3545 0%, #ffc107 50%, #28a745 100%);
+            border-radius: 10px;
+            margin-right: 10px;
+            position: relative;
+        }
+        
+        .gauge-marker {
+            position: absolute;
+            top: -2px;
+            width: 4px;
+            height: 24px;
+            background: #000;
+            border-radius: 2px;
+        }
+        
+        .analytics-sidebar {
+            background: #f8f9fa;
+            border-left: 1px solid #dee2e6;
+            padding: 25px;
+            overflow-y: auto;
+        }
+        
+        .crisis-summary {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border: 2px solid #ffa726;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .crisis-summary::before {
+            content: '🌾';
+            position: absolute;
+            top: -12px;
+            left: 15px;
+            background: white;
+            padding: 5px 8px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-left: 5px solid #28a745;
+        }
+        
+        .metric-card.critical {
+            border-left-color: #dc3545;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+        }
+        
+        .metric-card.warning {
+            border-left-color: #ffc107;
+            background: linear-gradient(135deg, #fffbf0 0%, #ffffff 100%);
+        }
+        
+        .controls-bar {
+            background: linear-gradient(135deg, #2c5530 0%, #3e7b3e 100%);
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .scenario-btn {
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 5px;
+        }
+        
+        .scenario-btn:hover,
+        .scenario-btn.active {
+            background: #6c757d;
+            border-color: #6c757d;
+            transform: translateY(-1px);
+        }
+        
+        .report-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e9ecef;
+        }
+        
+        .report-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f8f9fa;
+        }
+        
+        .report-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #495057;
+        }
+        
+        .report-content h6 {
+            color: #2c5530;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .report-content ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .report-content li {
+            margin-bottom: 5px;
+        }
+        
+        .highlight-stat {
+            background: #e3f2fd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #1565c0;
+        }
+        
+        .export-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .export-btn {
+            background: #28a745;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .export-btn:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+        
+        .barge-marker {
+            animation: bargeFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes bargeFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(2px, -2px); }
+        }
+        
+        .facility-info {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid #17a2b8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .loading-river {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(44, 85, 48, 0.9);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            z-index: 2000;
+            display: none;
+        }
+        
+        .river-wave {
+            display: inline-block;
+            width: 50px;
+            height: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .river-wave div {
+            display: inline-block;
+            width: 6px;
+            height: 15px;
+            background: #4682b4;
+            margin: 0 1px;
+            border-radius: 3px 3px 0 0;
+            animation: riverWave 1.5s infinite ease-in-out;
+        }
+        
+        .river-wave div:nth-child(2) { animation-delay: -0.1s; }
+        .river-wave div:nth-child(3) { animation-delay: -0.2s; }
+        .river-wave div:nth-child(4) { animation-delay: -0.3s; }
+        .river-wave div:nth-child(5) { animation-delay: -0.4s; }
+        
+        @keyframes riverWave {
+            0%, 40%, 100% { transform: scaleY(0.4); }
+            20% { transform: scaleY(1.0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🌾 Mississippi River Crisis: Soybean Transportation Analysis</h1>
+            <div class="subtitle">Critical Water Levels Impact on Agricultural Supply Chain - Minnesota to New Orleans</div>
+        </div>
+        
+        <div class="drought-banner">
+            <strong>🚨 AGRICULTURAL EMERGENCY:</strong> Mississippi River at critical low levels - Barge transportation severely impacted - 2.4M tons of soybeans affected
+        </div>
+        
+        <div class="controls-bar">
+            <div>
+                <span style="margin-right: 15px; font-weight: 600;">Water Level Scenario:</span>
+                <button class="scenario-btn active" onclick="loadWaterScenario('critical')">Critical Low</button>
+                <button class="scenario-btn" onclick="loadWaterScenario('low')">Low Water</button>
+                <button class="scenario-btn" onclick="loadWaterScenario('normal')">Normal Levels</button>
+            </div>
+            
+            <div>
+                <button class="scenario-btn" onclick="animateBargeTraffic()">🚢 Animate Barges</button>
+                <button class="scenario-btn" onclick="generateReport()">📊 Generate Report</button>
+                <div class="time-display" id="river-timestamp" style="display: inline-block; margin-left: 15px; background: rgba(0,0,0,0.3); padding: 8px 15px; border-radius: 20px;">Oct 15, 2024 - River Gauge: -12.3 ft</div>
+            </div>
+        </div>
+        
+        <div class="main-layout">
+            <div class="map-section">
+                <div id="river-map"></div>
+                
+                <div class="river-info-panel">
+                    <h6><strong>🏭 Key Facilities & Routes</strong></h6>
+                    <div class="legend-item" style="margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="width: 20px; height: 4px; background: #4682b4; margin-right: 10px;"></div>
+                            <span><strong>Mississippi River System</strong></span>
+                        </div>
+                    </div>
+                    <div class="legend-item" style="margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="width: 20px; height: 4px; background: #dc3545; margin-right: 10px;"></div>
+                            <span><strong>Critical Depth Areas</strong></span>
+                        </div>
+                    </div>
+                    <div class="legend-item" style="margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="width: 20px; height: 4px; background: #28a745; margin-right: 10px; border-radius: 10px;"></div>
+                            <span><strong>Active Barge Routes</strong></span>
+                        </div>
+                    </div>
+                    
+                    <hr style="margin: 15px 0;">
+                    
+                    <div class="facility-info">
+                        <strong>Minnesota Grain Elevators</strong><br>
+                        <small>Capacity: 2.4M tons | Status: Loaded</small>
+                    </div>
+                    <div class="facility-info">
+                        <strong>Lock & Dam System</strong><br>
+                        <small>29 locks | 15 currently restricted</small>
+                    </div>
+                    <div class="facility-info">
+                        <strong>New Orleans Export Terminals</strong><br>
+                        <small>5 major facilities | 45% capacity utilization</small>
+                    </div>
+                </div>
+                
+                <div class="water-level-indicator">
+                    <h6><strong>🌊 Current Water Levels</strong></h6>
+                    <div class="water-gauge">
+                        <div class="gauge-bar">
+                            <div class="gauge-marker" style="left: 15%;"></div>
+                        </div>
+                        <span><strong>Critical</strong></span>
+                    </div>
+                    <div style="font-size: 0.9rem; color: #495057;">
+                        <strong>Memphis:</strong> -12.3 ft (Critical)<br>
+                        <strong>St. Louis:</strong> -8.7 ft (Low)<br>
+                        <strong>New Orleans:</strong> -4.1 ft (Below Normal)
+                    </div>
+                </div>
+                
+                <div class="loading-river" id="loading-river">
+                    <div class="river-wave">
+                        <div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                    <h5>Analyzing River Conditions</h5>
+                    <p id="river-loading-message">Calculating barge capacity restrictions...</p>
+                </div>
+            </div>
+            
+            <div class="analytics-sidebar">
+                <div class="crisis-summary">
+                    <h6><strong>Agricultural Supply Chain Impact</strong></h6>
+                    <p><strong>2.4 million tons</strong> of soybeans awaiting transport<br>
+                    <strong>67% reduction</strong> in barge capacity due to low water<br>
+                    <strong>$340M worth</strong> of agricultural commodities affected</p>
+                </div>
+                
+                <div class="metric-card critical">
+                    <div class="metric-value" style="font-size: 2rem; font-weight: bold; color: #dc3545;">-12.3 ft</div>
+                    <div class="metric-label" style="font-size: 0.9rem; color: #6c757d; text-transform: uppercase;">Water Level at Memphis</div>
+                    <div class="metric-change" style="background: rgba(220, 53, 69, 0.1); color: #dc3545; padding: 4px 8px; border-radius: 12px; display: inline-block; margin-top: 8px; font-size: 0.9rem; font-weight: 600;">18.3 ft below normal</div>
+                </div>
+                
+                <div class="metric-card critical">
+                    <div class="metric-value" style="font-size: 2rem; font-weight: bold; color: #dc3545;">67%</div>
+                    <div class="metric-label" style="font-size: 0.9rem; color: #6c757d; text-transform: uppercase;">Barge Capacity Reduction</div>
+                    <div class="metric-change" style="background: rgba(220, 53, 69, 0.1); color: #dc3545; padding: 4px 8px; border-radius: 12px; display: inline-block; margin-top: 8px; font-size: 0.9rem; font-weight: 600;">From 1,500 to 500 tons per barge</div>
+                </div>
+                
+                <div class="metric-card warning">
+                    <div class="metric-value" style="font-size: 2rem; font-weight: bold; color: #ffc107;">+$47/ton</div>
+                    <div class="metric-label" style="font-size: 0.9rem; color: #6c757d; text-transform: uppercase;">Additional Transportation Cost</div>
+                    <div class="metric-change" style="background: rgba(255, 193, 7, 0.1); color: #856404; padding: 4px 8px; border-radius: 12px; display: inline-block; margin-top: 8px; font-size: 0.9rem; font-weight: 600;">+385% vs normal river transport</div>
+                </div>
+                
+                <div class="metric-card critical">
+                    <div class="metric-value" style="font-size: 2rem; font-weight: bold; color: #dc3545;">18 days</div>
+                    <div class="metric-label" style="font-size: 0.9rem; color: #6c757d; text-transform: uppercase;">Average Transport Delay</div>
+                    <div class="metric-change" style="background: rgba(220, 53, 69, 0.1); color: #dc3545; padding: 4px 8px; border-radius: 12px; display: inline-block; margin-top: 8px; font-size: 0.9rem; font-weight: 600;">vs 5-7 days normal transit</div>
+                </div>
+                
+                <div class="report-section">
+                    <div class="report-header">
+                        <h6><strong>📋 Live Impact Report</strong></h6>
+                        <div class="export-controls" style="margin-top: 0;">
+                            <button class="export-btn" onclick="exportToPDF()">📄 PDF</button>
+                            <button class="export-btn" onclick="exportToExcel()">📊 Excel</button>
+                        </div>
+                    </div>
+                    
+                    <div class="report-content" id="live-report">
+                        <h6>Executive Summary</h6>
+                        <p>Critical water levels on the Mississippi River system are causing severe disruptions to soybean transportation from Minnesota grain elevators to New Orleans export facilities. Current conditions represent a <span class="highlight-stat">67% reduction</span> in barge loading capacity.</p>
+                        
+                        <h6>Key Impact Metrics</h6>
+                        <ul>
+                            <li><strong>Water Level:</strong> Memphis gauge at <span class="highlight-stat">-12.3 feet</span> (18.3 ft below normal)</li>
+                            <li><strong>Cargo Capacity:</strong> Reduced from 1,500 to <span class="highlight-stat">500 tons per barge</span></li>
+                            <li><strong>Transportation Cost:</strong> Increased by <span class="highlight-stat">$47/ton</span> (+385%)</li>
+                            <li><strong>Transit Time:</strong> Extended to <span class="highlight-stat">18 days average</span> (vs 5-7 normal)</li>
+                        </ul>
+                        
+                        <h6>Affected Infrastructure</h6>
+                        <ul>
+                            <li><strong>Lock Restrictions:</strong> 15 of 29 locks operating with reduced capacity</li>
+                            <li><strong>Grain Elevators:</strong> 2.4M tons of soybeans awaiting transport in Minnesota</li>
+                            <li><strong>Export Terminals:</strong> New Orleans facilities at 45% capacity utilization</li>
+                        </ul>
+                        
+                        <h6>Economic Impact</h6>
+                        <p>The crisis affects <span class="highlight-stat">$340 million worth</span> of agricultural commodities, with farmers facing storage costs and delayed payments. Export contracts are at risk of penalty clauses due to delivery delays.</p>
+                    </div>
+                </div>
+                
+                <div class="route-stats" style="background: white; border-radius: 12px; padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                    <h6><strong>📈 Water Level Trends</strong></h6>
+                    <canvas id="water-level-chart" width="400" height="200"></canvas>
+                </div>
+                
+                <div class="route-stats" style="background: white; border-radius: 12px; padding: 18px; margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                    <h6><strong>🚛 Transportation Cost Comparison</strong></h6>
+                    <canvas id="cost-comparison-chart" width="400" height="180"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let map;
+        let riverLayers = [];
+        let bargeMarkers = [];
+        let currentWaterScenario = 'critical';
+        
+        // Mississippi River system coordinates (realistic waypoints)
+        const mississippiSystem = {
+            // Main Mississippi River route from Minnesota to New Orleans
+            mainRiver: [
+                [44.9778, -93.2650],  // Minneapolis, MN (grain elevators)
+                [44.0521, -92.5332],  // Winona, MN (Lock & Dam 5a)
+                [41.5868, -90.5776],  // Davenport, IA (Lock & Dam 15)
+                [41.5240, -90.5776],  // Rock Island, IL
+                [38.6270, -90.1994],  // St. Louis, MO (major confluence)
+                [37.0842, -89.1265],  // Cape Girardeau, MO
+                [36.3032, -89.5181],  // New Madrid, MO
+                [35.1495, -90.0490],  // Memphis, TN (critical gauge point)
+                [33.0154, -91.0880],  // Vicksburg, MS
+                [30.4515, -91.1871],  // Baton Rouge, LA
+                [29.9511, -90.0715]   // New Orleans, LA (export terminals)
+            ],
+            
+            // Minnesota River tributary (soybean source)
+            minnesotaRiver: [
+                [44.6830, -93.9102],  // Savage, MN (grain elevators)
+                [44.8441, -93.3977],  // Bloomington, MN
+                [44.9778, -93.2650]   // Minneapolis confluence
+            ],
+            
+            // Illinois Waterway (alternative route)
+            illinoisWaterway: [
+                [41.5868, -90.5776],  // Davenport, IA
+                [41.4789, -90.4301],  // Moline, IL
+                [41.3578, -89.0929],  // LaSalle, IL
+                [41.8781, -87.6298]   // Chicago, IL (Lake Michigan connection)
+            ]
+        };
+        
+        // Grain facilities and export terminals
+        const agriculturalFacilities = {
+            // Minnesota grain elevators
+            minnesotaElevators: [
+                { coords: [44.6830, -93.9102], name: "Savage Grain Terminal", capacity: "400K tons", status: "loaded" },
+                { coords: [44.9778, -93.2650], name: "Minneapolis Grain Exchange", capacity: "800K tons", status: "loaded" },
+                { coords: [44.0521, -92.5332], name: "Winona Elevator", capacity: "350K tons", status: "loaded" },
+                { coords: [43.6591, -91.0968], name: "Lansing Terminal", capacity: "275K tons", status: "loaded" }
+            ],
+            
+            // Lock and dam systems
+            lockSystems: [
+                { coords: [44.0521, -92.5332], name: "Lock & Dam 5A", restriction: "severe", depth: "8.2 ft" },
+                { coords: [41.5868, -90.5776], name: "Lock & Dam 15", restriction: "moderate", depth: "9.1 ft" },
+                { coords: [38.6270, -90.1994], name: "Mel Price L&D", restriction: "severe", depth: "7.8 ft" },
+                { coords: [35.1495, -90.0490], name: "Memphis Harbor", restriction: "critical", depth: "6.3 ft" }
+            ],
+            
+            // New Orleans export terminals
+            newOrleansTerminals: [
+                { coords: [29.9511, -90.0715], name: "ADM Grain Export", capacity: "2.1M tons/year", utilization: "45%" },
+                { coords: [29.9423, -90.0561], name: "Cargill Terminal", capacity: "3.2M tons/year", utilization: "38%" },
+                { coords: [29.9334, -90.0628], name: "Louis Dreyfus", capacity: "1.8M tons/year", utilization: "52%" },
+                { coords: [29.9245, -90.0695], name: "Zen-Noh Grain", capacity: "2.5M tons/year", utilization: "41%" }
+            ]
+        };
+        
+        // Water level scenarios
+        const waterScenarios = {
+            normal: {
+                memphis: 5.0,
+                stlouis: 12.0,
+                neworleans: 8.5,
+                bargeCapacity: 1500,
+                transitTime: 6,
+                additionalCost: 0,
+                color: "#28a745"
+            },
+            low: {
+                memphis: -4.2,
+                stlouis: -2.1,
+                neworleans: 2.3,
+                bargeCapacity: 1100,
+                transitTime: 12,
+                additionalCost: 23,
+                color: "#ffc107"
+            },
+            critical: {
+                memphis: -12.3,
+                stlouis: -8.7,
+                neworleans: -4.1,
+                bargeCapacity: 500,
+                transitTime: 18,
+                additionalCost: 47,
+                color: "#dc3545"
+            }
+        };
+        
+        function initializeRiverMap() {
+            // Initialize map focused on Mississippi River basin
+            map = L.map('river-map', {
+                center: [38.0, -92.0],
+                zoom: 6,
+                zoomControl: true,
+                attributionControl: false
+            });
+            
+            // Add terrain basemap suitable for river systems
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Esri, DeLorme, NAVTEQ',
+                maxZoom: 16
+            }).addTo(map);
+            
+            // Add facilities and infrastructure
+            addAgriculturalFacilities();
+            
+            // Load initial scenario
+            loadWaterScenario('critical');
+            
+            // Initialize charts
+            initializeRiverCharts();
+            
+            console.log('🌾 Mississippi River soybean transportation analysis initialized');
+        }
+        
+        function addAgriculturalFacilities() {
+            // Add Minnesota grain elevators
+            agriculturalFacilities.minnesotaElevators.forEach(elevator => {
+                const elevatorIcon = L.divIcon({
+                    html: `<div style="
+                        background: #8B4513; 
+                        width: 20px; 
+                        height: 20px; 
+                        border-radius: 3px; 
+                        border: 2px solid white; 
+                        display: flex; 
+                        align-items: center; 
+                        justify-content: center; 
+                        color: white; 
+                        font-weight: bold; 
+                        font-size: 10px;
+                    ">🌾</div>`,
+                    className: 'elevator-marker',
+                    iconSize: [20, 20]
+                });
+                
+                L.marker(elevator.coords, { icon: elevatorIcon })
+                    .bindPopup(`
+                        <div style="text-align: center; min-width: 180px;">
+                            <h6><strong>${elevator.name}</strong></h6>
+                            <p><strong>Capacity:</strong> ${elevator.capacity}<br>
+                            <strong>Status:</strong> <span style="color: #ffc107;">${elevator.status.toUpperCase()}</span><br>
+                            <strong>Commodity:</strong> Soybeans awaiting transport</p>
+                        </div>
+                    `)
+                    .addTo(map);
+            });
+            
+            // Add lock and dam systems with restriction indicators
+            agriculturalFacilities.lockSystems.forEach(lock => {
+                const restrictionColor = {
+                    'critical': '#dc3545',
+                    'severe': '#ff6b6b', 
+                    'moderate': '#ffc107',
+                    'normal': '#28a745'
+                }[lock.restriction];
+                
+                const lockIcon = L.divIcon({
+                    html: `<div style="
+                        background: ${restrictionColor}; 
+                        width: 16px; 
+                        height: 16px; 
+                        border-radius: 50%; 
+                        border: 2px solid white;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                    "></div>`,
+                    className: 'lock-marker',
+                    iconSize: [16, 16]
+                });
+                
+                L.marker(lock.coords, { icon: lockIcon })
+                    .bindPopup(`
+                        <div style="text-align: center; min-width: 160px;">
+                            <h6><strong>${lock.name}</strong></h6>
+                            <p><strong>Water Depth:</strong> ${lock.depth}<br>
+                            <strong>Restriction:</strong> <span style="color: ${restrictionColor};">${lock.restriction.toUpperCase()}</span></p>
+                        </div>
+                    `)
+                    .addTo(map);
+            });
+            
+            // Add New Orleans export terminals
+            agriculturalFacilities.newOrleansTerminals.forEach(terminal => {
+                const terminalIcon = L.divIcon({
+                    html: `<div style="
+                        background: #17a2b8; 
+                        width: 18px; 
+                        height: 18px; 
+                        border-radius: 3px; 
+                        border: 2px solid white; 
+                        display: flex; 
+                        align-items: center; 
+                        justify-content: center; 
+                        color: white; 
+                        font-weight: bold; 
+                        font-size: 8px;
+                    ">🏭</div>`,
+                    className: 'terminal-marker',
+                    iconSize: [18, 18]
+                });
+                
+                L.marker(terminal.coords, { icon: terminalIcon })
+                    .bindPopup(`
+                        <div style="text-align: center; min-width: 200px;">
+                            <h6><strong>${terminal.name}</strong></h6>
+                            <p><strong>Capacity:</strong> ${terminal.capacity}<br>
+                            <strong>Current Utilization:</strong> <span style="color: #dc3545;">${terminal.utilization}</span><br>
+                            <strong>Status:</strong> Below capacity due to transport delays</p>
+                        </div>
+                    `)
+                    .addTo(map);
+            });
+        }
+        
+        function loadWaterScenario(scenario) {
+            currentWaterScenario = scenario;
+            
+            // Update active button
+            document.querySelectorAll('.scenario-btn').forEach(btn => btn.classList.remove('active'));
+            event?.target?.classList.add('active');
+            
+            // Show loading
+            showRiverLoading('Analyzing river conditions and barge restrictions...');
+            
+            setTimeout(() => {
+                // Clear existing river layers
+                riverLayers.forEach(layer => map.removeLayer(layer));
+                riverLayers = [];
+                
+                const scenarioData = waterScenarios[scenario];
+                
+                // Draw main Mississippi River with condition-based styling
+                const riverPath = L.polyline(mississippiSystem.mainRiver, {
+                    color: scenarioData.color,
+                    weight: 8,
+                    opacity: 0.8,
+                    dashArray: scenario === 'critical' ? '15, 10' : null
+                }).addTo(map);
+                
+                riverPath.bindPopup(`
+                    <strong>Mississippi River - ${scenario.toUpperCase()}</strong><br>
+                    Memphis Water Level: ${scenarioData.memphis > 0 ? '+' : ''}${scenarioData.memphis} ft<br>
+                    Barge Capacity: ${scenarioData.bargeCapacity} tons<br>
+                    Transit Time: ${scenarioData.transitTime} days<br>
+                    Additional Cost: $${scenarioData.additionalCost}/ton
+                `);
+                
+                riverLayers.push(riverPath);
+                
+                // Add Minnesota River tributary
+                const minnesotaRiver = L.polyline(mississippiSystem.minnesotaRiver, {
+                    color: '#8B4513',
+                    weight: 4,
+                    opacity: 0.7
+                }).addTo(map);
+                riverLayers.push(minnesotaRiver);
+                
+                // Update metrics in sidebar
+                updateRiverMetrics(scenario);
+                updateWaterLevelIndicator(scenario);
+                updateLiveReport(scenario);
+                
+                hideRiverLoading();
+            }, 1500);
+        }
+        
+        function updateRiverMetrics(scenario) {
+            const data = waterScenarios[scenario];
+            
+            // Update water level
+            document.querySelector('.metric-card:nth-child(2) .metric-value').textContent = 
+                `${data.memphis > 0 ? '+' : ''}${data.memphis} ft`;
+            
+            // Update capacity reduction
+            const capacityReduction = Math.round((1 - data.bargeCapacity / 1500) * 100);
+            document.querySelector('.metric-card:nth-child(3) .metric-value').textContent = `${capacityReduction}%`;
+            document.querySelector('.metric-card:nth-child(3) .metric-change').textContent = 
+                `From 1,500 to ${data.bargeCapacity} tons per barge`;
+            
+            // Update additional cost
+            document.querySelector('.metric-card:nth-child(4) .metric-value').textContent = `+$${data.additionalCost}/ton`;
+            
+            // Update transit time
+            document.querySelector('.metric-card:nth-child(5) .metric-value').textContent = `${data.transitTime} days`;
+        }
+        
+        function updateWaterLevelIndicator(scenario) {
+            const data = waterScenarios[scenario];
+            const gauge = document.querySelector('.gauge-marker');
+            
+            // Position marker based on water level (-20 to +10 ft scale)
+            const position = Math.max(0, Math.min(100, ((data.memphis + 20) / 30) * 100));
+            gauge.style.left = `${position}%`;
+            
+            // Update text indicators
+            const levelText = document.querySelector('.water-level-indicator div:last-child');
+            levelText.innerHTML = `
+                <strong>Memphis:</strong> ${data.memphis > 0 ? '+' : ''}${data.memphis} ft (${scenario.charAt(0).toUpperCase() + scenario.slice(1)})<br>
+                <strong>St. Louis:</strong> ${data.stlouis > 0 ? '+' : ''}${data.stlouis} ft<br>
+                <strong>New Orleans:</strong> ${data.neworleans > 0 ? '+' : ''}${data.neworleans} ft
+            `;
+        }
+        
+        function updateLiveReport(scenario) {
+            const data = waterScenarios[scenario];
+            const capacityReduction = Math.round((1 - data.bargeCapacity / 1500) * 100);
+            const costIncrease = Math.round((data.additionalCost / 12.2) * 100); // $12.2 is normal river transport cost
+            
+            document.getElementById('live-report').innerHTML = `
+                <h6>Executive Summary</h6>
+                <p>${scenario === 'critical' ? 'Critical' : scenario === 'low' ? 'Low' : 'Normal'} water levels on the Mississippi River system are ${scenario === 'normal' ? 'supporting normal operations' : 'causing ' + (scenario === 'critical' ? 'severe' : 'moderate') + ' disruptions'} to soybean transportation from Minnesota grain elevators to New Orleans export facilities. Current conditions represent a <span class="highlight-stat">${capacityReduction}% reduction</span> in barge loading capacity.</p>
+                
+                <h6>Key Impact Metrics</h6>
+                <ul>
+                    <li><strong>Water Level:</strong> Memphis gauge at <span class="highlight-stat">${data.memphis > 0 ? '+' : ''}${data.memphis} feet</span> ${scenario === 'normal' ? '(normal range)' : '(' + Math.abs(data.memphis - 5) + ' ft ' + (data.memphis < 5 ? 'below' : 'above') + ' normal)'}</li>
+                    <li><strong>Cargo Capacity:</strong> ${scenario === 'normal' ? 'Normal capacity at' : 'Reduced from 1,500 to'} <span class="highlight-stat">${data.bargeCapacity} tons per barge</span></li>
+                    <li><strong>Transportation Cost:</strong> ${scenario === 'normal' ? 'Standard rates' : 'Increased by'} <span class="highlight-stat">${scenario === 'normal' ? '$12.20/ton' : '$' + data.additionalCost + '/ton'}</span> ${scenario === 'normal' ? '' : '(+' + costIncrease + '%)'}</li>
+                    <li><strong>Transit Time:</strong> ${scenario === 'critical' ? 'Extended to' : scenario === 'low' ? 'Increased to' : 'Normal'} <span class="highlight-stat">${data.transitTime} days average</span> ${scenario === 'normal' ? '' : '(vs 5-7 normal)'}</li>
+                </ul>
+                
+                <h6>Affected Infrastructure</h6>
+                <ul>
+                    <li><strong>Lock Restrictions:</strong> ${scenario === 'critical' ? '15 of 29' : scenario === 'low' ? '8 of 29' : '0 of 29'} locks operating with reduced capacity</li>
+                    <li><strong>Grain Elevators:</strong> 2.4M tons of soybeans ${scenario === 'normal' ? 'flowing normally' : 'awaiting transport'} in Minnesota</li>
+                    <li><strong>Export Terminals:</strong> New Orleans facilities at ${scenario === 'critical' ? '45%' : scenario === 'low' ? '67%' : '89%'} capacity utilization</li>
+                </ul>
+                
+                <h6>Economic Impact</h6>
+                <p>The ${scenario === 'normal' ? 'normal conditions support' : 'crisis affects'} <span class="highlight-stat">$340 million worth</span> of agricultural commodities${scenario === 'normal' ? ' flowing efficiently to export markets.' : ', with farmers facing storage costs and delayed payments. Export contracts are at risk of penalty clauses due to delivery delays.'}</p>
+            `;
+        }
+        
+        function animateBargeTraffic() {
+            showRiverLoading('Animating barge traffic along Mississippi River...');
+            
+            // Clear existing barge markers
+            bargeMarkers.forEach(marker => map.removeLayer(marker));
+            bargeMarkers = [];
+            
+            setTimeout(() => {
+                const riverPath = mississippiSystem.mainRiver;
+                const scenario = waterScenarios[currentWaterScenario];
+                
+                // Add barges at different points along the river
+                for (let i = 1; i < riverPath.length - 1; i += 2) {
+                    setTimeout(() => {
+                        addBargeMarker(riverPath[i], scenario.bargeCapacity);
+                    }, i * 300);
+                }
+                
+                hideRiverLoading();
+                
+                // Update timestamp
+                let day = 1;
+                const interval = setInterval(() => {
+                    document.getElementById('river-timestamp').textContent = 
+                        `Oct ${14 + day}, 2024 - River Gauge: ${scenario.memphis} ft`;
+                    day++;
+                    
+                    if (day > 5) {
+                        clearInterval(interval);
+                        document.getElementById('river-timestamp').textContent = 
+                            'Oct 15, 2024 - River Gauge: -12.3 ft';
+                    }
+                }, 1000);
+            }, 1000);
+        }
+        
+        function addBargeMarker(coords, capacity) {
+            const bargeSize = capacity > 1000 ? '16px' : capacity > 700 ? '12px' : '8px';
+            const bargeColor = capacity > 1000 ? '#28a745' : capacity > 700 ? '#ffc107' : '#dc3545';
+            
+            const bargeIcon = L.divIcon({
+                html: `<div class="barge-marker" style="
+                    background: ${bargeColor}; 
+                    width: ${bargeSize}; 
+                    height: 8px; 
+                    border-radius: 2px; 
+                    border: 1px solid white;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+                "></div>`,
+                className: 'barge-marker-container',
+                iconSize: [parseInt(bargeSize), 8]
+            });
+            
+            const barge = L.marker(coords, { icon: bargeIcon }).addTo(map);
+            barge.bindPopup(`
+                <strong>Soybean Barge</strong><br>
+                Capacity: ${capacity} tons<br>
+                Status: ${capacity > 1000 ? 'Normal Load' : capacity > 700 ? 'Reduced Load' : 'Critical Restriction'}<br>
+                Commodity: Soybeans to New Orleans
+            `);
+            
+            bargeMarkers.push(barge);
+        }
+        
+        function generateReport() {
+            showRiverLoading('Generating comprehensive impact report...');
+            
+            setTimeout(() => {
+                // Highlight the report section
+                const reportSection = document.querySelector('.report-section');
+                reportSection.style.border = '2px solid #28a745';
+                reportSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                
+                setTimeout(() => {
+                    reportSection.style.border = '1px solid #e9ecef';
+                }, 2000);
+                
+                hideRiverLoading();
+            }, 1500);
+        }
+        
+        function initializeRiverCharts() {
+            // Water Level Trends Chart
+            const waterCtx = document.getElementById('water-level-chart').getContext('2d');
+            window.waterLevelChart = new Chart(waterCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Sep 1', 'Sep 15', 'Oct 1', 'Oct 15', 'Oct 30', 'Nov 15'],
+                    datasets: [{
+                        label: 'Memphis Water Level (ft)',
+                        data: [2.1, -1.2, -4.8, -12.3, -15.1, -11.7],
+                        borderColor: '#4682b4',
+                        backgroundColor: 'rgba(70, 130, 180, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#4682b4',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '2024 Water Level Crisis Timeline'
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Water Level (feet)'
+                            },
+                            grid: {
+                                color: function(context) {
+                                    return context.tick.value === 0 ? '#000000' : '#e0e0e0';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Cost Comparison Chart
+            const costCtx = document.getElementById('cost-comparison-chart').getContext('2d');
+            window.costComparisonChart = new Chart(costCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['River Barge\n(Normal)', 'River Barge\n(Low Water)', 'River Barge\n(Critical)', 'Rail Transport', 'Truck Transport'],
+                    datasets: [{
+                        label: 'Cost per Ton ($)',
+                        data: [12.20, 35.20, 59.20, 67.50, 89.30],
+                        backgroundColor: ['#28a745', '#ffc107', '#dc3545', '#6c757d', '#17a2b8'],
+                        borderColor: ['#1e7e34', '#e0a800', '#c82333', '#495057', '#117a8b'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Transportation Cost Impact'
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Cost per Ton (USD)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function exportToPDF() {
+            // Simulate PDF generation
+            showRiverLoading('Generating PDF report...');
+            setTimeout(() => {
+                hideRiverLoading();
+                alert('PDF report would be generated with current analysis data, charts, and recommendations.');
+            }, 2000);
+        }
+        
+        function exportToExcel() {
+            // Simulate Excel export
+            showRiverLoading('Preparing Excel data export...');
+            setTimeout(() => {
+                hideRiverLoading();
+                alert('Excel file would contain detailed metrics, facility data, and impact calculations.');
+            }, 1500);
+        }
+        
+        function showRiverLoading(message = 'Loading...') {
+            const loading = document.getElementById('loading-river');
+            const messageEl = document.getElementById('river-loading-message');
+            messageEl.textContent = message;
+            loading.style.display = 'block';
+        }
+        
+        function hideRiverLoading() {
+            document.getElementById('loading-river').style.display = 'none';
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🌾 Initializing Mississippi River Soybean Crisis Analysis...');
+            initializeRiverMap();
+            
+            setTimeout(() => {
+                console.log('🚢 Agricultural supply chain visualization ready');
+            }, 1000);
+        });
+    </script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

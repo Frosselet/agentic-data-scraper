@@ -1,0 +1,279 @@
+{
+  "@context": {
+    "@base": "https://agentic-data-scraper.com/sow/commodities/",
+    "@vocab": "https://ontology.commodities.org/",
+    "business": "https://schema.org/",
+    "geo": "http://www.geonames.org/ontology#",
+    "time": "http://www.w3.org/2006/time#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "finance": "https://spec.edmcouncil.org/fibo/",
+    
+    "Commodity": {
+      "@id": "commodities:Commodity",
+      "@type": "@id"
+    },
+    "CommodityPrice": {
+      "@id": "commodities:Price",
+      "@type": "@id"
+    },
+    "MarketAnalysis": {
+      "@id": "commodities:MarketAnalysis",
+      "@type": "@id"
+    },
+    "PriceVolatility": {
+      "@id": "commodities:Volatility",
+      "@type": "@id"
+    },
+    "TradingVolume": {
+      "@id": "commodities:TradingVolume",
+      "@type": "@id"
+    },
+    "SupplyDemandBalance": {
+      "@id": "commodities:SupplyDemand",
+      "@type": "@id"
+    },
+    "SeasonalPattern": {
+      "@id": "commodities:SeasonalPattern",
+      "@type": "@id"
+    },
+    "WeatherImpact": {
+      "@id": "commodities:WeatherImpact",
+      "@type": "@id"
+    },
+    
+    "AgriculturalCommodity": {
+      "@id": "commodities:Agricultural",
+      "@type": "@id"
+    },
+    "EnergyCommodity": {
+      "@id": "commodities:Energy",
+      "@type": "@id"
+    },
+    "MetalsCommodity": {
+      "@id": "commodities:Metals",
+      "@type": "@id"
+    },
+    "SoftCommodity": {
+      "@id": "commodities:Soft",
+      "@type": "@id"
+    },
+    
+    "Wheat": {
+      "@id": "commodities:Wheat",
+      "@type": "@id",
+      "owl:subClassOf": "commodities:Agricultural"
+    },
+    "Corn": {
+      "@id": "commodities:Corn",
+      "@type": "@id",
+      "owl:subClassOf": "commodities:Agricultural"
+    },
+    "Soybean": {
+      "@id": "commodities:Soybean",
+      "@type": "@id",
+      "owl:subClassOf": "commodities:Agricultural"
+    },
+    "Coffee": {
+      "@id": "commodities:Coffee",
+      "@type": "@id",
+      "owl:subClassOf": "commodities:Soft"
+    },
+    "Sugar": {
+      "@id": "commodities:Sugar",
+      "@type": "@id",
+      "owl:subClassOf": "commodities:Soft"
+    },
+    "Cotton": {
+      "@id": "commodities:Cotton",
+      "@type": "@id",
+      "owl:subClassOf": "commodities:Soft"
+    },
+    "CrudeOil": {
+      "@id": "commodities:CrudeOil",
+      "@type": "@id",
+      "owl:subClassOf": "commodities:Energy"
+    },
+    "NaturalGas": {
+      "@id": "commodities:NaturalGas",
+      "@type": "@id", 
+      "owl:subClassOf": "commodities:Energy"
+    },
+    "Gold": {
+      "@id": "commodities:Gold",
+      "@type": "@id",
+      "owl:subClassOf": "commodities:Metals"
+    },
+    "Silver": {
+      "@id": "commodities:Silver",
+      "@type": "@id",
+      "owl:subClassOf": "commodities:Metals"
+    },
+    "Copper": {
+      "@id": "commodities:Copper",
+      "@type": "@id",
+      "owl:subClassOf": "commodities:Metals"
+    },
+    
+    "hasPrice": {
+      "@id": "commodities:hasPrice",
+      "@type": "@id"
+    },
+    "pricePerUnit": {
+      "@id": "commodities:pricePerUnit",
+      "@type": "xsd:decimal"
+    },
+    "priceUnit": {
+      "@id": "commodities:priceUnit",
+      "@type": "xsd:string"
+    },
+    "tradingExchange": {
+      "@id": "commodities:exchange",
+      "@type": "@id"
+    },
+    "contractMonth": {
+      "@id": "commodities:contractMonth",
+      "@type": "time:YearMonth"
+    },
+    "expirationDate": {
+      "@id": "commodities:expiration",
+      "@type": "time:Date"
+    },
+    "dailyVolume": {
+      "@id": "commodities:dailyVolume",
+      "@type": "xsd:integer"
+    },
+    "openInterest": {
+      "@id": "commodities:openInterest", 
+      "@type": "xsd:integer"
+    },
+    
+    "TradingExchange": {
+      "@id": "commodities:Exchange",
+      "@type": "@id"
+    },
+    "CME": {
+      "@id": "commodities:CME",
+      "@type": "@id"
+    },
+    "CBOT": {
+      "@id": "commodities:CBOT",
+      "@type": "@id"
+    },
+    "NYMEX": {
+      "@id": "commodities:NYMEX",
+      "@type": "@id"
+    },
+    "ICE": {
+      "@id": "commodities:ICE",
+      "@type": "@id"
+    },
+    "LME": {
+      "@id": "commodities:LME",
+      "@type": "@id"
+    },
+    
+    "ProducingRegion": {
+      "@id": "commodities:ProducingRegion",
+      "@type": "@id"
+    },
+    "ConsumingRegion": {
+      "@id": "commodities:ConsumingRegion",
+      "@type": "@id"
+    },
+    "TransportationRoute": {
+      "@id": "commodities:TransportationRoute",
+      "@type": "@id"
+    },
+    "StorageFacility": {
+      "@id": "commodities:StorageFacility",
+      "@type": "@id"
+    },
+    "DeliveryPoint": {
+      "@id": "commodities:DeliveryPoint",
+      "@type": "@id"
+    },
+    
+    "GeopoliticalEvent": {
+      "@id": "commodities:GeopoliticalEvent",
+      "@type": "@id"
+    },
+    "TradePolicy": {
+      "@id": "commodities:TradePolicy",
+      "@type": "@id"
+    },
+    "Sanctions": {
+      "@id": "commodities:Sanctions", 
+      "@type": "@id"
+    },
+    "TradeWar": {
+      "@id": "commodities:TradeWar",
+      "@type": "@id"
+    },
+    "CurrencyFluctuation": {
+      "@id": "commodities:CurrencyFluctuation",
+      "@type": "@id"
+    },
+    
+    "ClimatePattern": {
+      "@id": "commodities:ClimatePattern",
+      "@type": "@id"
+    },
+    "ElNino": {
+      "@id": "commodities:ElNino",
+      "@type": "@id"
+    },
+    "LaNina": {
+      "@id": "commodities:LaNina",
+      "@type": "@id"
+    },
+    "Drought": {
+      "@id": "commodities:Drought",
+      "@type": "@id"
+    },
+    "Flood": {
+      "@id": "commodities:Flood",
+      "@type": "@id"
+    },
+    "Hurricane": {
+      "@id": "commodities:Hurricane",
+      "@type": "@id"
+    },
+    
+    "infers_geopolitical_correlation": {
+      "@id": "commodities:infersGeopoliticalCorrelation",
+      "@type": "@id",
+      "reasoning": "Commodities tracking reveals geopolitical correlation analysis opportunities"
+    },
+    "infers_weather_impact_analysis": {
+      "@id": "commodities:infersWeatherImpact",
+      "@type": "@id",
+      "reasoning": "Agricultural commodities require weather pattern analysis"
+    },
+    "infers_supply_chain_disruption": {
+      "@id": "commodities:infersSupplyChainDisruption",
+      "@type": "@id",
+      "reasoning": "Commodity price movements indicate supply chain disruption analysis needs"
+    },
+    "infers_currency_correlation": {
+      "@id": "commodities:infersCurrencyCorrelation",
+      "@type": "@id",
+      "reasoning": "Commodity prices correlate with currency movements"
+    },
+    "infers_seasonal_patterns": {
+      "@id": "commodities:infersSeasonalPatterns",
+      "@type": "@id",
+      "reasoning": "Commodity markets have strong seasonal pattern analysis needs"
+    },
+    "infers_portfolio_risk_analysis": {
+      "@id": "commodities:infersPortfolioRisk",
+      "@type": "@id",
+      "reasoning": "Commodity analysis extends to portfolio risk management"
+    },
+    "infers_economic_indicator_correlation": {
+      "@id": "commodities:infersEconomicCorrelation",
+      "@type": "@id",
+      "reasoning": "Commodity movements correlate with broader economic indicators"
+    }
+  }
+}

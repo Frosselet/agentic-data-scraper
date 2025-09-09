@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revolutionary SOW Graph Analytics</title>
+    
+    <!-- External libraries -->
+    <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
+    <script src="https://unpkg.com/cytoscape-cose-bilkent@4.1.0/cytoscape-cose-bilkent.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    
+    <!-- Bootstrap for UI -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="/static/sow_graph.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .hero-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            padding: 40px;
+        }
+        
+        .graph-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .metric-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-viz {
+            background: linear-gradient(45deg, #3498db, #2ecc71);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .btn-viz:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(52, 152, 219, 0.4);
+            color: white;
+        }
+        
+        .dimension-selector {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .graph-title {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .controls-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .visualization-tabs {
+            border-bottom: 3px solid #e9ecef;
+        }
+        
+        .nav-pills .nav-link {
+            border-radius: 25px;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-pills .nav-link.active {
+            background: linear-gradient(45deg, #3498db, #2ecc71);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Hero Section -->
+        <div class="row">
+            <div class="col-12">
+                <div class="hero-section text-center">
+                    <h1 class="display-4 mb-4">
+                        <strong>Revolutionary SOW Graph Analytics</strong>
+                    </h1>
+                    <p class="lead mb-4">
+                        Discover implicit opportunities through intelligent graph traversal and 4D analytics
+                    </p>
+                    <p class="text-muted">
+                        Powered by KuzuDB graph engine with engaging interactive visualization
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dashboard Metrics -->
+        <div class="row" id="dashboard-metrics">
+            <div class="col-md-3">
+                <div class="dashboard-card text-center">
+                    <div class="metric-value" id="total-requirements">-</div>
+                    <div class="metric-label">Requirements</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dashboard-card text-center">
+                    <div class="metric-value" id="discovered-opportunities">-</div>
+                    <div class="metric-label">Opportunities</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dashboard-card text-center">
+                    <div class="metric-value" id="total-value">$-</div>
+                    <div class="metric-label">Total Value</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dashboard-card text-center">
+                    <div class="metric-value" id="avg-confidence">-%</div>
+                    <div class="metric-label">Avg Confidence</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Visualization Controls -->
+        <div class="row">
+            <div class="col-12">
+                <div class="graph-container">
+                    <div class="controls-panel">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <label for="requirement-select" class="form-label fw-bold">Focus on Requirement:</label>
+                                <select class="form-select" id="requirement-select">
+                                    <option value="">Show All Requirements</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Visualization Type:</label>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-viz active" data-viz="cytoscape">Network Graph</button>
+                                    <button type="button" class="btn btn-viz" data-viz="d3">Force Layout</button>
+                                    <button type="button" class="btn btn-viz" data-viz="4d">4D Analytics</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Visualization Area -->
+        <div class="row">
+            <div class="col-12">
+                <div class="graph-container">
+                    <div class="graph-title" id="viz-title">
+                        SOW Graph Visualization
+                    </div>
+                    
+                    <!-- Cytoscape Network Graph -->
+                    <div id="cytoscape-container" class="visualization-panel" style="height: 700px;">
+                        <div class="loader"></div>
+                    </div>
+                    
+                    <!-- D3 Force Graph -->
+                    <div id="d3-container" class="visualization-panel" style="display: none; height: 700px;">
+                        <svg id="d3-graph" width="100%" height="100%"></svg>
+                    </div>
+                    
+                    <!-- 4D Analytics -->
+                    <div id="4d-container" class="visualization-panel" style="display: none;">
+                        <!-- 4D Dimension Tabs -->
+                        <ul class="nav nav-pills visualization-tabs justify-content-center" id="4d-tabs">
+                            <li class="nav-item">
+                                <button class="nav-link active" data-dimension="temporal">Temporal Layer</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-dimension="spatial">Spatial Layer</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-dimension="domain">Domain Layer</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-dimension="knowledge">Knowledge Layer</button>
+                            </li>
+                        </ul>
+                        
+                        <!-- 4D Content Areas -->
+                        <div class="tab-content" style="min-height: 600px; padding: 30px;">
+                            <div class="tab-pane fade show active" id="temporal-dimension">
+                                <h4>Temporal Evolution of Requirements and Opportunities</h4>
+                                <div id="temporal-chart" style="height: 500px;"></div>
+                            </div>
+                            <div class="tab-pane fade" id="spatial-dimension">
+                                <h4>Domain and Industry Distribution</h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div id="domain-chart" style="height: 400px;"></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div id="industry-chart" style="height: 400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="domain-dimension">
+                                <h4>Cross-Domain Relationships</h4>
+                                <div id="domain-network" style="height: 500px;"></div>
+                            </div>
+                            <div class="tab-pane fade" id="knowledge-dimension">
+                                <h4>Knowledge Patterns and Inference</h4>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div id="confidence-distribution" style="height: 400px;"></div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div id="pattern-stats" class="p-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Graph Information Panel -->
+                    <div class="controls-panel" id="graph-info">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div id="node-details" class="p-3">
+                                    <h6>Click on nodes to see detailed information</h6>
+                                    <p class="text-muted">Interactive exploration of requirements, opportunities, and relationships</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div id="graph-stats" class="p-3">
+                                    <h6>Graph Statistics</h6>
+                                    <div class="small text-muted">
+                                        <div>Nodes: <span id="node-count">0</span></div>
+                                        <div>Edges: <span id="edge-count">0</span></div>
+                                        <div>Density: <span id="graph-density">0%</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Real-time Analytics Dashboard -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="dashboard-card">
+                    <h5>Opportunity Discovery Methods</h5>
+                    <div id="discovery-methods-chart" style="height: 300px;"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dashboard-card">
+                    <h5>Business Value Distribution</h5>
+                    <div id="value-distribution-chart" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Custom JavaScript -->
+    <script src="/static/sow_graph_utils.js"></script>
+    <script>
+        // Global variables
+        let currentVisualization = 'cytoscape';
+        let currentRequirement = null;
+        let cytoscapeInstance = null;
+        let websocket = null;
+        
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeWebSocket();
+            loadDashboardData();
+            setupEventHandlers();
+            loadVisualization('cytoscape');
+        });
+        
+        // WebSocket connection for real-time updates
+        function initializeWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            websocket = new WebSocket(`${protocol}//${window.location.host}/ws/graph`);
+            
+            websocket.onopen = function(event) {
+                console.log('WebSocket connected');
+            };
+            
+            websocket.onmessage = function(event) {
+                const message = JSON.parse(event.data);
+                handleWebSocketMessage(message);
+            };
+            
+            websocket.onclose = function(event) {
+                console.log('WebSocket disconnected, attempting reconnect...');
+                setTimeout(initializeWebSocket, 3000);
+            };
+        }
+        
+        function handleWebSocketMessage(message) {
+            if (message.type === 'graph_data') {
+                updateVisualization(message.data);
+            } else if (message.type === 'graph_update') {
+                refreshCurrentVisualization();
+            }
+        }
+        
+        // Load dashboard metrics
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('/api/graph/cytoscape');
+                const data = await response.json();
+                
+                updateDashboardMetrics(data.stats);
+                loadRequirementSelect(data);
+                
+            } catch (error) {
+                console.error('Failed to load dashboard data:', error);
+            }
+        }
+        
+        function updateDashboardMetrics(stats) {
+            document.getElementById('total-requirements').textContent = stats.requirements_count || 0;
+            document.getElementById('discovered-opportunities').textContent = stats.opportunities_count || 0;
+            
+            // Calculate total value from graph data (placeholder)
+            document.getElementById('total-value').textContent = '$' + (Math.random() * 100000).toFixed(0);
+            document.getElementById('avg-confidence').textContent = (Math.random() * 100).toFixed(1) + '%';
+        }
+        
+        function loadRequirementSelect(data) {
+            const select = document.getElementById('requirement-select');
+            select.innerHTML = '<option value="">Show All Requirements</option>';
+            
+            if (data.elements && data.elements.nodes) {
+                data.elements.nodes.forEach(node => {
+                    if (node.data.type === 'requirement') {
+                        const option = document.createElement('option');
+                        option.value = node.data.id;
+                        option.textContent = `${node.data.id} - ${node.data.label}`;
+                        select.appendChild(option);
+                    }
+                });
+            }
+        }
+        
+        // Setup event handlers
+        function setupEventHandlers() {
+            // Visualization type buttons
+            document.querySelectorAll('[data-viz]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const vizType = this.getAttribute('data-viz');
+                    switchVisualization(vizType);
+                    
+                    // Update active button
+                    document.querySelectorAll('[data-viz]').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Requirement selection
+            document.getElementById('requirement-select').addEventListener('change', function() {
+                currentRequirement = this.value || null;
+                refreshCurrentVisualization();
+            });
+            
+            // 4D dimension tabs
+            document.querySelectorAll('[data-dimension]').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const dimension = this.getAttribute('data-dimension');
+                    switch4DDimension(dimension);
+                    
+                    // Update active tab
+                    document.querySelectorAll('[data-dimension]').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+        
+        // Visualization management
+        function switchVisualization(vizType) {
+            // Hide all panels
+            document.querySelectorAll('.visualization-panel').forEach(panel => {
+                panel.style.display = 'none';
+            });
+            
+            // Show selected panel
+            const targetPanel = document.getElementById(`${vizType}-container`);
+            if (targetPanel) {
+                targetPanel.style.display = 'block';
+            }
+            
+            currentVisualization = vizType;
+            loadVisualization(vizType);
+        }
+        
+        async function loadVisualization(vizType) {
+            const title = document.getElementById('viz-title');
+            
+            try {
+                if (vizType === 'cytoscape') {
+                    title.textContent = 'Network Graph Visualization';
+                    await loadCytoscapeVisualization();
+                } else if (vizType === 'd3') {
+                    title.textContent = 'Force-Directed Graph';
+                    await loadD3Visualization();
+                } else if (vizType === '4d') {
+                    title.textContent = '4D Analytics Dashboard';
+                    await load4DVisualization();
+                }
+            } catch (error) {
+                console.error(`Failed to load ${vizType} visualization:`, error);
+            }
+        }
+        
+        async function loadCytoscapeVisualization() {
+            try {
+                const url = currentRequirement ? 
+                    `/api/graph/cytoscape?requirement_id=${currentRequirement}` : 
+                    '/api/graph/cytoscape';
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                // Initialize Cytoscape
+                if (cytoscapeInstance) {
+                    cytoscapeInstance.destroy();
+                }
+                
+                cytoscapeInstance = cytoscape({
+                    container: document.getElementById('cytoscape-container'),
+                    elements: data.elements,
+                    layout: data.layout,
+                    style: data.style,
+                    userZoomingEnabled: true,
+                    userPanningEnabled: true,
+                    minZoom: 0.1,
+                    maxZoom: 3
+                });
+                
+                // Add event handlers
+                cytoscapeInstance.on('tap', 'node', function(evt) {
+                    const node = evt.target;
+                    showNodeDetails(node.data());
+                });
+                
+                cytoscapeInstance.on('mouseover', 'node', function(evt) {
+                    const node = evt.target;
+                    const renderedPosition = node.renderedPosition();
+                    showTooltip(renderedPosition.x, renderedPosition.y, node.data());
+                });
+                
+                cytoscapeInstance.on('mouseout', 'node', function(evt) {
+                    hideTooltip();
+                });
+                
+                updateGraphStats(data.stats);
+                
+            } catch (error) {
+                console.error('Cytoscape loading error:', error);
+            }
+        }
+        
+        async function loadD3Visualization() {
+            try {
+                const url = currentRequirement ? 
+                    `/api/graph/d3?requirement_id=${currentRequirement}` : 
+                    '/api/graph/d3';
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                createD3ForceGraph(data);
+                updateGraphStats(data.stats);
+                
+            } catch (error) {
+                console.error('D3 loading error:', error);
+            }
+        }
+        
+        async function load4DVisualization() {
+            try {
+                const response = await fetch('/api/graph/4d');
+                const data = await response.json();
+                
+                create4DVisualization(data);
+                
+            } catch (error) {
+                console.error('4D visualization loading error:', error);
+            }
+        }
+        
+        function createD3ForceGraph(data) {
+            const container = document.getElementById('d3-container');
+            const svg = d3.select('#d3-graph');
+            svg.selectAll('*').remove(); // Clear previous graph
+            
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            
+            svg.attr('width', width).attr('height', height);
+            
+            // Create force simulation
+            const simulation = d3.forceSimulation(data.nodes)
+                .force('link', d3.forceLink(data.links).id(d => d.id).distance(100))
+                .force('charge', d3.forceManyBody().strength(-300))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(30));
+            
+            // Add links
+            const link = svg.append('g')
+                .selectAll('line')
+                .data(data.links)
+                .join('line')
+                .attr('stroke', d => d.color)
+                .attr('stroke-opacity', 0.6)
+                .attr('stroke-width', d => d.weight * 3);
+            
+            // Add nodes
+            const node = svg.append('g')
+                .selectAll('circle')
+                .data(data.nodes)
+                .join('circle')
+                .attr('r', d => d.size)
+                .attr('fill', d => d.color)
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            // Add labels
+            const label = svg.append('g')
+                .selectAll('text')
+                .data(data.nodes)
+                .join('text')
+                .text(d => d.name.length > 15 ? d.name.substr(0, 15) + '...' : d.name)
+                .attr('font-size', 10)
+                .attr('dx', 15)
+                .attr('dy', 4);
+            
+            // Add tooltips
+            node.on('mouseover', function(event, d) {
+                showTooltip(event.pageX, event.pageY, d.data);
+            }).on('mouseout', hideTooltip);
+            
+            // Update positions
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                node
+                    .attr('cx', d => d.x)
+                    .attr('cy', d => d.y);
+                
+                label
+                    .attr('x', d => d.x)
+                    .attr('y', d => d.y);
+            });
+            
+            function dragstarted(event) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                event.subject.fx = event.subject.x;
+                event.subject.fy = event.subject.y;
+            }
+            
+            function dragged(event) {
+                event.subject.fx = event.x;
+                event.subject.fy = event.y;
+            }
+            
+            function dragended(event) {
+                if (!event.active) simulation.alphaTarget(0);
+                event.subject.fx = null;
+                event.subject.fy = null;
+            }
+        }
+        
+        function create4DVisualization(data) {
+            // Temporal dimension chart
+            if (data.temporal && data.temporal.time_series) {
+                createTemporalChart(data.temporal);
+            }
+            
+            // Spatial dimension charts
+            if (data.spatial) {
+                createSpatialCharts(data.spatial);
+            }
+            
+            // Domain relationships network
+            if (data.domain) {
+                createDomainNetwork(data.domain);
+            }
+            
+            // Knowledge patterns analysis
+            if (data.knowledge) {
+                createKnowledgeCharts(data.knowledge);
+            }
+        }
+        
+        function createTemporalChart(temporalData) {
+            const timeSeriesData = temporalData.time_series;
+            const periods = Object.keys(timeSeriesData).sort();
+            
+            const trace1 = {
+                x: periods,
+                y: periods.map(p => timeSeriesData[p].requirements),
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Requirements',
+                line: { color: '#3498db' }
+            };
+            
+            const trace2 = {
+                x: periods,
+                y: periods.map(p => timeSeriesData[p].opportunities),
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Opportunities',
+                line: { color: '#e74c3c' }
+            };
+            
+            const layout = {
+                title: 'Requirements and Opportunities Over Time',
+                xaxis: { title: 'Time Period' },
+                yaxis: { title: 'Count' },
+                showlegend: true
+            };
+            
+            Plotly.newPlot('temporal-chart', [trace1, trace2], layout);
+        }
+        
+        function createSpatialCharts(spatialData) {
+            // Domain distribution pie chart
+            if (spatialData.domains) {
+                const domainLabels = Object.keys(spatialData.domains);
+                const domainValues = domainLabels.map(d => spatialData.domains[d].count);
+                
+                const domainTrace = {
+                    labels: domainLabels,
+                    values: domainValues,
+                    type: 'pie',
+                    textinfo: 'label+percent',
+                    textposition: 'outside'
+                };
+                
+                Plotly.newPlot('domain-chart', [domainTrace], {title: 'Domain Distribution'});
+            }
+            
+            // Industry distribution chart
+            if (spatialData.industries) {
+                const industryLabels = Object.keys(spatialData.industries);
+                const industryValues = industryLabels.map(i => spatialData.industries[i].count);
+                
+                const industryTrace = {
+                    x: industryLabels,
+                    y: industryValues,
+                    type: 'bar',
+                    marker: { color: '#2ecc71' }
+                };
+                
+                Plotly.newPlot('industry-chart', [industryTrace], {
+                    title: 'Industry Distribution',
+                    xaxis: { title: 'Industry' },
+                    yaxis: { title: 'Count' }
+                });
+            }
+        }
+        
+        function createDomainNetwork(domainData) {
+            // Use Plotly network diagram for domain relationships
+            const nodes = [...new Set(domainData.relationships.flatMap(r => [r.source, r.target]))];
+            const nodeIds = {};
+            nodes.forEach((node, i) => nodeIds[node] = i);
+            
+            const nodeTrace = {
+                x: nodes.map(() => Math.random()),
+                y: nodes.map(() => Math.random()),
+                mode: 'markers+text',
+                text: nodes,
+                textposition: 'middle center',
+                marker: { size: 20, color: '#3498db' },
+                type: 'scatter',
+                hoverinfo: 'text'
+            };
+            
+            // Add edges (simplified for Plotly)
+            const edgeTraces = domainData.relationships.map(rel => ({
+                x: [Math.random(), Math.random()],
+                y: [Math.random(), Math.random()],
+                mode: 'lines',
+                line: { width: rel.strength * 3, color: '#bdc3c7' },
+                type: 'scatter',
+                showlegend: false,
+                hoverinfo: 'none'
+            }));
+            
+            Plotly.newPlot('domain-network', [nodeTrace, ...edgeTraces], {
+                title: 'Domain Relationship Network',
+                showlegend: false,
+                xaxis: { showgrid: false, zeroline: false, showticklabels: false },
+                yaxis: { showgrid: false, zeroline: false, showticklabels: false }
+            });
+        }
+        
+        function createKnowledgeCharts(knowledgeData) {
+            // Confidence distribution histogram
+            const confidenceScores = knowledgeData.confidence_stats.distribution;
+            
+            const confidenceTrace = {
+                x: confidenceScores,
+                type: 'histogram',
+                marker: { color: '#9b59b6' },
+                nbinsx: 20
+            };
+            
+            Plotly.newPlot('confidence-distribution', [confidenceTrace], {
+                title: 'Confidence Score Distribution',
+                xaxis: { title: 'Confidence Score' },
+                yaxis: { title: 'Frequency' }
+            });
+            
+            // Pattern statistics
+            const statsDiv = document.getElementById('pattern-stats');
+            statsDiv.innerHTML = `
+                <h6>Pattern Statistics</h6>
+                <div class="small">
+                    <div>Mean Confidence: ${(knowledgeData.confidence_stats.mean * 100).toFixed(1)}%</div>
+                    <div>Min Confidence: ${(knowledgeData.confidence_stats.min * 100).toFixed(1)}%</div>
+                    <div>Max Confidence: ${(knowledgeData.confidence_stats.max * 100).toFixed(1)}%</div>
+                    <div>Total Patterns: ${Object.keys(knowledgeData.patterns).length}</div>
+                </div>
+            `;
+        }
+        
+        function switch4DDimension(dimension) {
+            // Hide all dimension content
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('show', 'active');
+            });
+            
+            // Show selected dimension
+            const targetPane = document.getElementById(`${dimension}-dimension`);
+            if (targetPane) {
+                targetPane.classList.add('show', 'active');
+            }
+        }
+        
+        // Utility functions
+        function showNodeDetails(nodeData) {
+            const detailsDiv = document.getElementById('node-details');
+            const content = SOWGraphUtils.createTooltip(nodeData, nodeData.type);
+            detailsDiv.innerHTML = `<h6>${nodeData.type.toUpperCase()} Details</h6>${content}`;
+        }
+        
+        function showTooltip(x, y, data) {
+            const content = SOWGraphUtils.createTooltip(data, data.type);
+            SOWGraphUtils.showTooltip({pageX: x, pageY: y}, content);
+        }
+        
+        function hideTooltip() {
+            SOWGraphUtils.hideTooltip();
+        }
+        
+        function updateGraphStats(stats) {
+            document.getElementById('node-count').textContent = stats.total_nodes || 0;
+            document.getElementById('edge-count').textContent = stats.total_edges || 0;
+            
+            const density = stats.total_nodes > 0 ? 
+                ((stats.total_edges || 0) / ((stats.total_nodes || 1) * ((stats.total_nodes || 1) - 1)) * 100) : 0;
+            document.getElementById('graph-density').textContent = density.toFixed(1) + '%';
+        }
+        
+        function refreshCurrentVisualization() {
+            loadVisualization(currentVisualization);
+        }
+        
+        // Handle window resize
+        window.addEventListener('resize', SOWGraphUtils.debounce(() => {
+            if (cytoscapeInstance) {
+                cytoscapeInstance.resize();
+            }
+            refreshCurrentVisualization();
+        }, 250));
+        
+    </script>
+</body>
+</html>

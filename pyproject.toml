@@ -41,9 +41,9 @@ dependencies = [
     
     # Data processing
     "polars>=1.4.0",
-    "pandas>=2.2.0",
+    "pandas>=2.2.0,<2.3.0",
     "pyarrow>=17.0.0",
-    "numpy>=2.0.0",
+    "numpy>=1.24.0,<2.0.0",
     
     # Semantic web
     "rdflib>=7.0.0",
@@ -82,10 +82,14 @@ dev = [
     "mkdocs-material>=9.5.0",
     "mkdocstrings[python]>=0.25.0",
     
-    # Development tools
+    # Development tools - Jupyter ecosystem
     "ipython>=8.26.0",
     "jupyter>=1.0.0",
+    "jupyterlab>=4.2.0",
     "notebook>=7.2.0",
+    "ipykernel>=6.29.0",
+    "matplotlib>=3.8.0,<3.10.0",
+    "seaborn>=0.12.0,<0.14.0",
 ]
 
 lambda = [
@@ -96,14 +100,42 @@ lambda = [
 ]
 
 semantic = [
-    # Additional semantic web tools
+    # KuzuDB graph database (primary graph engine)
+    "kuzu>=0.1.0",
+    "pyarrow>=17.0.0",  # Required for KuzuDB performance
+    
+    # Modern graph visualization stack
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "jinja2>=3.1.0",
+    "plotly>=5.17.0",
+    "bokeh>=3.3.0",
+    
+    # Minimal NetworkX (only for specific algorithms not yet in KuzuDB)
     "networkx>=3.3",
+    
+    # Additional semantic web tools
     "pyshacl>=0.25.0",
     "ontospy>=2.1.0",
 ]
 
+graph_viz = [
+    # Interactive web-based graph visualization
+    "dash>=2.14.0",
+    "dash-cytoscape>=0.3.0",
+    "dash-bootstrap-components>=1.5.0",
+    "streamlit>=1.28.0",
+    
+    # 4D visualization capabilities
+    "plotly>=5.17.0",
+    "bokeh>=3.3.0",
+    "altair>=5.2.0",
+    "holoviews>=1.18.0",
+    "panel>=1.3.0",
+]
+
 all = [
-    "agentic-data-scraper[dev,lambda,semantic]"
+    "agentic-data-scraper[dev,lambda,semantic,graph_viz]"
 ]
 
 [project.urls]

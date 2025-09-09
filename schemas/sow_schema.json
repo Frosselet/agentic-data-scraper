@@ -1,0 +1,487 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.agentic-data-scraper.com/sow/v1",
+  "title": "Statement of Work (SOW) Schema",
+  "description": "Comprehensive schema for semantic Statement of Work documents that serve as master blueprints for autonomous pipeline generation",
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": "object",
+      "description": "JSON-LD context for semantic web compatibility",
+      "properties": {
+        "@vocab": {
+          "type": "string",
+          "format": "uri",
+          "default": "https://schemas.agentic-data-scraper.com/vocab/"
+        },
+        "schema": {
+          "type": "string",
+          "format": "uri",
+          "default": "https://schema.org/"
+        },
+        "skos": {
+          "type": "string", 
+          "format": "uri",
+          "default": "http://www.w3.org/2004/02/skos/core#"
+        },
+        "owl": {
+          "type": "string",
+          "format": "uri", 
+          "default": "http://www.w3.org/2002/07/owl#"
+        },
+        "dct": {
+          "type": "string",
+          "format": "uri",
+          "default": "http://purl.org/dc/terms/"
+        }
+      },
+      "required": ["@vocab"]
+    },
+    "@type": {
+      "type": "string",
+      "const": "StatementOfWork",
+      "description": "JSON-LD type identifier"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Core document metadata and governance information",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Unique identifier for this SOW"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Semantic version of this SOW document"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 200,
+          "description": "Human-readable title of the data pipeline project"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 2000,
+          "description": "Detailed description of project objectives and scope"
+        },
+        "domain": {
+          "type": "string",
+          "enum": ["agriculture", "trading", "healthcare", "logistics", "finance", "retail", "manufacturing", "energy", "government", "education"],
+          "description": "Primary business domain for domain-specific ontology application"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of SOW creation"
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time", 
+          "description": "ISO 8601 timestamp of last modification"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "email": {"type": "string", "format": "email"},
+              "role": {"type": "string", "enum": ["business_analyst", "data_architect", "domain_expert", "stakeholder"]},
+              "organization": {"type": "string"}
+            },
+            "required": ["name", "role"]
+          },
+          "minItems": 1
+        },
+        "stakeholders": {
+          "type": "array",
+          "items": {
+            "type": "object", 
+            "properties": {
+              "name": {"type": "string"},
+              "organization": {"type": "string"},
+              "role": {"type": "string"},
+              "contact": {"type": "string", "format": "email"},
+              "responsibilities": {"type": "array", "items": {"type": "string"}}
+            },
+            "required": ["name", "role"]
+          }
+        },
+        "ontology_references": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "uri": {"type": "string", "format": "uri"},
+              "version": {"type": "string"},
+              "purpose": {"type": "string"}
+            },
+            "required": ["name", "uri"]
+          },
+          "description": "External ontologies and vocabularies used for semantic annotation"
+        }
+      },
+      "required": ["id", "version", "title", "description", "domain", "created", "authors"]
+    },
+    "business_context": {
+      "type": "object",
+      "description": "Business requirements, objectives, and domain knowledge",
+      "properties": {
+        "objectives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "title": {"type": "string"},
+              "description": {"type": "string"},
+              "priority": {"type": "string", "enum": ["critical", "high", "medium", "low"]},
+              "success_criteria": {"type": "array", "items": {"type": "string"}},
+              "semantic_tags": {"type": "array", "items": {"type": "string"}}
+            },
+            "required": ["id", "title", "description", "priority"]
+          },
+          "minItems": 1,
+          "description": "Business objectives and goals for the data pipeline"
+        },
+        "use_cases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "title": {"type": "string"},
+              "actors": {"type": "array", "items": {"type": "string"}},
+              "description": {"type": "string"},
+              "preconditions": {"type": "array", "items": {"type": "string"}},
+              "main_flow": {"type": "array", "items": {"type": "string"}},
+              "postconditions": {"type": "array", "items": {"type": "string"}},
+              "data_inputs": {"type": "array", "items": {"type": "string"}},
+              "data_outputs": {"type": "array", "items": {"type": "string"}}
+            },
+            "required": ["id", "title", "description", "main_flow"]
+          },
+          "description": "Detailed use cases describing how the pipeline will be used"
+        },
+        "business_rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "title": {"type": "string"},
+              "description": {"type": "string"},
+              "rule_type": {"type": "string", "enum": ["validation", "transformation", "business_logic", "compliance"]},
+              "conditions": {"type": "array", "items": {"type": "string"}},
+              "actions": {"type": "array", "items": {"type": "string"}},
+              "exceptions": {"type": "array", "items": {"type": "string"}},
+              "semantic_representation": {"type": "string", "description": "SHACL or OWL representation of the rule"}
+            },
+            "required": ["id", "title", "description", "rule_type"]
+          },
+          "description": "Business rules that must be implemented in the pipeline"
+        },
+        "domain_concepts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "concept": {"type": "string"},
+              "definition": {"type": "string"},
+              "synonyms": {"type": "array", "items": {"type": "string"}},
+              "ontology_uri": {"type": "string", "format": "uri"},
+              "relationships": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "relation_type": {"type": "string"},
+                    "target_concept": {"type": "string"},
+                    "description": {"type": "string"}
+                  },
+                  "required": ["relation_type", "target_concept"]
+                }
+              }
+            },
+            "required": ["concept", "definition"]
+          },
+          "description": "Domain-specific concepts and their semantic relationships"
+        }
+      },
+      "required": ["objectives", "use_cases"]
+    },
+    "data_requirements": {
+      "type": "object",
+      "description": "Comprehensive data requirements and specifications",
+      "properties": {
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "name": {"type": "string"},
+              "type": {"type": "string", "enum": ["web", "api", "database", "file", "stream", "manual"]},
+              "description": {"type": "string"},
+              "location": {"type": "string"},
+              "format": {"type": "string", "enum": ["json", "xml", "csv", "html", "pdf", "excel", "parquet", "avro"]},
+              "access_method": {"type": "string", "enum": ["scraping", "api", "sql", "ftp", "s3", "stream"]},
+              "authentication": {
+                "type": "object",
+                "properties": {
+                  "required": {"type": "boolean"},
+                  "method": {"type": "string", "enum": ["basic", "oauth2", "api_key", "certificate", "none"]},
+                  "credentials_location": {"type": "string"}
+                }
+              },
+              "refresh_frequency": {"type": "string", "enum": ["real-time", "hourly", "daily", "weekly", "monthly", "on-demand"]},
+              "data_volume_estimate": {"type": "string"},
+              "quality_expectations": {
+                "type": "object",
+                "properties": {
+                  "completeness": {"type": "number", "minimum": 0, "maximum": 100},
+                  "accuracy": {"type": "number", "minimum": 0, "maximum": 100},
+                  "timeliness": {"type": "string"}
+                }
+              },
+              "semantic_mappings": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "source_field": {"type": "string"},
+                    "semantic_concept": {"type": "string"},
+                    "ontology_uri": {"type": "string", "format": "uri"}
+                  }
+                }
+              }
+            },
+            "required": ["id", "name", "type", "description", "location", "format"]
+          },
+          "minItems": 1,
+          "description": "All data sources required for the pipeline"
+        },
+        "schema_definitions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "schema_id": {"type": "string"},
+              "name": {"type": "string"},
+              "description": {"type": "string"},
+              "source_id": {"type": "string"},
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string"},
+                    "type": {"type": "string", "enum": ["string", "integer", "float", "boolean", "date", "datetime", "array", "object"]},
+                    "required": {"type": "boolean", "default": false},
+                    "description": {"type": "string"},
+                    "constraints": {
+                      "type": "object",
+                      "properties": {
+                        "min_length": {"type": "integer"},
+                        "max_length": {"type": "integer"},
+                        "pattern": {"type": "string"},
+                        "enum": {"type": "array"},
+                        "minimum": {"type": "number"},
+                        "maximum": {"type": "number"}
+                      }
+                    },
+                    "semantic_annotations": {
+                      "type": "object",
+                      "properties": {
+                        "concept_uri": {"type": "string", "format": "uri"},
+                        "property_uri": {"type": "string", "format": "uri"},
+                        "data_type_uri": {"type": "string", "format": "uri"}
+                      }
+                    }
+                  },
+                  "required": ["name", "type"]
+                },
+                "minItems": 1
+              }
+            },
+            "required": ["schema_id", "name", "source_id", "fields"]
+          },
+          "description": "Detailed schema definitions for each data source"
+        },
+        "transformations": {
+          "type": "array", 
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "name": {"type": "string"},
+              "description": {"type": "string"},
+              "input_schema": {"type": "string"},
+              "output_schema": {"type": "string"},
+              "transformation_type": {"type": "string", "enum": ["mapping", "aggregation", "filtering", "enrichment", "validation", "normalization"]},
+              "logic": {"type": "string", "description": "Transformation logic in natural language or pseudo-code"},
+              "semantic_preservation": {
+                "type": "object",
+                "properties": {
+                  "maintains_semantics": {"type": "boolean"},
+                  "concept_mappings": {"type": "array", "items": {"type": "object"}}
+                }
+              }
+            },
+            "required": ["id", "name", "description", "transformation_type", "logic"]
+          },
+          "description": "Data transformation specifications"
+        }
+      },
+      "required": ["sources", "schema_definitions"]
+    },
+    "technical_requirements": {
+      "type": "object",
+      "description": "Technical specifications and infrastructure requirements",
+      "properties": {
+        "infrastructure": {
+          "type": "object",
+          "properties": {
+            "cloud_provider": {"type": "string", "enum": ["aws", "azure", "gcp", "on-premises", "hybrid"]},
+            "compute_requirements": {
+              "type": "object",
+              "properties": {
+                "cpu_cores": {"type": "integer", "minimum": 1},
+                "memory_gb": {"type": "integer", "minimum": 1},
+                "storage_gb": {"type": "integer", "minimum": 10}
+              }
+            },
+            "networking": {
+              "type": "object",
+              "properties": {
+                "vpc_required": {"type": "boolean"},
+                "security_groups": {"type": "array", "items": {"type": "string"}},
+                "load_balancer": {"type": "boolean"}
+              }
+            }
+          },
+          "required": ["cloud_provider"]
+        },
+        "performance_requirements": {
+          "type": "object",
+          "properties": {
+            "throughput": {"type": "string", "description": "Expected data throughput (e.g., '1000 records/second')"},
+            "latency": {"type": "string", "description": "Maximum acceptable latency"},
+            "availability": {"type": "number", "minimum": 90, "maximum": 100},
+            "scalability": {"type": "string", "enum": ["fixed", "auto-scaling", "manual-scaling"]}
+          }
+        },
+        "security_requirements": {
+          "type": "object",
+          "properties": {
+            "data_classification": {"type": "string", "enum": ["public", "internal", "confidential", "restricted"]},
+            "encryption_at_rest": {"type": "boolean", "default": true},
+            "encryption_in_transit": {"type": "boolean", "default": true},
+            "access_controls": {"type": "array", "items": {"type": "string"}},
+            "audit_requirements": {"type": "boolean", "default": true}
+          }
+        },
+        "monitoring_and_alerting": {
+          "type": "object",
+          "properties": {
+            "metrics_collection": {"type": "boolean", "default": true},
+            "logging_level": {"type": "string", "enum": ["debug", "info", "warning", "error"]},
+            "alert_conditions": {"type": "array", "items": {"type": "string"}},
+            "notification_channels": {"type": "array", "items": {"type": "string"}}
+          }
+        }
+      },
+      "required": ["infrastructure", "performance_requirements", "security_requirements"]
+    },
+    "governance": {
+      "type": "object",
+      "description": "Data governance, compliance, and quality requirements",
+      "properties": {
+        "compliance_frameworks": {
+          "type": "array",
+          "items": {"type": "string", "enum": ["GDPR", "HIPAA", "SOX", "PCI-DSS", "ISO27001", "NIST"]},
+          "description": "Applicable compliance frameworks and regulations"
+        },
+        "data_quality_rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "rule_id": {"type": "string"},
+              "name": {"type": "string"},
+              "description": {"type": "string"},
+              "rule_type": {"type": "string", "enum": ["completeness", "accuracy", "consistency", "validity", "uniqueness", "timeliness"]},
+              "scope": {"type": "string", "description": "Fields or datasets this rule applies to"},
+              "threshold": {"type": "number", "minimum": 0, "maximum": 100},
+              "action_on_failure": {"type": "string", "enum": ["alert", "reject", "quarantine", "correct"]},
+              "shacl_rule": {"type": "string", "description": "SHACL representation of the quality rule"}
+            },
+            "required": ["rule_id", "name", "rule_type", "scope", "action_on_failure"]
+          }
+        },
+        "data_lineage": {
+          "type": "object",
+          "properties": {
+            "tracking_required": {"type": "boolean", "default": true},
+            "granularity": {"type": "string", "enum": ["field-level", "record-level", "dataset-level"]},
+            "retention_period": {"type": "string"}
+          }
+        },
+        "privacy_requirements": {
+          "type": "object",
+          "properties": {
+            "pii_handling": {"type": "boolean", "default": false},
+            "anonymization_required": {"type": "boolean", "default": false},
+            "retention_policy": {"type": "string"},
+            "right_to_erasure": {"type": "boolean", "default": false}
+          }
+        }
+      },
+      "required": ["data_quality_rules"]
+    },
+    "delivery": {
+      "type": "object", 
+      "description": "Project delivery and timeline specifications",
+      "properties": {
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "phase_id": {"type": "string"},
+              "name": {"type": "string"},
+              "description": {"type": "string"},
+              "deliverables": {"type": "array", "items": {"type": "string"}},
+              "duration_days": {"type": "integer", "minimum": 1},
+              "dependencies": {"type": "array", "items": {"type": "string"}},
+              "acceptance_criteria": {"type": "array", "items": {"type": "string"}}
+            },
+            "required": ["phase_id", "name", "deliverables", "duration_days"]
+          }
+        },
+        "milestones": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "milestone_id": {"type": "string"},
+              "name": {"type": "string"},
+              "description": {"type": "string"},
+              "target_date": {"type": "string", "format": "date"},
+              "success_criteria": {"type": "array", "items": {"type": "string"}}
+            },
+            "required": ["milestone_id", "name", "target_date"]
+          }
+        }
+      },
+      "required": ["phases"]
+    }
+  },
+  "required": ["@context", "@type", "metadata", "business_context", "data_requirements", "technical_requirements", "governance", "delivery"],
+  "additionalProperties": false
+}

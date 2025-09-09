@@ -1,0 +1,155 @@
+{
+  "@context": {
+    "@base": "https://agentic-data-scraper.com/sow/supply-chain/",
+    "@vocab": "https://gs1.org/ontology/",
+    "business": "https://schema.org/",
+    "geo": "http://www.geonames.org/ontology#",
+    "time": "http://www.w3.org/2006/time#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    
+    "Supplier": {
+      "@id": "business:Organization",
+      "@type": "@id",
+      "owl:equivalentClass": "gs1:Supplier"
+    },
+    "SupplierPerformance": {
+      "@id": "supply-chain:SupplierPerformance",
+      "@type": "@id"
+    },
+    "SupplyChainRisk": {
+      "@id": "supply-chain:Risk",
+      "@type": "@id"
+    },
+    "Inventory": {
+      "@id": "gs1:Product",
+      "@type": "@id"
+    },
+    "Logistics": {
+      "@id": "supply-chain:Logistics",
+      "@type": "@id"
+    },
+    "ProcurementProcess": {
+      "@id": "supply-chain:Procurement",
+      "@type": "@id"
+    },
+    "QualityMetrics": {
+      "@id": "supply-chain:Quality",
+      "@type": "@id"
+    },
+    "DeliveryPerformance": {
+      "@id": "supply-chain:Delivery",
+      "@type": "@id"
+    },
+    
+    "hasSupplier": {
+      "@id": "supply-chain:hasSupplier",
+      "@type": "@id"
+    },
+    "locatedAt": {
+      "@id": "business:location",
+      "@type": "@id",
+      "geo:spatial_relationship": "contains"
+    },
+    "operatesIn": {
+      "@id": "business:areaServed", 
+      "@type": "@id"
+    },
+    "suppliesTo": {
+      "@id": "supply-chain:suppliesTo",
+      "@type": "@id"
+    },
+    "hasRiskLevel": {
+      "@id": "supply-chain:riskLevel",
+      "@type": "xsd:string"
+    },
+    "performanceScore": {
+      "@id": "supply-chain:performanceScore",
+      "@type": "xsd:decimal"
+    },
+    "deliveryTime": {
+      "@id": "supply-chain:deliveryTime",
+      "@type": "time:Duration"
+    },
+    "qualityRating": {
+      "@id": "supply-chain:qualityRating", 
+      "@type": "xsd:decimal"
+    },
+    "complianceStatus": {
+      "@id": "supply-chain:complianceStatus",
+      "@type": "xsd:string"
+    },
+    
+    "Country": {
+      "@id": "geo:Country",
+      "@type": "@id"
+    },
+    "Region": {
+      "@id": "geo:Region",
+      "@type": "@id"
+    },
+    "GeopoliticalRisk": {
+      "@id": "supply-chain:GeopoliticalRisk",
+      "@type": "@id"
+    },
+    "TradeRoute": {
+      "@id": "supply-chain:TradeRoute",
+      "@type": "@id"
+    },
+    "Port": {
+      "@id": "geo:Port",
+      "@type": "@id"
+    },
+    "Warehouse": {
+      "@id": "business:Warehouse",
+      "@type": "@id"
+    },
+    "ManufacturingFacility": {
+      "@id": "business:ManufacturingFacility", 
+      "@type": "@id"
+    },
+    
+    "TemporalPattern": {
+      "@id": "time:TemporalEntity",
+      "@type": "@id"
+    },
+    "SeasonalDemand": {
+      "@id": "supply-chain:SeasonalDemand",
+      "@type": "@id"
+    },
+    "SupplyCycle": {
+      "@id": "supply-chain:SupplyCycle",
+      "@type": "@id"
+    },
+    "LeadTime": {
+      "@id": "supply-chain:LeadTime",
+      "@type": "time:Duration"
+    },
+    
+    "infers_geographic_analysis": {
+      "@id": "supply-chain:infersGeographicAnalysis",
+      "@type": "@id",
+      "reasoning": "If suppliers mentioned, infer geographic risk analysis needs"
+    },
+    "infers_temporal_patterns": {
+      "@id": "supply-chain:infersTemporalPatterns", 
+      "@type": "@id",
+      "reasoning": "If inventory mentioned, infer time series pattern analysis"
+    },
+    "infers_network_analysis": {
+      "@id": "supply-chain:infersNetworkAnalysis",
+      "@type": "@id", 
+      "reasoning": "If supply chain mentioned, infer relationship network analysis"
+    },
+    "infers_financial_impact": {
+      "@id": "supply-chain:infersFinancialImpact",
+      "@type": "@id",
+      "reasoning": "Supply chain optimization has direct financial implications"
+    },
+    "infers_compliance_monitoring": {
+      "@id": "supply-chain:infersCompliance",
+      "@type": "@id",
+      "reasoning": "Supply chain operations require regulatory compliance tracking"
+    }
+  }
+}

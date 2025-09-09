@@ -2,7 +2,7 @@
 
 **Status:** Proposed  
 **Date:** 2025-09-04  
-**Authors:** Development Team  
+**Authors:** François Rosselet, Claude (Anthropic)
 **Reviewers:** TBD  
 **Implementation Branch:** `adr-003-baml-agent-architecture`
 
