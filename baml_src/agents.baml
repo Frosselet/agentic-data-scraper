@@ -1,6 +1,13 @@
 // BAML Agent Configuration for Agentic Data Scraper
 // Defines the multi-agent architecture for SOW-driven data pipeline generation
 
+// Python client generator
+generator PythonClient {
+  output_type "python/pydantic"
+  output_dir "../"
+  version "0.206.1"
+}
+
 // Client configuration
 client<llm> GPT4 {
   provider openai
@@ -274,8 +281,8 @@ function DataTransformerAgent(
     Anomalies: {{ source_data.anomalies }}
     
     Target Schema:
-    {% for key, value in target_schema.items() %}
-    {{ key }}: {{ value }}
+    {% for key in target_schema %}
+    {{ key }}: {{ target_schema[key] }}
     {% endfor %}
     
     Business Rules:
