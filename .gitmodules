@@ -26,6 +26,3 @@
 	path = deployment
 	url = https://github.com/Frosselet/agentic-aws-deployment.git
 
-[submodule "ui"]
-	path = ui
-	url = https://github.com/Frosselet/agentic-streamlit-ui.git

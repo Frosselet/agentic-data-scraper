@@ -16,14 +16,13 @@ agentic-data-scraper/                 # Main orchestrator
 ├── contracts/                       # → agentic-business-contracts
 ├── collectors/                      # → agentic-data-collectors
 ├── pipelines/                       # → agentic-data-pipelines
-├── deployment/                      # → agentic-aws-deployment
-└── ui/                             # → agentic-streamlit-ui
+└── deployment/                      # → agentic-aws-deployment
 ```
 
 ### Cross-Repository Workflow
 - Each submodule has its own specialized CLAUDE.md with focused context
 - Main repository orchestrates integration and provides unified testing
-- Follow dependency hierarchy: ontologies → core → agents/contracts/collectors → pipelines → deployment/ui
+- Follow dependency hierarchy: ontologies → core → agents/contracts/collectors → pipelines → deployment
 
 ### Development Process
 - Follow ADR (Architecture Decision Records) methodology
@@ -78,7 +77,6 @@ git checkout main && git merge adr-001-project-structure  # Merge after review
 4. **Data Transformer**: Schema alignment and transformation
 5. **Semantic Integrator**: Ontology mapping and SKOS alignment
 6. **Supervisor**: Coordination and verification
-7. **Streamlit UI/UX Agent**: Specialized for Streamlit interface development and UX optimization
 
 ### BAML Prompt Engineering Guidelines
 **CRITICAL: BAML uses strongly typed signatures - abandon traditional prompt engineering techniques**
@@ -109,48 +107,3 @@ BAML's power comes from strongly typed class signatures that automatically parse
 - SOW and data contract enforcement at runtime
 - Support for S3 flat files and Iceberg tables
 
-## Streamlit UI/UX Subagent Specification
-
-### Purpose
-Specialized Claude Code subagent for Streamlit interface development, user experience optimization, and UI component enhancement.
-
-### Core Capabilities
-- **Layout Optimization**: Expert use of st.columns, st.tabs, st.expander, st.container for optimal information architecture
-- **Component Selection**: Choose the best Streamlit components for each use case
-- **State Management**: Optimize st.session_state usage and data persistence
-- **Performance**: Implement caching strategies and loading optimizations
-- **Accessibility**: Ensure WCAG compliance and usability best practices
-- **Responsive Design**: Mobile-friendly layouts and adaptive interfaces
-- **Error Handling**: User-friendly error states and validation messages
-
-### Technical Expertise
-- **Streamlit API Mastery**: Deep knowledge of all Streamlit components and their optimal usage patterns
-- **CSS Integration**: Custom styling with st.markdown and HTML integration
-- **Form Design**: Complex form handling, validation, and user workflows
-- **Data Visualization**: Charts, metrics, and interactive visualizations
-- **Custom Components**: Integration of third-party components when needed
-
-### UX Focus Areas
-- **Information Architecture**: Logical content organization and navigation flows
-- **Progressive Disclosure**: Wizard-style interfaces and step-by-step processes
-- **Feedback Systems**: Loading states, progress indicators, and success/error messaging
-- **User Journey Optimization**: Streamlined workflows and reduced cognitive load
-- **Mobile Experience**: Touch-friendly interfaces and responsive layouts
-
-### Usage Guidelines
-Invoke this subagent for:
-- UI/UX analysis and improvement recommendations
-- Streamlit layout and component optimization
-- User experience enhancement projects
-- Interface redesign and modernization
-- Accessibility audits and improvements
-- Performance optimization for Streamlit apps
-
-### Example Invocation
-```
-Use the Streamlit UI/UX subagent to analyze and improve the Data Business Canvas interface, focusing on:
-- Layout optimization for better information hierarchy
-- Enhanced user flow for the executive targets section
-- Improved mobile responsiveness
-- Better error handling and user feedback
-```

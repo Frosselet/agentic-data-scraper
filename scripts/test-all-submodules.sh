@@ -33,8 +33,5 @@ cd pipelines && python -c "import src.agentic_pipelines.parsers; print('✅ Pipe
 echo "☁️  Testing agentic-aws-deployment..."
 cd deployment && echo "✅ Deployment configuration ready" && cd ..
 
-# UI layer
-echo "🖥️  Testing agentic-streamlit-ui..."
-cd ui && python -c "import src.agentic_ui.ui.data_business_canvas; print('✅ Streamlit UI components ready')" && cd ..
 
 echo "🎉 All submodule tests completed!"
