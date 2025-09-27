@@ -1,0 +1,31 @@
+[submodule "ontologies"]
+	path = ontologies
+	url = https://github.com/Frosselet/agentic-semantic-ontologies.git
+
+[submodule "core"]
+	path = core
+	url = https://github.com/Frosselet/agentic-core-engine.git
+
+[submodule "agents"]
+	path = agents
+	url = https://github.com/Frosselet/agentic-baml-agents.git
+
+[submodule "contracts"]
+	path = contracts
+	url = https://github.com/Frosselet/agentic-business-contracts.git
+
+[submodule "collectors"]
+	path = collectors
+	url = https://github.com/Frosselet/agentic-data-collectors.git
+
+[submodule "pipelines"]
+	path = pipelines
+	url = https://github.com/Frosselet/agentic-data-pipelines.git
+
+[submodule "deployment"]
+	path = deployment
+	url = https://github.com/Frosselet/agentic-aws-deployment.git
+
+[submodule "ui"]
+	path = ui
+	url = https://github.com/Frosselet/agentic-streamlit-ui.git

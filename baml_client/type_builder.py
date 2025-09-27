@@ -20,14 +20,22 @@ from .globals import DO_NOT_USE_DIRECTLY_UNLESS_YOU_KNOW_WHAT_YOURE_DOING_RUNTIM
 class TypeBuilder(type_builder.TypeBuilder):
     def __init__(self):
         super().__init__(classes=set(
-          ["AgriculturePipelineConfig","BusinessContext","CongestionAlert","DataContract","DataSource","DataSourceRecommendation","FeasibilityAnalysis","GeneratedPipeline","MarketOpportunity","NavigationRecommendation","ParsedData","RouteOption","RoutingRequest","SOWContract","SecurityDecision","SemanticAnnotation","SupplyChainPipelineConfig","TradingPipelineConfig","TransformationStrategy","VesselSpecifications","WaterwayConditions",]
+          ["AgriculturePipelineConfig","AlignmentScore","BusinessContext","CongestionAlert","DataBusinessCanvas","DataContract","DataSource","DataSourceMetadata","DataSourceRecommendation","DiscoveryResult","ExecutiveTarget","FeasibilityAnalysis","GeneratedPipeline","KnownSourceRequest","MarketOpportunity","NavigationRecommendation","ParsedData","RouteOption","RoutingRequest","SOWContract","SecurityDecision","SemanticAnnotation","SupplyChainPipelineConfig","TargetParsingResult","TradingPipelineConfig","TransformationStrategy","VesselSpecifications","WaterwayConditions","WorkflowPrepopulation","ZeroStartDiscovery",]
         ), enums=set(
-          ["NavigationPriority","RiskLevel","TransportMode",]
+          ["DataSourceType","DiscoveryPath","NavigationPriority","RiskLevel","TargetCategory","TargetPriority","TransportMode","UpdateFrequency",]
         ), runtime=DO_NOT_USE_DIRECTLY_UNLESS_YOU_KNOW_WHAT_YOURE_DOING_RUNTIME)
 
     # #########################################################################
-    # Generated enums 3
+    # Generated enums 8
     # #########################################################################
+
+    @property
+    def DataSourceType(self) -> "DataSourceTypeViewer":
+        return DataSourceTypeViewer(self)
+
+    @property
+    def DiscoveryPath(self) -> "DiscoveryPathViewer":
+        return DiscoveryPathViewer(self)
 
     @property
     def NavigationPriority(self) -> "NavigationPriorityViewer":
@@ -38,17 +46,33 @@ class TypeBuilder(type_builder.TypeBuilder):
         return RiskLevelViewer(self)
 
     @property
+    def TargetCategory(self) -> "TargetCategoryViewer":
+        return TargetCategoryViewer(self)
+
+    @property
+    def TargetPriority(self) -> "TargetPriorityViewer":
+        return TargetPriorityViewer(self)
+
+    @property
     def TransportMode(self) -> "TransportModeViewer":
         return TransportModeViewer(self)
 
+    @property
+    def UpdateFrequency(self) -> "UpdateFrequencyViewer":
+        return UpdateFrequencyViewer(self)
+
 
     # #########################################################################
-    # Generated classes 21
+    # Generated classes 30
     # #########################################################################
 
     @property
     def AgriculturePipelineConfig(self) -> "AgriculturePipelineConfigViewer":
         return AgriculturePipelineConfigViewer(self)
+
+    @property
+    def AlignmentScore(self) -> "AlignmentScoreViewer":
+        return AlignmentScoreViewer(self)
 
     @property
     def BusinessContext(self) -> "BusinessContextViewer":
@@ -59,6 +83,10 @@ class TypeBuilder(type_builder.TypeBuilder):
         return CongestionAlertViewer(self)
 
     @property
+    def DataBusinessCanvas(self) -> "DataBusinessCanvasViewer":
+        return DataBusinessCanvasViewer(self)
+
+    @property
     def DataContract(self) -> "DataContractViewer":
         return DataContractViewer(self)
 
@@ -67,8 +95,20 @@ class TypeBuilder(type_builder.TypeBuilder):
         return DataSourceViewer(self)
 
     @property
+    def DataSourceMetadata(self) -> "DataSourceMetadataViewer":
+        return DataSourceMetadataViewer(self)
+
+    @property
     def DataSourceRecommendation(self) -> "DataSourceRecommendationViewer":
         return DataSourceRecommendationViewer(self)
+
+    @property
+    def DiscoveryResult(self) -> "DiscoveryResultViewer":
+        return DiscoveryResultViewer(self)
+
+    @property
+    def ExecutiveTarget(self) -> "ExecutiveTargetViewer":
+        return ExecutiveTargetViewer(self)
 
     @property
     def FeasibilityAnalysis(self) -> "FeasibilityAnalysisViewer":
@@ -77,6 +117,10 @@ class TypeBuilder(type_builder.TypeBuilder):
     @property
     def GeneratedPipeline(self) -> "GeneratedPipelineViewer":
         return GeneratedPipelineViewer(self)
+
+    @property
+    def KnownSourceRequest(self) -> "KnownSourceRequestViewer":
+        return KnownSourceRequestViewer(self)
 
     @property
     def MarketOpportunity(self) -> "MarketOpportunityViewer":
@@ -115,6 +159,10 @@ class TypeBuilder(type_builder.TypeBuilder):
         return SupplyChainPipelineConfigViewer(self)
 
     @property
+    def TargetParsingResult(self) -> "TargetParsingResultViewer":
+        return TargetParsingResultViewer(self)
+
+    @property
     def TradingPipelineConfig(self) -> "TradingPipelineConfigViewer":
         return TradingPipelineConfigViewer(self)
 
@@ -130,11 +178,119 @@ class TypeBuilder(type_builder.TypeBuilder):
     def WaterwayConditions(self) -> "WaterwayConditionsViewer":
         return WaterwayConditionsViewer(self)
 
+    @property
+    def WorkflowPrepopulation(self) -> "WorkflowPrepopulationViewer":
+        return WorkflowPrepopulationViewer(self)
+
+    @property
+    def ZeroStartDiscovery(self) -> "ZeroStartDiscoveryViewer":
+        return ZeroStartDiscoveryViewer(self)
+
 
 
 # #########################################################################
-# Generated enums 3
+# Generated enums 8
 # #########################################################################
+
+class DataSourceTypeAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.enum("DataSourceType")
+        self._values: typing.Set[str] = set([  "API",  "DATABASE",  "FILE_SYSTEM",  "WEB_SCRAPING",  "STREAM",  "CLOUD_STORAGE",  ])
+        self._vals = DataSourceTypeValues(self._bldr, self._values)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def values(self) -> "DataSourceTypeValues":
+        return self._vals
+
+
+class DataSourceTypeViewer(DataSourceTypeAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_values(self) -> typing.List[typing.Tuple[str, type_builder.EnumValueViewer]]:
+        return [(name, type_builder.EnumValueViewer(self._bldr.value(name))) for name in self._values]
+    
+
+class DataSourceTypeValues:
+    def __init__(self, enum_bldr: baml_py.EnumBuilder, values: typing.Set[str]):
+        self.__bldr = enum_bldr
+        self.__values = values # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def API(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("API"))
+    
+    @property
+    def DATABASE(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("DATABASE"))
+    
+    @property
+    def FILE_SYSTEM(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("FILE_SYSTEM"))
+    
+    @property
+    def WEB_SCRAPING(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("WEB_SCRAPING"))
+    
+    @property
+    def STREAM(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("STREAM"))
+    
+    @property
+    def CLOUD_STORAGE(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("CLOUD_STORAGE"))
+    
+    
+
+
+class DiscoveryPathAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.enum("DiscoveryPath")
+        self._values: typing.Set[str] = set([  "KNOWN_SOURCE",  "ZERO_START",  ])
+        self._vals = DiscoveryPathValues(self._bldr, self._values)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def values(self) -> "DiscoveryPathValues":
+        return self._vals
+
+
+class DiscoveryPathViewer(DiscoveryPathAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_values(self) -> typing.List[typing.Tuple[str, type_builder.EnumValueViewer]]:
+        return [(name, type_builder.EnumValueViewer(self._bldr.value(name))) for name in self._values]
+    
+
+class DiscoveryPathValues:
+    def __init__(self, enum_bldr: baml_py.EnumBuilder, values: typing.Set[str]):
+        self.__bldr = enum_bldr
+        self.__values = values # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def KNOWN_SOURCE(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("KNOWN_SOURCE"))
+    
+    @property
+    def ZERO_START(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("ZERO_START"))
+    
+    
+
 
 class NavigationPriorityAst:
     def __init__(self, tb: type_builder.TypeBuilder):
@@ -240,6 +396,138 @@ class RiskLevelValues:
     
 
 
+class TargetCategoryAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.enum("TargetCategory")
+        self._values: typing.Set[str] = set([  "REVENUE",  "MARKET_EXPANSION",  "OPERATIONAL_EFFICIENCY",  "CUSTOMER_EXPERIENCE",  "INNOVATION",  "COMPLIANCE",  "RISK_MANAGEMENT",  "COST_REDUCTION",  "DIGITAL_TRANSFORMATION",  "SUSTAINABILITY",  "TALENT_DEVELOPMENT",  "STRATEGIC_PARTNERSHIP",  ])
+        self._vals = TargetCategoryValues(self._bldr, self._values)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def values(self) -> "TargetCategoryValues":
+        return self._vals
+
+
+class TargetCategoryViewer(TargetCategoryAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_values(self) -> typing.List[typing.Tuple[str, type_builder.EnumValueViewer]]:
+        return [(name, type_builder.EnumValueViewer(self._bldr.value(name))) for name in self._values]
+    
+
+class TargetCategoryValues:
+    def __init__(self, enum_bldr: baml_py.EnumBuilder, values: typing.Set[str]):
+        self.__bldr = enum_bldr
+        self.__values = values # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def REVENUE(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("REVENUE"))
+    
+    @property
+    def MARKET_EXPANSION(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("MARKET_EXPANSION"))
+    
+    @property
+    def OPERATIONAL_EFFICIENCY(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("OPERATIONAL_EFFICIENCY"))
+    
+    @property
+    def CUSTOMER_EXPERIENCE(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("CUSTOMER_EXPERIENCE"))
+    
+    @property
+    def INNOVATION(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("INNOVATION"))
+    
+    @property
+    def COMPLIANCE(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("COMPLIANCE"))
+    
+    @property
+    def RISK_MANAGEMENT(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("RISK_MANAGEMENT"))
+    
+    @property
+    def COST_REDUCTION(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("COST_REDUCTION"))
+    
+    @property
+    def DIGITAL_TRANSFORMATION(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("DIGITAL_TRANSFORMATION"))
+    
+    @property
+    def SUSTAINABILITY(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("SUSTAINABILITY"))
+    
+    @property
+    def TALENT_DEVELOPMENT(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("TALENT_DEVELOPMENT"))
+    
+    @property
+    def STRATEGIC_PARTNERSHIP(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("STRATEGIC_PARTNERSHIP"))
+    
+    
+
+
+class TargetPriorityAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.enum("TargetPriority")
+        self._values: typing.Set[str] = set([  "CRITICAL",  "HIGH",  "MEDIUM",  "LOW",  ])
+        self._vals = TargetPriorityValues(self._bldr, self._values)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def values(self) -> "TargetPriorityValues":
+        return self._vals
+
+
+class TargetPriorityViewer(TargetPriorityAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_values(self) -> typing.List[typing.Tuple[str, type_builder.EnumValueViewer]]:
+        return [(name, type_builder.EnumValueViewer(self._bldr.value(name))) for name in self._values]
+    
+
+class TargetPriorityValues:
+    def __init__(self, enum_bldr: baml_py.EnumBuilder, values: typing.Set[str]):
+        self.__bldr = enum_bldr
+        self.__values = values # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def CRITICAL(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("CRITICAL"))
+    
+    @property
+    def HIGH(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("HIGH"))
+    
+    @property
+    def MEDIUM(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("MEDIUM"))
+    
+    @property
+    def LOW(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("LOW"))
+    
+    
+
+
 class TransportModeAst:
     def __init__(self, tb: type_builder.TypeBuilder):
         _tb = tb._tb # type: ignore (we know how to use this private attribute)
@@ -290,9 +578,75 @@ class TransportModeValues:
     
 
 
+class UpdateFrequencyAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.enum("UpdateFrequency")
+        self._values: typing.Set[str] = set([  "REAL_TIME",  "HOURLY",  "DAILY",  "WEEKLY",  "MONTHLY",  "QUARTERLY",  "YEARLY",  "STATIC",  ])
+        self._vals = UpdateFrequencyValues(self._bldr, self._values)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def values(self) -> "UpdateFrequencyValues":
+        return self._vals
+
+
+class UpdateFrequencyViewer(UpdateFrequencyAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_values(self) -> typing.List[typing.Tuple[str, type_builder.EnumValueViewer]]:
+        return [(name, type_builder.EnumValueViewer(self._bldr.value(name))) for name in self._values]
+    
+
+class UpdateFrequencyValues:
+    def __init__(self, enum_bldr: baml_py.EnumBuilder, values: typing.Set[str]):
+        self.__bldr = enum_bldr
+        self.__values = values # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def REAL_TIME(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("REAL_TIME"))
+    
+    @property
+    def HOURLY(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("HOURLY"))
+    
+    @property
+    def DAILY(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("DAILY"))
+    
+    @property
+    def WEEKLY(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("WEEKLY"))
+    
+    @property
+    def MONTHLY(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("MONTHLY"))
+    
+    @property
+    def QUARTERLY(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("QUARTERLY"))
+    
+    @property
+    def YEARLY(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("YEARLY"))
+    
+    @property
+    def STATIC(self) -> type_builder.EnumValueViewer:
+        return type_builder.EnumValueViewer(self.__bldr.value("STATIC"))
+    
+    
+
+
 
 # #########################################################################
-# Generated classes 21
+# Generated classes 30
 # #########################################################################
 
 class AgriculturePipelineConfigAst:
@@ -338,6 +692,89 @@ class AgriculturePipelineConfigProperties:
     @property
     def quality_thresholds(self) -> type_builder.ClassPropertyViewer:
         return type_builder.ClassPropertyViewer(self.__bldr.property("quality_thresholds"))
+    
+    
+
+
+class AlignmentScoreAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("AlignmentScore")
+        self._properties: typing.Set[str] = set([  "overall_score",  "confidence",  "strategic_fit",  "impact_potential",  "timeline_feasibility",  "resource_efficiency",  "risk_assessment",  "dependency_analysis",  "reasoning",  "key_factors",  "risk_factors",  "recommendations",  ])
+        self._props = AlignmentScoreProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "AlignmentScoreProperties":
+        return self._props
+
+
+class AlignmentScoreViewer(AlignmentScoreAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class AlignmentScoreProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def overall_score(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("overall_score"))
+    
+    @property
+    def confidence(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("confidence"))
+    
+    @property
+    def strategic_fit(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("strategic_fit"))
+    
+    @property
+    def impact_potential(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("impact_potential"))
+    
+    @property
+    def timeline_feasibility(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("timeline_feasibility"))
+    
+    @property
+    def resource_efficiency(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("resource_efficiency"))
+    
+    @property
+    def risk_assessment(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("risk_assessment"))
+    
+    @property
+    def dependency_analysis(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("dependency_analysis"))
+    
+    @property
+    def reasoning(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("reasoning"))
+    
+    @property
+    def key_factors(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("key_factors"))
+    
+    @property
+    def risk_factors(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("risk_factors"))
+    
+    @property
+    def recommendations(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("recommendations"))
     
     
 
@@ -468,6 +905,105 @@ class CongestionAlertProperties:
     
 
 
+class DataBusinessCanvasAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("DataBusinessCanvas")
+        self._properties: typing.Set[str] = set([  "value_propositions",  "key_activities",  "key_resources",  "key_partnerships",  "customer_segments",  "customer_relationships",  "channels",  "cost_structure",  "revenue_streams",  "data_assets",  "intelligence_capabilities",  "competitive_advantages",  "business_domain",  "use_case_description",  "timeline",  "budget",  ])
+        self._props = DataBusinessCanvasProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "DataBusinessCanvasProperties":
+        return self._props
+
+
+class DataBusinessCanvasViewer(DataBusinessCanvasAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class DataBusinessCanvasProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def value_propositions(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("value_propositions"))
+    
+    @property
+    def key_activities(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("key_activities"))
+    
+    @property
+    def key_resources(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("key_resources"))
+    
+    @property
+    def key_partnerships(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("key_partnerships"))
+    
+    @property
+    def customer_segments(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("customer_segments"))
+    
+    @property
+    def customer_relationships(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("customer_relationships"))
+    
+    @property
+    def channels(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("channels"))
+    
+    @property
+    def cost_structure(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("cost_structure"))
+    
+    @property
+    def revenue_streams(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("revenue_streams"))
+    
+    @property
+    def data_assets(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("data_assets"))
+    
+    @property
+    def intelligence_capabilities(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("intelligence_capabilities"))
+    
+    @property
+    def competitive_advantages(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("competitive_advantages"))
+    
+    @property
+    def business_domain(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("business_domain"))
+    
+    @property
+    def use_case_description(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("use_case_description"))
+    
+    @property
+    def timeline(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("timeline"))
+    
+    @property
+    def budget(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("budget"))
+    
+    
+
+
 class DataContractAst:
     def __init__(self, tb: type_builder.TypeBuilder):
         _tb = tb._tb # type: ignore (we know how to use this private attribute)
@@ -586,6 +1122,157 @@ class DataSourceProperties:
     
 
 
+class DataSourceMetadataAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("DataSourceMetadata")
+        self._properties: typing.Set[str] = set([  "name",  "url",  "description",  "source_type",  "access_method",  "authentication_required",  "authentication_method",  "rate_limits",  "data_formats",  "schema_available",  "schema_url",  "sample_data_url",  "data_volume_estimate",  "update_frequency",  "historical_data_available",  "historical_range",  "data_quality_score",  "completeness_estimate",  "accuracy_indicators",  "known_data_issues",  "license_type",  "terms_of_use_url",  "privacy_considerations",  "compliance_standards",  "relevance_score",  "business_domains",  "use_cases",  "discovery_method",  "confidence_score",  ])
+        self._props = DataSourceMetadataProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "DataSourceMetadataProperties":
+        return self._props
+
+
+class DataSourceMetadataViewer(DataSourceMetadataAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class DataSourceMetadataProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def name(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("name"))
+    
+    @property
+    def url(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("url"))
+    
+    @property
+    def description(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("description"))
+    
+    @property
+    def source_type(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("source_type"))
+    
+    @property
+    def access_method(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("access_method"))
+    
+    @property
+    def authentication_required(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("authentication_required"))
+    
+    @property
+    def authentication_method(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("authentication_method"))
+    
+    @property
+    def rate_limits(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("rate_limits"))
+    
+    @property
+    def data_formats(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("data_formats"))
+    
+    @property
+    def schema_available(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("schema_available"))
+    
+    @property
+    def schema_url(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("schema_url"))
+    
+    @property
+    def sample_data_url(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("sample_data_url"))
+    
+    @property
+    def data_volume_estimate(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("data_volume_estimate"))
+    
+    @property
+    def update_frequency(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("update_frequency"))
+    
+    @property
+    def historical_data_available(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("historical_data_available"))
+    
+    @property
+    def historical_range(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("historical_range"))
+    
+    @property
+    def data_quality_score(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("data_quality_score"))
+    
+    @property
+    def completeness_estimate(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("completeness_estimate"))
+    
+    @property
+    def accuracy_indicators(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("accuracy_indicators"))
+    
+    @property
+    def known_data_issues(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("known_data_issues"))
+    
+    @property
+    def license_type(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("license_type"))
+    
+    @property
+    def terms_of_use_url(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("terms_of_use_url"))
+    
+    @property
+    def privacy_considerations(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("privacy_considerations"))
+    
+    @property
+    def compliance_standards(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("compliance_standards"))
+    
+    @property
+    def relevance_score(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("relevance_score"))
+    
+    @property
+    def business_domains(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("business_domains"))
+    
+    @property
+    def use_cases(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("use_cases"))
+    
+    @property
+    def discovery_method(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("discovery_method"))
+    
+    @property
+    def confidence_score(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("confidence_score"))
+    
+    
+
+
 class DataSourceRecommendationAst:
     def __init__(self, tb: type_builder.TypeBuilder):
         _tb = tb._tb # type: ignore (we know how to use this private attribute)
@@ -673,6 +1360,172 @@ class DataSourceRecommendationProperties:
     @property
     def semantic_vocabularies(self) -> type_builder.ClassPropertyViewer:
         return type_builder.ClassPropertyViewer(self.__bldr.property("semantic_vocabularies"))
+    
+    
+
+
+class DiscoveryResultAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("DiscoveryResult")
+        self._properties: typing.Set[str] = set([  "discovery_path",  "discovered_sources",  "total_sources_found",  "search_queries_used",  "discovery_duration_seconds",  "recommended_next_steps",  "prefilled_operations_data",  "prefilled_governance_data",  ])
+        self._props = DiscoveryResultProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "DiscoveryResultProperties":
+        return self._props
+
+
+class DiscoveryResultViewer(DiscoveryResultAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class DiscoveryResultProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def discovery_path(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("discovery_path"))
+    
+    @property
+    def discovered_sources(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("discovered_sources"))
+    
+    @property
+    def total_sources_found(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("total_sources_found"))
+    
+    @property
+    def search_queries_used(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("search_queries_used"))
+    
+    @property
+    def discovery_duration_seconds(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("discovery_duration_seconds"))
+    
+    @property
+    def recommended_next_steps(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("recommended_next_steps"))
+    
+    @property
+    def prefilled_operations_data(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("prefilled_operations_data"))
+    
+    @property
+    def prefilled_governance_data(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("prefilled_governance_data"))
+    
+    
+
+
+class ExecutiveTargetAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("ExecutiveTarget")
+        self._properties: typing.Set[str] = set([  "id",  "title",  "description",  "category",  "priority",  "owner",  "owner_role",  "deadline",  "success_metrics",  "target_value",  "baseline_value",  "business_domain",  "stakeholders",  "dependencies",  "constraints",  "status",  ])
+        self._props = ExecutiveTargetProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "ExecutiveTargetProperties":
+        return self._props
+
+
+class ExecutiveTargetViewer(ExecutiveTargetAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class ExecutiveTargetProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def id(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("id"))
+    
+    @property
+    def title(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("title"))
+    
+    @property
+    def description(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("description"))
+    
+    @property
+    def category(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("category"))
+    
+    @property
+    def priority(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("priority"))
+    
+    @property
+    def owner(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("owner"))
+    
+    @property
+    def owner_role(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("owner_role"))
+    
+    @property
+    def deadline(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("deadline"))
+    
+    @property
+    def success_metrics(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("success_metrics"))
+    
+    @property
+    def target_value(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("target_value"))
+    
+    @property
+    def baseline_value(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("baseline_value"))
+    
+    @property
+    def business_domain(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("business_domain"))
+    
+    @property
+    def stakeholders(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("stakeholders"))
+    
+    @property
+    def dependencies(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("dependencies"))
+    
+    @property
+    def constraints(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("constraints"))
+    
+    @property
+    def status(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("status"))
     
     
 
@@ -799,6 +1652,57 @@ class GeneratedPipelineProperties:
     @property
     def test_cases(self) -> type_builder.ClassPropertyViewer:
         return type_builder.ClassPropertyViewer(self.__bldr.property("test_cases"))
+    
+    
+
+
+class KnownSourceRequestAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("KnownSourceRequest")
+        self._properties: typing.Set[str] = set([  "source_urls",  "expected_source_type",  "specific_datasets",  "collection_depth",  ])
+        self._props = KnownSourceRequestProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "KnownSourceRequestProperties":
+        return self._props
+
+
+class KnownSourceRequestViewer(KnownSourceRequestAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class KnownSourceRequestProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def source_urls(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("source_urls"))
+    
+    @property
+    def expected_source_type(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("expected_source_type"))
+    
+    @property
+    def specific_datasets(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("specific_datasets"))
+    
+    @property
+    def collection_depth(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("collection_depth"))
     
     
 
@@ -1402,6 +2306,89 @@ class SupplyChainPipelineConfigProperties:
     
 
 
+class TargetParsingResultAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("TargetParsingResult")
+        self._properties: typing.Set[str] = set([  "key_themes",  "quantitative_targets",  "timeframes",  "stakeholders",  "success_indicators",  "suggested_category",  "suggested_priority",  "complexity_score",  "required_data_types",  "suggested_metrics",  "potential_data_sources",  "confidence",  ])
+        self._props = TargetParsingResultProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "TargetParsingResultProperties":
+        return self._props
+
+
+class TargetParsingResultViewer(TargetParsingResultAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class TargetParsingResultProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def key_themes(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("key_themes"))
+    
+    @property
+    def quantitative_targets(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("quantitative_targets"))
+    
+    @property
+    def timeframes(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("timeframes"))
+    
+    @property
+    def stakeholders(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("stakeholders"))
+    
+    @property
+    def success_indicators(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("success_indicators"))
+    
+    @property
+    def suggested_category(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("suggested_category"))
+    
+    @property
+    def suggested_priority(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("suggested_priority"))
+    
+    @property
+    def complexity_score(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("complexity_score"))
+    
+    @property
+    def required_data_types(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("required_data_types"))
+    
+    @property
+    def suggested_metrics(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("suggested_metrics"))
+    
+    @property
+    def potential_data_sources(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("potential_data_sources"))
+    
+    @property
+    def confidence(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("confidence"))
+    
+    
+
+
 class TradingPipelineConfigAst:
     def __init__(self, tb: type_builder.TypeBuilder):
         _tb = tb._tb # type: ignore (we know how to use this private attribute)
@@ -1634,6 +2621,140 @@ class WaterwayConditionsProperties:
     @property
     def depth_restrictions(self) -> type_builder.ClassPropertyViewer:
         return type_builder.ClassPropertyViewer(self.__bldr.property("depth_restrictions"))
+    
+    
+
+
+class WorkflowPrepopulationAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("WorkflowPrepopulation")
+        self._properties: typing.Set[str] = set([  "operations_data",  "governance_data",  "review_data",  ])
+        self._props = WorkflowPrepopulationProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "WorkflowPrepopulationProperties":
+        return self._props
+
+
+class WorkflowPrepopulationViewer(WorkflowPrepopulationAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class WorkflowPrepopulationProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def operations_data(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("operations_data"))
+    
+    @property
+    def governance_data(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("governance_data"))
+    
+    @property
+    def review_data(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("review_data"))
+    
+    
+
+
+class ZeroStartDiscoveryAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("ZeroStartDiscovery")
+        self._properties: typing.Set[str] = set([  "business_domain",  "use_case_description",  "required_data_types",  "geographic_scope",  "time_period_requirements",  "max_sources_to_find",  "preferred_source_types",  "exclude_paid_sources",  "require_api_access",  "search_strategy",  "include_academic_sources",  "include_government_sources",  "include_commercial_sources",  ])
+        self._props = ZeroStartDiscoveryProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "ZeroStartDiscoveryProperties":
+        return self._props
+
+
+class ZeroStartDiscoveryViewer(ZeroStartDiscoveryAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class ZeroStartDiscoveryProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def business_domain(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("business_domain"))
+    
+    @property
+    def use_case_description(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("use_case_description"))
+    
+    @property
+    def required_data_types(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("required_data_types"))
+    
+    @property
+    def geographic_scope(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("geographic_scope"))
+    
+    @property
+    def time_period_requirements(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("time_period_requirements"))
+    
+    @property
+    def max_sources_to_find(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("max_sources_to_find"))
+    
+    @property
+    def preferred_source_types(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("preferred_source_types"))
+    
+    @property
+    def exclude_paid_sources(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("exclude_paid_sources"))
+    
+    @property
+    def require_api_access(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("require_api_access"))
+    
+    @property
+    def search_strategy(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("search_strategy"))
+    
+    @property
+    def include_academic_sources(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("include_academic_sources"))
+    
+    @property
+    def include_government_sources(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("include_government_sources"))
+    
+    @property
+    def include_commercial_sources(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("include_commercial_sources"))
     
     
 

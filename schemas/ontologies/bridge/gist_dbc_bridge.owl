@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#"
+         xml:base="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:gist="https://w3id.org/semanticarts/ontology/gistCore#"
+         xmlns:dbc="http://data-business-canvas.org/ontology#"
+         xmlns:sow="https://agentic-data-scraper.com/ontology/sow#"
+         xmlns:bmc="http://business-model-canvas.org/ontology#"
+         xmlns:bridge="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+  <owl:Ontology rdf:about="https://agentic-data-scraper.com/ontology/gist-dbc-bridge">
+    <owl:versionIRI rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge/v1.0"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+    <owl:imports rdf:resource="https://w3id.org/semanticarts/ontology/gistCore"/>
+    <owl:imports rdf:resource="http://data-business-canvas.org/ontology"/>
+    <owl:imports rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <rdfs:label>Gist to Data Business Canvas Bridge Ontology</rdfs:label>
+    <rdfs:comment>Bridge ontology connecting Semantic Arts Gist upper ontology to Data Business Canvas, SOW, and Data Contracts</rdfs:comment>
+    <dcterms:created>2024-12-01T00:00:00Z</dcterms:created>
+    <dcterms:modified>2024-12-24T00:00:00Z</dcterms:modified>
+    <dcterms:creator>Agentic Data Scraper Team</dcterms:creator>
+    <dcterms:contributor>Claude Code - Semantic Architecture</dcterms:contributor>
+    <dcterms:description>This bridge ontology provides semantic integration between the Gist upper ontology, Data Business Canvas, Statement of Work (SOW), and Data Contract layers, enabling Lambda-ready data pipeline generation with full semantic discoverability.</dcterms:description>
+    <dcterms:license>MIT</dcterms:license>
+  </owl:Ontology>
+
+  <!-- ====================================================================== -->
+  <!-- SKOS CONCEPT SCHEMES FOR TAXONOMIC BROWSING                           -->
+  <!-- ====================================================================== -->
+
+  <!-- Data Business Canvas Taxonomy ConceptScheme -->
+  <skos:ConceptScheme rdf:about="#DataBusinessTaxonomy">
+    <rdfs:label>Data Business Canvas Taxonomy</rdfs:label>
+    <rdfs:comment>Hierarchical classification of data business model concepts</rdfs:comment>
+    <dcterms:description>Enables browsable navigation of business model components from strategic to operational levels</dcterms:description>
+    <rdfs:seeAlso rdf:resource="#DataBusinessCanvas"/>
+    <rdfs:seeAlso rdf:resource="#ValueProposition"/>
+    <rdfs:seeAlso rdf:resource="#CustomerSegment"/>
+    <rdfs:seeAlso rdf:resource="#DataAsset"/>
+    <rdfs:seeAlso rdf:resource="#IntelligenceCapability"/>
+  </skos:ConceptScheme>
+
+  <!-- Executive Strategy Taxonomy ConceptScheme -->
+  <skos:ConceptScheme rdf:about="#ExecutiveTaxonomy">
+    <rdfs:label>Executive Strategy Taxonomy</rdfs:label>
+    <rdfs:comment>Strategic executive concepts and alignment structures</rdfs:comment>
+    <dcterms:description>Hierarchical classification of executive targets, strategic alignment, and organizational objectives for strategic decision-making support</dcterms:description>
+    <rdfs:seeAlso rdf:resource="#ExecutiveTarget"/>
+    <rdfs:seeAlso rdf:resource="#ExecutiveTargetOwner"/>
+    <rdfs:seeAlso rdf:resource="#StrategicAlignmentScore"/>
+  </skos:ConceptScheme>
+
+  <!-- ====================================================================== -->
+  <!-- LEVEL 1: Gist Foundation Classes (Upper Ontology)                     -->
+  <!-- ====================================================================== -->
+
+  <!-- Key Gist classes we extend (these come from gist import) -->
+  <!-- gist:Organization, gist:Person, gist:Event, gist:Agreement, gist:Category -->
+
+  <!-- ====================================================================== -->
+  <!-- LEVEL 2: Data Business Canvas Classes (Business Strategy Layer)       -->
+  <!-- ====================================================================== -->
+
+  <!-- Data Business Canvas Core - Extends Gist Organization -->
+  <owl:Class rdf:about="#DataBusinessCanvas">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Organization"/>
+    <rdfs:subClassOf rdf:resource="http://business-model-canvas.org/ontology#BusinessModel"/>
+    <skos:inScheme rdf:resource="#DataBusinessTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:narrower rdf:resource="#ValueProposition"/>
+    <skos:narrower rdf:resource="#CustomerSegment"/>
+    <skos:narrower rdf:resource="#DataAsset"/>
+    <skos:narrower rdf:resource="#IntelligenceCapability"/>
+    <skos:related rdf:resource="#ExecutiveTarget"/>
+    <skos:related rdf:resource="#SemanticSOWContract"/>
+    <rdfs:label>Data Business Canvas</rdfs:label>
+    <rdfs:comment>A business model specifically focused on data-driven value creation, extending Gist Organization</rdfs:comment>
+    <skos:scopeNote>This concept extends traditional Business Model Canvas methodology to emphasize data assets and intelligence capabilities as core business components. Unlike generic business models that treat data as supporting infrastructure, this model positions data assets as primary value drivers and revenue generators. Lambda implementations must consider: (1) Data lineage tracking from ingestion to business value creation, (2) Multi-tenant data governance with role-based access controls, (3) Real-time data quality monitoring with automated alerts, (4) Cross-functional data product lifecycle management, (5) Semantic data discovery through ontology-based cataloging. Implementation requires event-driven architecture supporting both batch and streaming data processing, with data contracts enforcing schema evolution and backward compatibility. Consider serverless data mesh patterns for scalable domain-driven data architecture.</skos:scopeNote>
+    <skos:example>Supply chain visibility platform for Turkish olive oil producers with predictive analytics for seasonal demand forecasting and real-time supplier performance dashboards</skos:example>
+    <rdfs:seeAlso rdf:resource="#ValueProposition"/>
+    <rdfs:seeAlso rdf:resource="#CustomerSegment"/>
+    <rdfs:seeAlso rdf:resource="#DataAsset"/>
+    <rdfs:seeAlso rdf:resource="#ExecutiveTarget"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow#SemanticStatementOfWork"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Organization"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/subject"/>
+    <rdfs:seeAlso rdf:resource="http://xmlns.com/foaf/0.1/Organization"/>
+  </owl:Class>
+
+  <!-- Business Model Components as Gist Categories -->
+  <owl:Class rdf:about="#ValueProposition">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <skos:inScheme rdf:resource="#DataBusinessTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:broader rdf:resource="#DataBusinessCanvas"/>
+    <skos:related rdf:resource="#CustomerSegment"/>
+    <skos:related rdf:resource="#DataAsset"/>
+    <skos:related rdf:resource="#IntelligenceCapability"/>
+    <rdfs:label>Value Proposition</rdfs:label>
+    <rdfs:comment>Data-driven value proposition extending Gist Category</rdfs:comment>
+    <skos:example>Reduce procurement costs by 15% through real-time supplier performance analytics and geographical risk assessment of Mediterranean olive oil supply chains</skos:example>
+    <rdfs:seeAlso rdf:resource="#CustomerSegment"/>
+    <rdfs:seeAlso rdf:resource="#DataAsset"/>
+    <rdfs:seeAlso rdf:resource="#IntelligenceCapability"/>
+    <rdfs:seeAlso rdf:resource="#RevenueEvent"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow#DesiredOutcome"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Product"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Service"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/goodrelations/v1#ProductOrService"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="#CustomerSegment">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <skos:inScheme rdf:resource="#DataBusinessTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:broader rdf:resource="#DataBusinessCanvas"/>
+    <skos:related rdf:resource="#ValueProposition"/>
+    <skos:related rdf:resource="#DataAsset"/>
+    <skos:related rdf:resource="#IntelligenceCapability"/>
+    <rdfs:label>Customer Segment</rdfs:label>
+    <rdfs:comment>Customer segment classification extending Gist Category</rdfs:comment>
+    <skos:example>Mid-size Mediterranean food manufacturers (50-500 employees) requiring supply chain transparency for premium olive oil procurement and regulatory compliance</skos:example>
+    <rdfs:seeAlso rdf:resource="#ValueProposition"/>
+    <rdfs:seeAlso rdf:resource="#RevenueEvent"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/audience"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Person"/>
+    <rdfs:seeAlso rdf:resource="http://xmlns.com/foaf/0.1/Group"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/audience"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="#DataAsset">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <rdfs:subClassOf rdf:resource="http://data-business-canvas.org/ontology#KeyResource"/>
+    <skos:inScheme rdf:resource="#DataBusinessTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:broader rdf:resource="#DataBusinessCanvas"/>
+    <skos:related rdf:resource="#ValueProposition"/>
+    <skos:related rdf:resource="#CustomerSegment"/>
+    <skos:related rdf:resource="#IntelligenceCapability"/>
+    <rdfs:label>Data Asset</rdfs:label>
+    <rdfs:comment>Business-valuable data resource extending Gist Category and DBC Key Resource</rdfs:comment>
+    <skos:scopeNote>Represents data resources that have been curated, governed, and productized for business consumption, distinct from raw data sources. Data Assets must maintain business context, semantic meaning, and operational metadata throughout their lifecycle. Lambda implementations require: (1) Data asset registry with semantic annotations, business glossary integration, and impact analysis capabilities, (2) Multi-tiered storage architecture optimizing for access patterns (hot/warm/cold with automated lifecycle policies), (3) Data quality monitoring with configurable rules, anomaly detection, and business impact assessment, (4) Comprehensive data lineage tracking from source systems through transformations to consumption endpoints, (5) Access control integration with corporate identity systems and fine-grained permission management. Consider implementing data mesh principles with domain-owned data products, standardized data contracts for interoperability, and federated governance balancing autonomy with enterprise consistency. Storage formats should optimize for both analytical queries (columnar formats like Parquet/ORC) and operational access patterns (key-value, document, graph as appropriate).</skos:scopeNote>
+    <skos:example>Turkish olive oil supplier database with GPS coordinates, harvest yield history, quality certifications, and real-time delivery performance metrics stored in Parquet format</skos:example>
+    <rdfs:seeAlso rdf:resource="#IntelligenceCapability"/>
+    <rdfs:seeAlso rdf:resource="#DataQualityStandard"/>
+    <rdfs:seeAlso rdf:resource="#DataProcessingTask"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow#EntityToTrack"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#SupplyChainEntity"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Dataset"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/dcmitype/Dataset"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
+    <rdfs:seeAlso rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="#IntelligenceCapability">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <rdfs:subClassOf rdf:resource="http://data-business-canvas.org/ontology#KeyActivity"/>
+    <skos:inScheme rdf:resource="#DataBusinessTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:broader rdf:resource="#DataBusinessCanvas"/>
+    <skos:related rdf:resource="#ValueProposition"/>
+    <skos:related rdf:resource="#CustomerSegment"/>
+    <skos:related rdf:resource="#DataAsset"/>
+    <rdfs:label>Intelligence Capability</rdfs:label>
+    <rdfs:comment>AI/ML capability that transforms data assets into business value</rdfs:comment>
+    <skos:scopeNote>Represents AI/ML capabilities that transform raw data assets into actionable business intelligence and automated decision-making systems. This encompasses not just algorithmic components but the entire operational infrastructure including model governance, performance monitoring, and feedback loops. Lambda implementations should architect for: (1) MLOps pipeline automation with model versioning using semantic versioning tied to data contract changes, (2) Multi-environment model deployment with canary releases and A/B testing frameworks, (3) Model drift detection using statistical tests and business KPI monitoring, (4) Explainable AI capabilities for regulatory compliance and business transparency, (5) Real-time inference engines with sub-second response times and 99.9% availability. Consider containerized model serving with auto-scaling based on prediction volume, feature stores for consistent feature engineering across batch/streaming contexts, and model lineage tracking linking predictions back to training data provenance.</skos:scopeNote>
+    <skos:example>Predictive analytics engine using time-series forecasting to predict olive oil harvest yields based on weather data, historical performance, and soil quality indicators</skos:example>
+    <rdfs:seeAlso rdf:resource="#DataAsset"/>
+    <rdfs:seeAlso rdf:resource="#DataProcessingTask"/>
+    <rdfs:seeAlso rdf:resource="#ValueProposition"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#InferredOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#CrossDomainOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/SoftwareApplication"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/ComputerLanguage"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/type"/>
+  </owl:Class>
+
+  <!-- Key Partners as Gist Organizations -->
+  <owl:Class rdf:about="#DataProvider">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Organization"/>
+    <rdfs:label>Data Provider</rdfs:label>
+    <rdfs:comment>External organization providing data services</rdfs:comment>
+  </owl:Class>
+
+  <owl:Class rdf:about="#TechnologyPartner">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Organization"/>
+    <rdfs:label>Technology Partner</rdfs:label>
+    <rdfs:comment>Organization providing technology infrastructure or services</rdfs:comment>
+  </owl:Class>
+
+  <!-- Revenue and Cost Structures as Gist Events -->
+  <owl:Class rdf:about="#RevenueEvent">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Event"/>
+    <rdfs:label>Revenue Event</rdfs:label>
+    <rdfs:comment>Event that generates revenue from data insights</rdfs:comment>
+  </owl:Class>
+
+  <owl:Class rdf:about="#CostEvent">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Event"/>
+    <rdfs:label>Cost Event</rdfs:label>
+    <rdfs:comment>Event that incurs costs in data operations</rdfs:comment>
+  </owl:Class>
+
+  <!-- ====================================================================== -->
+  <!-- LEVEL 3: SOW (Statement of Work) Classes (Implementation Layer)       -->
+  <!-- ====================================================================== -->
+
+  <!-- SOW Contract extends Gist Agreement -->
+  <owl:Class rdf:about="#SemanticSOWContract">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Agreement"/>
+    <rdfs:subClassOf rdf:resource="https://agentic-data-scraper.com/ontology/sow#SemanticContract"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:related rdf:resource="#DataBusinessCanvas"/>
+    <skos:related rdf:resource="#DataContract"/>
+    <rdfs:label>Semantic SOW Contract</rdfs:label>
+    <rdfs:comment>Technical implementation contract extending Gist Agreement</rdfs:comment>
+    <skos:example>AWS Lambda-based data pipeline contract for Turkish olive oil supplier monitoring with automated web scraping, real-time quality alerts, and S3 data lake integration</skos:example>
+    <rdfs:seeAlso rdf:resource="#DataContract"/>
+    <rdfs:seeAlso rdf:resource="#DataBusinessCanvas"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow#BusinessChallenge"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#BusinessRequirement"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Service"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/license"/>
+  </owl:Class>
+
+  <!-- SOW Execution as Gist Project -->
+  <owl:Class rdf:about="#SOWProject">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Project"/>
+    <rdfs:label>SOW Project</rdfs:label>
+    <rdfs:comment>Project for executing SOW contract deliverables</rdfs:comment>
+  </owl:Class>
+
+  <!-- SOW Stakeholders as Gist Persons -->
+  <owl:Class rdf:about="#SOWStakeholder">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Person"/>
+    <rdfs:label>SOW Stakeholder</rdfs:label>
+    <rdfs:comment>Person involved in SOW contract execution</rdfs:comment>
+  </owl:Class>
+
+  <!-- ====================================================================== -->
+  <!-- LEVEL 4: Data Contract Classes (Operational Layer)                    -->
+  <!-- ====================================================================== -->
+
+  <!-- Data Contract extends Gist Agreement -->
+  <owl:Class rdf:about="#DataContract">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Agreement"/>
+    <rdfs:subClassOf rdf:resource="https://agentic-data-scraper.com/ontology/sow#DataContract"/>
+    <rdfs:label>Data Contract</rdfs:label>
+    <rdfs:comment>Operational data contract extending Gist Agreement</rdfs:comment>
+    <skos:example>Supplier performance data contract specifying JSON Schema validation, 99.5% data quality threshold, daily update frequency, and Apache Iceberg table format with partition by region</skos:example>
+    <rdfs:seeAlso rdf:resource="#SemanticSOWContract"/>
+    <rdfs:seeAlso rdf:resource="#DataProcessingTask"/>
+    <rdfs:seeAlso rdf:resource="#DataQualityStandard"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Service"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/license"/>
+    <rdfs:seeAlso rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+  </owl:Class>
+
+  <!-- Data Processing as Gist Task -->
+  <owl:Class rdf:about="#DataProcessingTask">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Task"/>
+    <rdfs:label>Data Processing Task</rdfs:label>
+    <rdfs:comment>Specific task for processing data according to contract</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="#DataContract"/>
+    <rdfs:seeAlso rdf:resource="#DataAsset"/>
+    <rdfs:seeAlso rdf:resource="#IntelligenceCapability"/>
+    <rdfs:seeAlso rdf:resource="#DataQualityStandard"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Action"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/ns/prov#Activity"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/type"/>
+  </owl:Class>
+
+  <!-- Data Quality as Gist Category -->
+  <owl:Class rdf:about="#DataQualityStandard">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <rdfs:label>Data Quality Standard</rdfs:label>
+    <rdfs:comment>Quality standard category for data processing</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="#DataContract"/>
+    <rdfs:seeAlso rdf:resource="#DataAsset"/>
+    <rdfs:seeAlso rdf:resource="#DataProcessingTask"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/QualityRating"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/conformsTo"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+  </owl:Class>
+
+  <!-- ====================================================================== -->
+  <!-- CROSS-LEVEL PROPERTIES (Connecting the Hierarchy)                     -->
+  <!-- ====================================================================== -->
+
+  <!-- Level 1-2: Gist to DBC Bridge Properties -->
+  <owl:ObjectProperty rdf:about="#hasBusinessModel">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Organization"/>
+    <rdfs:range rdf:resource="#DataBusinessCanvas"/>
+    <rdfs:label>has business model</rdfs:label>
+    <rdfs:comment>Links a Gist Organization to its Data Business Canvas</rdfs:comment>
+    <skos:example>AegeanOliveCorp hasBusinessModel SupplyChainOptimizationCanvas - connects the organization to its data-driven business model for supply chain intelligence</skos:example>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isBusinessModelOf">
+    <owl:inverseOf rdf:resource="#hasBusinessModel"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataBusinessCanvas"/>
+    <rdfs:range rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Organization"/>
+    <rdfs:label>is business model of</rdfs:label>
+    <rdfs:comment>Inverse of hasBusinessModel - links Data Business Canvas back to its Gist Organization</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#providesValueTo">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataAsset"/>
+    <rdfs:range rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Person"/>
+    <rdfs:label>provides value to</rdfs:label>
+    <rdfs:comment>Links data assets to people who benefit from them</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#receivesValueFrom">
+    <owl:inverseOf rdf:resource="#providesValueTo"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Person"/>
+    <rdfs:range rdf:resource="#DataAsset"/>
+    <rdfs:label>receives value from</rdfs:label>
+    <rdfs:comment>Inverse of providesValueTo - links people back to data assets they benefit from</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <!-- Level 2-3: DBC to SOW Bridge Properties -->
+  <owl:ObjectProperty rdf:about="#implementedBySOW">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataBusinessCanvas"/>
+    <rdfs:range rdf:resource="#SemanticSOWContract"/>
+    <rdfs:label>implemented by SOW</rdfs:label>
+    <rdfs:comment>Links business canvas to its SOW implementation contract</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#implementsCanvas">
+    <owl:inverseOf rdf:resource="#implementedBySOW"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#SemanticSOWContract"/>
+    <rdfs:range rdf:resource="#DataBusinessCanvas"/>
+    <rdfs:label>implements canvas</rdfs:label>
+    <rdfs:comment>Inverse of implementedBySOW - links SOW contract back to the business canvas it implements</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#requiresDataSource">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#SemanticSOWContract"/>
+    <rdfs:range rdf:resource="#DataAsset"/>
+    <rdfs:label>requires data source</rdfs:label>
+    <rdfs:comment>Links SOW contract to required data assets</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isDataSourceFor">
+    <owl:inverseOf rdf:resource="#requiresDataSource"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataAsset"/>
+    <rdfs:range rdf:resource="#SemanticSOWContract"/>
+    <rdfs:label>is data source for</rdfs:label>
+    <rdfs:comment>Inverse of requiresDataSource - links data asset back to SOW contracts that require it</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <!-- Level 3-4: SOW to Data Contract Bridge Properties -->
+  <owl:ObjectProperty rdf:about="#realizesContract">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#SemanticSOWContract"/>
+    <rdfs:range rdf:resource="#DataContract"/>
+    <rdfs:label>realizes contract</rdfs:label>
+    <rdfs:comment>Links SOW to specific operational data contracts</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isRealizedBySOW">
+    <owl:inverseOf rdf:resource="#realizesContract"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataContract"/>
+    <rdfs:range rdf:resource="#SemanticSOWContract"/>
+    <rdfs:label>is realized by SOW</rdfs:label>
+    <rdfs:comment>Inverse of realizesContract - links data contract back to the SOW that realizes it</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#executedByTask">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataContract"/>
+    <rdfs:range rdf:resource="#DataProcessingTask"/>
+    <rdfs:label>executed by task</rdfs:label>
+    <rdfs:comment>Links data contract to processing tasks</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#executesContract">
+    <owl:inverseOf rdf:resource="#executedByTask"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataProcessingTask"/>
+    <rdfs:range rdf:resource="#DataContract"/>
+    <rdfs:label>executes contract</rdfs:label>
+    <rdfs:comment>Inverse of executedByTask - links processing task back to the data contract it executes</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <!-- Cross-Level Business Value Chain -->
+  <owl:ObjectProperty rdf:about="#createsBusinessValue">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataProcessingTask"/>
+    <rdfs:range rdf:resource="#ValueProposition"/>
+    <rdfs:label>creates business value</rdfs:label>
+    <rdfs:comment>Links operational tasks back to business value</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isBusinessValueOf">
+    <owl:inverseOf rdf:resource="#createsBusinessValue"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#ValueProposition"/>
+    <rdfs:range rdf:resource="#DataProcessingTask"/>
+    <rdfs:label>is business value of</rdfs:label>
+    <rdfs:comment>Inverse of createsBusinessValue - links value proposition back to tasks that create it</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <!-- ====================================================================== -->
+  <!-- EXECUTIVE TARGET INTEGRATION (+E Extension)                           -->
+  <!-- ====================================================================== -->
+
+  <!-- Executive Target as Gist Category with specific business intent -->
+  <owl:Class rdf:about="#ExecutiveTarget">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <rdfs:subClassOf rdf:resource="https://agentic-data-scraper.com/ontology/sow#BusinessObjective"/>
+    <skos:inScheme rdf:resource="#ExecutiveTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:narrower rdf:resource="#StrategicAlignmentScore"/>
+    <skos:related rdf:resource="#ExecutiveTargetOwner"/>
+    <skos:related rdf:resource="#DataBusinessCanvas"/>
+    <rdfs:label>Executive Target</rdfs:label>
+    <rdfs:comment>Strategic executive objective extending Gist Category</rdfs:comment>
+    <skos:scopeNote>Represents measurable strategic objectives that directly link data initiatives to executive accountability and corporate performance metrics. These targets bridge the semantic gap between technical data capabilities and C-level business outcomes, requiring sophisticated measurement and attribution systems. Lambda implementations must support: (1) Multi-dimensional KPI tracking with hierarchical goal decomposition from executive targets down to operational metrics, (2) Automated attribution analysis linking data initiatives to business outcome improvements using causal inference techniques, (3) Real-time executive dashboards with drill-down capabilities from strategic targets to underlying data assets and processing pipelines, (4) Variance analysis and alert systems for tracking progress against targets with predictive early warning indicators, (5) Integration with enterprise planning systems (ERP, CRM, HCM) for holistic business context. Architecture should support both retrospective analysis (what happened and why) and prospective planning (scenario analysis and forecasting). Consider implementing OKR (Objectives and Key Results) frameworks with semantic linking to data lineage for transparent accountability and impact measurement.</skos:scopeNote>
+    <skos:example>Achieve 20% improvement in supply chain efficiency by Q4 2025 through data-driven optimization and reduce supplier risk exposure by implementing geographic diversification strategies</skos:example>
+    <rdfs:seeAlso rdf:resource="#StrategicAlignmentScore"/>
+    <rdfs:seeAlso rdf:resource="#ExecutiveTargetOwner"/>
+    <rdfs:seeAlso rdf:resource="#DataBusinessCanvas"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow#DesiredOutcome"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#InferredOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Goal"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/subject"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+  </owl:Class>
+
+  <!-- Target Owner as Gist Person -->
+  <owl:Class rdf:about="#ExecutiveTargetOwner">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Person"/>
+    <skos:inScheme rdf:resource="#ExecutiveTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:related rdf:resource="#ExecutiveTarget"/>
+    <skos:related rdf:resource="#StrategicAlignmentScore"/>
+    <rdfs:label>Executive Target Owner</rdfs:label>
+    <rdfs:comment>Executive responsible for strategic target achievement</rdfs:comment>
+    <skos:example>Chief Procurement Officer (CPO) responsible for Mediterranean region supplier strategy with accountability for cost reduction and risk mitigation KPIs</skos:example>
+  </owl:Class>
+
+  <!-- Alignment Score as Gist Category -->
+  <owl:Class rdf:about="#StrategicAlignmentScore">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <skos:inScheme rdf:resource="#ExecutiveTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:broader rdf:resource="#ExecutiveTarget"/>
+    <skos:related rdf:resource="#ExecutiveTargetOwner"/>
+    <rdfs:label>Strategic Alignment Score</rdfs:label>
+    <rdfs:comment>Quantified measure of alignment with executive targets</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="#ExecutiveTarget"/>
+    <rdfs:seeAlso rdf:resource="#DataBusinessCanvas"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Rating"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/PropertyValue"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/conformsTo"/>
+  </owl:Class>
+
+  <!-- Executive Target Properties -->
+  <owl:ObjectProperty rdf:about="#alignsWithTarget">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataBusinessCanvas"/>
+    <rdfs:range rdf:resource="#ExecutiveTarget"/>
+    <rdfs:label>aligns with target</rdfs:label>
+    <rdfs:comment>Links business canvas to executive strategic targets</rdfs:comment>
+    <skos:example>SupplyChainOptimizationCanvas alignsWithTarget CostReduction20PercentTarget - establishes strategic alignment between data initiatives and executive objectives</skos:example>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isTargetAlignedWith">
+    <owl:inverseOf rdf:resource="#alignsWithTarget"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#ExecutiveTarget"/>
+    <rdfs:range rdf:resource="#DataBusinessCanvas"/>
+    <rdfs:label>is target aligned with</rdfs:label>
+    <rdfs:comment>Inverse of alignsWithTarget - links executive target back to business canvas that aligns with it</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#ownedBy">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#ExecutiveTarget"/>
+    <rdfs:range rdf:resource="#ExecutiveTargetOwner"/>
+    <rdfs:label>owned by</rdfs:label>
+    <rdfs:comment>Links target to responsible executive</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#ownsTarget">
+    <owl:inverseOf rdf:resource="#ownedBy"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#ExecutiveTargetOwner"/>
+    <rdfs:range rdf:resource="#ExecutiveTarget"/>
+    <rdfs:label>owns target</rdfs:label>
+    <rdfs:comment>Inverse of ownedBy - links executive target owner back to targets they own</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasAlignmentScore">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataBusinessCanvas"/>
+    <rdfs:range rdf:resource="#StrategicAlignmentScore"/>
+    <rdfs:label>has alignment score</rdfs:label>
+    <rdfs:comment>Links canvas to its strategic alignment assessment</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isAlignmentScoreOf">
+    <owl:inverseOf rdf:resource="#hasAlignmentScore"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#StrategicAlignmentScore"/>
+    <rdfs:range rdf:resource="#DataBusinessCanvas"/>
+    <rdfs:label>is alignment score of</rdfs:label>
+    <rdfs:comment>Inverse of hasAlignmentScore - links strategic alignment score back to canvas it assesses</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <!-- ====================================================================== -->
+  <!-- SEMANTIC INTEGRATION PROPERTIES                                       -->
+  <!-- ====================================================================== -->
+
+  <!-- SKOS Integration -->
+  <owl:ObjectProperty rdf:about="#hasSemanticMapping">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataAsset"/>
+    <rdfs:range rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <rdfs:label>has semantic mapping</rdfs:label>
+    <rdfs:comment>Links data assets to SKOS concept categories</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isSemanticMappingOf">
+    <owl:inverseOf rdf:resource="#hasSemanticMapping"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <rdfs:range rdf:resource="#DataAsset"/>
+    <rdfs:label>is semantic mapping of</rdfs:label>
+    <rdfs:comment>Inverse of hasSemanticMapping - links SKOS category back to data assets mapped to it</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasQualityStandard">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataContract"/>
+    <rdfs:range rdf:resource="#DataQualityStandard"/>
+    <rdfs:label>has quality standard</rdfs:label>
+    <rdfs:comment>Links data contract to its quality standard requirements</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isQualityStandardFor">
+    <owl:inverseOf rdf:resource="#hasQualityStandard"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataQualityStandard"/>
+    <rdfs:range rdf:resource="#DataContract"/>
+    <rdfs:label>is quality standard for</rdfs:label>
+    <rdfs:comment>Inverse of hasQualityStandard - links quality standard back to data contracts that require it</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <!-- Multilingual Support -->
+  <owl:DatatypeProperty rdf:about="#hasPreferredLabel">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>has preferred label</rdfs:label>
+    <rdfs:comment>SKOS-routed preferred label for multilingual support</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#hasValueDescription">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#ValueProposition"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>has value description</rdfs:label>
+    <rdfs:comment>Textual description of the value proposition delivered to customers</rdfs:comment>
+    <skos:example>"Real-time supply chain visibility enabling 15% cost reduction through predictive analytics and geographic risk assessment of Turkish olive oil suppliers"</skos:example>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#hasSegmentName">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#CustomerSegment"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>has segment name</rdfs:label>
+    <rdfs:comment>Name identifying the customer segment category</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#hasTargetMetric">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#ExecutiveTarget"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>has target metric</rdfs:label>
+    <rdfs:comment>Quantifiable metric definition for the executive target</rdfs:comment>
+    <skos:example>"Reduce total procurement costs by 20% measured as (previous_year_costs - current_year_costs)/previous_year_costs >= 0.20 by December 31, 2025"</skos:example>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#hasAlignmentScoreValue">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#StrategicAlignmentScore"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:label>has alignment score value</rdfs:label>
+    <rdfs:comment>Numerical value of strategic alignment assessment (0.0 to 1.0)</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#hasCostAmount">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#CostEvent"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:label>has cost amount</rdfs:label>
+    <rdfs:comment>Monetary amount of the cost event in base currency</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#hasRevenueAmount">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#RevenueEvent"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:label>has revenue amount</rdfs:label>
+    <rdfs:comment>Monetary amount of the revenue event in base currency</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#hasQualityThreshold">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataQualityStandard"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:label>has quality threshold</rdfs:label>
+    <rdfs:comment>Minimum acceptable quality threshold value for data processing</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#hasDeadline">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataProcessingTask"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdfs:label>has deadline</rdfs:label>
+    <rdfs:comment>Deadline timestamp for task completion</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#hasContractVersion">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataContract"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>has contract version</rdfs:label>
+    <rdfs:comment>Version identifier for the data contract specification</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#hasDataFormat">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#DataAsset"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>has data format</rdfs:label>
+    <rdfs:comment>Format specification of the data asset (e.g., JSON, Parquet, CSV)</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#hasCapabilityDescription">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:domain rdf:resource="#IntelligenceCapability"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>has capability description</rdfs:label>
+    <rdfs:comment>Textual description of the AI/ML capability and its business application</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <!-- ====================================================================== -->
+  <!-- EXAMPLE INSTANCES (Demonstrating the Connected Graph)                 -->
+  <!-- ====================================================================== -->
+
+  <!-- Example Gist Organization -->
+  <gist:Organization rdf:about="#AegeanOliveProducers">
+    <rdfs:label>Aegean Olive Producers Ltd</rdfs:label>
+    <rdfs:comment>Example organization from Turkish supply chain case</rdfs:comment>
+    <bridge:hasBusinessModel rdf:resource="#SupplyChainDataCanvas"/>
+  </gist:Organization>
+
+  <!-- Example DBC -->
+  <bridge:DataBusinessCanvas rdf:about="#SupplyChainDataCanvas">
+    <rdfs:label>Supply Chain Data Business Canvas</rdfs:label>
+    <bridge:implementedBySOW rdf:resource="#SupplyChainSOW"/>
+    <bridge:alignsWithTarget rdf:resource="#CostReductionTarget"/>
+  </bridge:DataBusinessCanvas>
+
+  <!-- Example SOW -->
+  <bridge:SemanticSOWContract rdf:about="#SupplyChainSOW">
+    <rdfs:label>Supply Chain Optimization SOW Contract</rdfs:label>
+    <bridge:realizesContract rdf:resource="#OliveOilDataContract"/>
+  </bridge:SemanticSOWContract>
+
+  <!-- Example Data Contract -->
+  <bridge:DataContract rdf:about="#OliveOilDataContract">
+    <rdfs:label>Olive Oil Supply Data Contract</rdfs:label>
+    <bridge:executedByTask rdf:resource="#TurkishSupplierDataCollection"/>
+  </bridge:DataContract>
+
+  <!-- Example Task -->
+  <bridge:DataProcessingTask rdf:about="#TurkishSupplierDataCollection">
+    <rdfs:label>Turkish Supplier Data Collection Task</rdfs:label>
+    <bridge:createsBusinessValue rdf:resource="#SupplierTransparencyValue"/>
+  </bridge:DataProcessingTask>
+
+  <!-- Example Executive Target -->
+  <bridge:ExecutiveTarget rdf:about="#CostReductionTarget">
+    <rdfs:label>15% Supply Chain Cost Reduction</rdfs:label>
+    <bridge:ownedBy rdf:resource="#SupplyChainDirector"/>
+  </bridge:ExecutiveTarget>
+
+</rdf:RDF>

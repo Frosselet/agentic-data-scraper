@@ -19,11 +19,17 @@ type_map = {
     "types.AgriculturePipelineConfig": types.AgriculturePipelineConfig,
     "stream_types.AgriculturePipelineConfig": stream_types.AgriculturePipelineConfig,
 
+    "types.AlignmentScore": types.AlignmentScore,
+    "stream_types.AlignmentScore": stream_types.AlignmentScore,
+
     "types.BusinessContext": types.BusinessContext,
     "stream_types.BusinessContext": stream_types.BusinessContext,
 
     "types.CongestionAlert": types.CongestionAlert,
     "stream_types.CongestionAlert": stream_types.CongestionAlert,
+
+    "types.DataBusinessCanvas": types.DataBusinessCanvas,
+    "stream_types.DataBusinessCanvas": stream_types.DataBusinessCanvas,
 
     "types.DataContract": types.DataContract,
     "stream_types.DataContract": stream_types.DataContract,
@@ -31,14 +37,26 @@ type_map = {
     "types.DataSource": types.DataSource,
     "stream_types.DataSource": stream_types.DataSource,
 
+    "types.DataSourceMetadata": types.DataSourceMetadata,
+    "stream_types.DataSourceMetadata": stream_types.DataSourceMetadata,
+
     "types.DataSourceRecommendation": types.DataSourceRecommendation,
     "stream_types.DataSourceRecommendation": stream_types.DataSourceRecommendation,
+
+    "types.DiscoveryResult": types.DiscoveryResult,
+    "stream_types.DiscoveryResult": stream_types.DiscoveryResult,
+
+    "types.ExecutiveTarget": types.ExecutiveTarget,
+    "stream_types.ExecutiveTarget": stream_types.ExecutiveTarget,
 
     "types.FeasibilityAnalysis": types.FeasibilityAnalysis,
     "stream_types.FeasibilityAnalysis": stream_types.FeasibilityAnalysis,
 
     "types.GeneratedPipeline": types.GeneratedPipeline,
     "stream_types.GeneratedPipeline": stream_types.GeneratedPipeline,
+
+    "types.KnownSourceRequest": types.KnownSourceRequest,
+    "stream_types.KnownSourceRequest": stream_types.KnownSourceRequest,
 
     "types.MarketOpportunity": types.MarketOpportunity,
     "stream_types.MarketOpportunity": stream_types.MarketOpportunity,
@@ -67,6 +85,9 @@ type_map = {
     "types.SupplyChainPipelineConfig": types.SupplyChainPipelineConfig,
     "stream_types.SupplyChainPipelineConfig": stream_types.SupplyChainPipelineConfig,
 
+    "types.TargetParsingResult": types.TargetParsingResult,
+    "stream_types.TargetParsingResult": stream_types.TargetParsingResult,
+
     "types.TradingPipelineConfig": types.TradingPipelineConfig,
     "stream_types.TradingPipelineConfig": stream_types.TradingPipelineConfig,
 
@@ -79,11 +100,27 @@ type_map = {
     "types.WaterwayConditions": types.WaterwayConditions,
     "stream_types.WaterwayConditions": stream_types.WaterwayConditions,
 
+    "types.WorkflowPrepopulation": types.WorkflowPrepopulation,
+    "stream_types.WorkflowPrepopulation": stream_types.WorkflowPrepopulation,
+
+    "types.ZeroStartDiscovery": types.ZeroStartDiscovery,
+    "stream_types.ZeroStartDiscovery": stream_types.ZeroStartDiscovery,
+
+
+    "types.DataSourceType": types.DataSourceType,
+
+    "types.DiscoveryPath": types.DiscoveryPath,
 
     "types.NavigationPriority": types.NavigationPriority,
 
     "types.RiskLevel": types.RiskLevel,
 
+    "types.TargetCategory": types.TargetCategory,
+
+    "types.TargetPriority": types.TargetPriority,
+
     "types.TransportMode": types.TransportMode,
+
+    "types.UpdateFrequency": types.UpdateFrequency,
 
 }

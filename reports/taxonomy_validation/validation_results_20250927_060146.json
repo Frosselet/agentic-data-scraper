@@ -1,0 +1,551 @@
+{
+  "start_time": "2025-09-27T06:01:45.399966",
+  "components_run": [
+    "sparql_queries"
+  ],
+  "skos_validation": null,
+  "sparql_queries": {
+    "timestamp": "2025-09-27 06:01:45.440646",
+    "total_queries": 14,
+    "successful_queries": 14,
+    "failed_queries": 0,
+    "query_results": [
+      {
+        "name": "List All ConceptSchemes",
+        "description": "Show me all concepts in DataBusinessTaxonomy",
+        "use_case": "Initial taxonomy exploration",
+        "lambda_application": "Lambda function needs to present available taxonomies to users",
+        "success": true,
+        "message": "Query returned 25 results",
+        "result_count": 25,
+        "expected_results": 10,
+        "meets_expectations": true,
+        "results": [
+          {
+            "scheme": "https://agentic-data-scraper.com/ontology/complete-sow#AnalyticsTaxonomy",
+            "label": "Analytics Opportunity Taxonomy",
+            "description": "Hierarchical organization of analytical opportunities including predictive, optimization, and cross-domain analysis capabilities discovered through SOW inference",
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#AnalyticalOpportunity",
+            "conceptLabel": "Analytical Opportunity"
+          },
+          {
+            "scheme": "https://agentic-data-scraper.com/ontology/complete-sow#AnalyticsTaxonomy",
+            "label": "Analytics Opportunity Taxonomy",
+            "description": "Hierarchical organization of analytical opportunities including predictive, optimization, and cross-domain analysis capabilities discovered through SOW inference",
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#CrossDomainOpportunity",
+            "conceptLabel": "Cross-Domain Opportunity"
+          },
+          {
+            "scheme": "https://agentic-data-scraper.com/ontology/complete-sow#AnalyticsTaxonomy",
+            "label": "Analytics Opportunity Taxonomy",
+            "description": "Hierarchical organization of analytical opportunities including predictive, optimization, and cross-domain analysis capabilities discovered through SOW inference",
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#OptimizationOpportunity",
+            "conceptLabel": "Optimization Opportunity"
+          },
+          {
+            "scheme": "https://agentic-data-scraper.com/ontology/complete-sow#AnalyticsTaxonomy",
+            "label": "Analytics Opportunity Taxonomy",
+            "description": "Hierarchical organization of analytical opportunities including predictive, optimization, and cross-domain analysis capabilities discovered through SOW inference",
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#PredictiveOpportunity",
+            "conceptLabel": "Predictive Opportunity"
+          },
+          {
+            "scheme": "https://agentic-data-scraper.com/ontology/complete-sow#SOWTaxonomy",
+            "label": "Statement of Work Taxonomy",
+            "description": "Enables browsable navigation of statement of work components from business challenges through desired outcomes to analytical opportunities and implementation constraints",
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#BusinessChallenge",
+            "conceptLabel": "Business Challenge"
+          }
+        ],
+        "query": "\n                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n                PREFIX dcterms: <http://purl.org/dc/terms/>\n                PREFIX bridge: <https://agentic-data-scraper.com/ontology/gist-dbc-bridge#>\n\n                SELECT ?scheme ?label ?description ?concept ?conceptLabel WHERE {\n                    ?scheme a skos:ConceptScheme ;\n                           rdfs:label ?label .\n\n                    OPTIONAL {\n                        ?scheme dcterms:description ?description\n                    }\n\n                    OPTIONAL {\n                        ?concept skos:inScheme ?scheme ;\n                                rdfs:label ?conceptLabel .\n                    }\n                }\n                ORDER BY ?scheme ?concept\n                "
+      },
+      {
+        "name": "Browse DataBusinessTaxonomy Concepts",
+        "description": "Show all concepts in the Data Business Canvas taxonomy",
+        "use_case": "Browse business model concepts",
+        "lambda_application": "Help users navigate business model components",
+        "success": true,
+        "message": "Query returned 5 results",
+        "result_count": 5,
+        "expected_results": 5,
+        "meets_expectations": true,
+        "results": [
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#CustomerSegment",
+            "label": "Customer Segment",
+            "comment": "Customer segment classification extending Gist Category"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataAsset",
+            "label": "Data Asset",
+            "comment": "Business-valuable data resource extending Gist Category and DBC Key Resource"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessCanvas",
+            "label": "Data Business Canvas",
+            "comment": "A business model specifically focused on data-driven value creation, extending Gist Organization"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#IntelligenceCapability",
+            "label": "Intelligence Capability",
+            "comment": "AI/ML capability that transforms data assets into business value"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#ValueProposition",
+            "label": "Value Proposition",
+            "comment": "Data-driven value proposition extending Gist Category"
+          }
+        ],
+        "query": "\n                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n                PREFIX bridge: <https://agentic-data-scraper.com/ontology/gist-dbc-bridge#>\n\n                SELECT ?concept ?label ?comment WHERE {\n                    ?concept skos:inScheme bridge:DataBusinessTaxonomy ;\n                            rdfs:label ?label .\n\n                    OPTIONAL { ?concept rdfs:comment ?comment }\n                }\n                ORDER BY ?label\n                "
+      },
+      {
+        "name": "Find Root Concepts",
+        "description": "Find all root concepts (no broader concepts) in taxonomies",
+        "use_case": "Find taxonomy entry points",
+        "lambda_application": "Start taxonomy browsing from root concepts",
+        "success": true,
+        "message": "Query returned 14 results",
+        "result_count": 14,
+        "expected_results": 3,
+        "meets_expectations": true,
+        "results": [
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#AnalyticalOpportunity",
+            "label": "Analytical Opportunity",
+            "scheme": "https://agentic-data-scraper.com/ontology/complete-sow#AnalyticsTaxonomy"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#AnalyticalOpportunity",
+            "label": "Analytical Opportunity",
+            "scheme": "https://agentic-data-scraper.com/ontology/complete-sow#AnalyticsTaxonomy"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#AnalyticalOpportunity",
+            "label": "Analytical Opportunity",
+            "scheme": "https://agentic-data-scraper.com/ontology/complete-sow#AnalyticsTaxonomy"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#SemanticStatementOfWork",
+            "label": "Semantic Statement of Work",
+            "scheme": "https://agentic-data-scraper.com/ontology/complete-sow#SOWTaxonomy"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#SemanticStatementOfWork",
+            "label": "Semantic Statement of Work",
+            "scheme": "https://agentic-data-scraper.com/ontology/complete-sow#SOWTaxonomy"
+          }
+        ],
+        "query": "\n                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n\n                SELECT ?concept ?label ?scheme WHERE {\n                    ?concept skos:inScheme ?scheme ;\n                            rdfs:label ?label .\n\n                    # Concept has narrower concepts but no broader concepts\n                    ?concept skos:narrower ?child .\n\n                    FILTER NOT EXISTS {\n                        ?concept skos:broader ?parent .\n                    }\n                }\n                ORDER BY ?scheme ?label\n                "
+      },
+      {
+        "name": "Hierarchical Navigation from DataBusinessCanvas",
+        "description": "Find all narrower concepts of DataBusinessCanvas",
+        "use_case": "Drill down from parent concept",
+        "lambda_application": "Navigate from high-level to specific concepts",
+        "success": true,
+        "message": "Query returned 4 results",
+        "result_count": 4,
+        "expected_results": 4,
+        "meets_expectations": true,
+        "results": [
+          {
+            "narrowerConcept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#CustomerSegment",
+            "label": "Customer Segment",
+            "comment": "Customer segment classification extending Gist Category"
+          },
+          {
+            "narrowerConcept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataAsset",
+            "label": "Data Asset",
+            "comment": "Business-valuable data resource extending Gist Category and DBC Key Resource"
+          },
+          {
+            "narrowerConcept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#IntelligenceCapability",
+            "label": "Intelligence Capability",
+            "comment": "AI/ML capability that transforms data assets into business value"
+          },
+          {
+            "narrowerConcept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#ValueProposition",
+            "label": "Value Proposition",
+            "comment": "Data-driven value proposition extending Gist Category"
+          }
+        ],
+        "query": "\n                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n                PREFIX bridge: <https://agentic-data-scraper.com/ontology/gist-dbc-bridge#>\n\n                SELECT ?narrowerConcept ?label ?comment WHERE {\n                    bridge:DataBusinessCanvas skos:narrower ?narrowerConcept .\n\n                    ?narrowerConcept rdfs:label ?label .\n                    OPTIONAL { ?narrowerConcept rdfs:comment ?comment }\n                }\n                ORDER BY ?label\n                "
+      },
+      {
+        "name": "Multi-Level Hierarchy Traversal",
+        "description": "Build complete hierarchy tree from root to leaf concepts",
+        "use_case": "Build complete taxonomy tree",
+        "lambda_application": "Generate hierarchical menu structures",
+        "success": true,
+        "message": "Query returned 4 results",
+        "result_count": 4,
+        "expected_results": 8,
+        "meets_expectations": false,
+        "results": [
+          {
+            "level1": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessCanvas",
+            "level1Label": "Data Business Canvas",
+            "level2": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#CustomerSegment",
+            "level2Label": "Customer Segment"
+          },
+          {
+            "level1": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessCanvas",
+            "level1Label": "Data Business Canvas",
+            "level2": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataAsset",
+            "level2Label": "Data Asset"
+          },
+          {
+            "level1": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessCanvas",
+            "level1Label": "Data Business Canvas",
+            "level2": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#IntelligenceCapability",
+            "level2Label": "Intelligence Capability"
+          },
+          {
+            "level1": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessCanvas",
+            "level1Label": "Data Business Canvas",
+            "level2": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#ValueProposition",
+            "level2Label": "Value Proposition"
+          }
+        ],
+        "query": "\n                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n                PREFIX bridge: <https://agentic-data-scraper.com/ontology/gist-dbc-bridge#>\n\n                SELECT ?level1 ?level1Label ?level2 ?level2Label ?level3 ?level3Label WHERE {\n                    # Level 1: Root concepts\n                    ?level1 skos:inScheme bridge:DataBusinessTaxonomy ;\n                           rdfs:label ?level1Label .\n\n                    FILTER NOT EXISTS {\n                        ?level1 skos:broader ?parent .\n                    }\n\n                    # Level 2: Direct children\n                    OPTIONAL {\n                        ?level1 skos:narrower ?level2 .\n                        ?level2 rdfs:label ?level2Label .\n\n                        # Level 3: Grandchildren\n                        OPTIONAL {\n                            ?level2 skos:narrower ?level3 .\n                            ?level3 rdfs:label ?level3Label .\n                        }\n                    }\n                }\n                ORDER BY ?level1Label ?level2Label ?level3Label\n                "
+      },
+      {
+        "name": "Cross-Domain Concept Discovery",
+        "description": "Find related concepts across different domains",
+        "use_case": "Discover cross-domain connections",
+        "lambda_application": "Suggest related concepts from other domains",
+        "success": true,
+        "message": "Query returned 3 results",
+        "result_count": 3,
+        "expected_results": 5,
+        "meets_expectations": false,
+        "results": [
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessCanvas",
+            "conceptLabel": "Data Business Canvas",
+            "relatedConcept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#ExecutiveTarget",
+            "relatedLabel": "Executive Target",
+            "conceptScheme": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessTaxonomy",
+            "relatedScheme": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#ExecutiveTaxonomy"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#DesiredOutcome",
+            "conceptLabel": "Desired Outcome",
+            "relatedConcept": "https://agentic-data-scraper.com/ontology/complete-sow#AnalyticalOpportunity",
+            "relatedLabel": "Analytical Opportunity",
+            "conceptScheme": "https://agentic-data-scraper.com/ontology/complete-sow#SOWTaxonomy",
+            "relatedScheme": "https://agentic-data-scraper.com/ontology/complete-sow#AnalyticsTaxonomy"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#ExecutiveTarget",
+            "conceptLabel": "Executive Target",
+            "relatedConcept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessCanvas",
+            "relatedLabel": "Data Business Canvas",
+            "conceptScheme": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#ExecutiveTaxonomy",
+            "relatedScheme": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessTaxonomy"
+          }
+        ],
+        "query": "\n                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n                PREFIX bridge: <https://agentic-data-scraper.com/ontology/gist-dbc-bridge#>\n\n                SELECT ?concept ?conceptLabel ?relatedConcept ?relatedLabel ?conceptScheme ?relatedScheme WHERE {\n                    ?concept skos:related ?relatedConcept ;\n                            skos:inScheme ?conceptScheme ;\n                            rdfs:label ?conceptLabel .\n\n                    ?relatedConcept skos:inScheme ?relatedScheme ;\n                                   rdfs:label ?relatedLabel .\n\n                    # Show only cross-scheme relationships\n                    FILTER(?conceptScheme != ?relatedScheme)\n                }\n                ORDER BY ?conceptLabel\n                "
+      },
+      {
+        "name": "Find Related Concepts for IntelligenceCapability",
+        "description": "Discover concepts related to AI/ML capabilities",
+        "use_case": "Explore concept relationships",
+        "lambda_application": "Show comprehensive concept context",
+        "success": true,
+        "message": "Query returned 4 results",
+        "result_count": 4,
+        "expected_results": 6,
+        "meets_expectations": false,
+        "results": [
+          {
+            "relatedConcept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessCanvas",
+            "label": "Data Business Canvas",
+            "relationship": "broader",
+            "comment": "A business model specifically focused on data-driven value creation, extending Gist Organization"
+          },
+          {
+            "relatedConcept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#CustomerSegment",
+            "label": "Customer Segment",
+            "relationship": "related",
+            "comment": "Customer segment classification extending Gist Category"
+          },
+          {
+            "relatedConcept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataAsset",
+            "label": "Data Asset",
+            "relationship": "related",
+            "comment": "Business-valuable data resource extending Gist Category and DBC Key Resource"
+          },
+          {
+            "relatedConcept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#ValueProposition",
+            "label": "Value Proposition",
+            "relationship": "related",
+            "comment": "Data-driven value proposition extending Gist Category"
+          }
+        ],
+        "query": "\n                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n                PREFIX bridge: <https://agentic-data-scraper.com/ontology/gist-dbc-bridge#>\n\n                SELECT ?relatedConcept ?label ?relationship ?comment WHERE {\n                    {\n                        bridge:IntelligenceCapability skos:related ?relatedConcept .\n                        BIND(\"related\" AS ?relationship)\n                    }\n                    UNION\n                    {\n                        bridge:IntelligenceCapability skos:broader ?relatedConcept .\n                        BIND(\"broader\" AS ?relationship)\n                    }\n                    UNION\n                    {\n                        bridge:IntelligenceCapability skos:narrower ?relatedConcept .\n                        BIND(\"narrower\" AS ?relationship)\n                    }\n\n                    ?relatedConcept rdfs:label ?label .\n                    OPTIONAL { ?relatedConcept rdfs:comment ?comment }\n                }\n                ORDER BY ?relationship ?label\n                "
+      },
+      {
+        "name": "Find Implementation Examples",
+        "description": "Show implementation examples for IntelligenceCapability",
+        "use_case": "Get concrete implementation guidance",
+        "lambda_application": "Provide practical examples for developers",
+        "success": true,
+        "message": "Query returned 19 results",
+        "result_count": 19,
+        "expected_results": 8,
+        "meets_expectations": true,
+        "results": [
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#BudgetConstraint",
+            "label": "Budget Constraint",
+            "example": "Maximum budget allocation of \u20ac50,000 for AWS infrastructure and Lambda function development with monthly operational costs not exceeding \u20ac2,500"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/sow#CommoditiesGeopoliticalRule",
+            "label": "Commodities to Geopolitical Correlation Analysis Rule",
+            "example": "INPUT: Business requirement states \"Analyze commodity price trends for procurement planning\"\nINFERRED OUTPUT: CrossDomainOpportunity with reasoning \"Commodities analysis uncovers geopolitical correlation analysis opportunities\" (confidence: 0.87)\nBUSINESS VALUE: Lambda function will correlate commodity price movements with geopolitical events, identify geopolitical risk factors affecting commodity availability, analyze the impact of trade policies on procurement costs, and provide early warning signals based on political developments - strategic intelligence that transforms basic commodity tracking into comprehensive geopolitical risk-aware procurement planning."
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/sow#ComplianceRule",
+            "label": "Compliance to Regulatory Network Analysis Rule",
+            "example": "INPUT: Business requirement states \"Ensure compliance with industry regulations\"\nINFERRED OUTPUT: NetworkAnalysisOpportunity with reasoning \"Compliance requirements infer regulatory network analysis needs\" (confidence: 0.88)\nBUSINESS VALUE: Lambda function can generate regulatory dependency graphs, identify compliance gaps through network analysis, trace regulatory cascades, and provide impact analysis when regulations change - capabilities that go beyond simple compliance checklists."
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/sow#CostTrackingRule",
+            "label": "Cost Tracking to Temporal Trend Analysis Rule",
+            "example": "INPUT: Business requirement states \"Monitor and report on operational costs\"\nINFERRED OUTPUT: TemporalAnalysisOpportunity with reasoning \"Cost tracking implies temporal trend analysis and spatial cost variations\" (confidence: 0.90)\nBUSINESS VALUE: Lambda function will generate time-series analyses showing cost trends over months/quarters/years, seasonal patterns, anomaly detection, and forecasting capabilities that provide deeper insights than simple cost reporting."
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#CrossDomainOpportunity",
+            "label": "Cross-Domain Opportunity",
+            "example": "Integrated supply chain and financial analytics combining Turkish supplier performance data with commodity price forecasting and currency exchange risk assessment"
+          }
+        ],
+        "query": "\n                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n                PREFIX bridge: <https://agentic-data-scraper.com/ontology/gist-dbc-bridge#>\n\n                SELECT ?concept ?label ?example WHERE {\n                    ?concept rdfs:label ?label ;\n                            skos:example ?example .\n\n                    # Filter for concepts with implementation-relevant examples\n                    FILTER(CONTAINS(LCASE(?example), \"analytics\") ||\n                           CONTAINS(LCASE(?example), \"prediction\") ||\n                           CONTAINS(LCASE(?example), \"optimization\") ||\n                           CONTAINS(LCASE(?example), \"lambda\"))\n                }\n                ORDER BY ?label\n                "
+      },
+      {
+        "name": "Examples with Domain Context",
+        "description": "Find examples for olive oil supply chain use case",
+        "use_case": "Domain-specific examples",
+        "lambda_application": "Show relevant examples for specific industries",
+        "success": true,
+        "message": "Query returned 36 results",
+        "result_count": 36,
+        "expected_results": 10,
+        "meets_expectations": true,
+        "results": [
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#AnalyticalOpportunity",
+            "label": "Analytical Opportunity",
+            "example": "Machine learning opportunity to predict olive oil harvest yields based on weather patterns, soil conditions, and historical supplier performance data"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#BusinessChallenge",
+            "label": "Business Challenge",
+            "example": "Lack of real-time visibility into supplier performance across Turkish olive oil supply chain during peak harvest season, resulting in 25% cost overruns and quality inconsistencies"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/sow#BusinessRequirement",
+            "label": "Business Requirement",
+            "example": "\"Monitor supplier performance for all olive oil vendors in Turkey and Greece with weekly quality assessments and cost tracking\" - directly stated requirement from procurement team"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/sow#CommodityEntity",
+            "label": "Commodity Entity",
+            "example": "\"Extra Virgin Olive Oil Grade A\" commodity tracked through London International Financial Futures Exchange (LIFFE) with benchmarks tied to Mediterranean harvest yields and quality certifications"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/sow#CrossDomainOpportunity",
+            "label": "Cross Domain Opportunity",
+            "example": "Integrated analysis combining Turkish supplier logistics costs with olive oil commodity price fluctuations and EUR/TRY exchange rate risks for comprehensive procurement planning"
+          }
+        ],
+        "query": "\n                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n\n                SELECT ?concept ?label ?example WHERE {\n                    ?concept rdfs:label ?label ;\n                            skos:example ?example .\n\n                    # Filter for olive oil supply chain examples\n                    FILTER(CONTAINS(LCASE(?example), \"olive\") ||\n                           CONTAINS(LCASE(?example), \"supplier\") ||\n                           CONTAINS(LCASE(?example), \"turkish\") ||\n                           CONTAINS(LCASE(?example), \"mediterranean\"))\n                }\n                ORDER BY ?label\n                "
+      },
+      {
+        "name": "Get Detailed Implementation Guidance",
+        "description": "Find detailed scope notes for CrossDomainOpportunity",
+        "use_case": "Get detailed implementation guidance",
+        "lambda_application": "Provide comprehensive implementation instructions",
+        "success": true,
+        "message": "Query returned 17 results",
+        "result_count": 17,
+        "expected_results": 5,
+        "meets_expectations": true,
+        "results": [
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#BusinessChallenge",
+            "label": "Business Challenge",
+            "scopeNote": "Represents the root business problem that drives data solution requirements, requiring both diagnostic analysis (what's wrong) and prescriptive solution design (how to fix it). Business Challenges are complex, multi-faceted problems that often span organizational boundaries and require interdisciplinary solutions. Lambda implementations must support: (1) Problem decomposition algorithms that break complex challenges into addressable sub-problems with dependency analysis and solution prioritization, (2) Root cause analysis capabilities using correlation analysis, statistical hypothesis testing, and domain expert knowledge integration, (3) Solution space exploration with constraint satisfaction programming to identify viable solution approaches within budget, timeline, and technical limitations, (4) Impact quantification models that measure both direct effects (primary metrics) and indirect effects (spillover benefits) of proposed solutions, (5) Stakeholder impact analysis identifying all parties affected by the challenge and proposed solutions. Consider implementing problem-solution fit validation frameworks with hypothesis-driven development and iterative solution refinement based on measurable business outcomes."
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/sow#BusinessRequirement",
+            "label": "Business Requirement",
+            "scopeNote": "Represents explicitly stated requirements from business stakeholders that form the foundation for automated analytical opportunity inference. These requirements must be parsed, analyzed, and semantically enriched to trigger appropriate SWRL inference rules. Lambda implementations must support: (1) Natural language processing pipelines with named entity recognition, relationship extraction, and intent classification to structure unstructured requirement text, (2) Requirement validation frameworks ensuring completeness, consistency, and feasibility with automated gap analysis and stakeholder feedback loops, (3) Requirement traceability systems linking generated capabilities back to source requirements for impact analysis and change management, (4) Semantic annotation engines that tag requirements with domain ontology concepts to enable inference rule activation, (5) Requirement versioning and evolution tracking supporting iterative refinement and change impact analysis. Architecture should implement requirements-driven code generation where each business requirement maps to specific data pipeline components, quality checks, and monitoring capabilities with full bidirectional traceability."
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/sow#CommodityEntity",
+            "label": "Commodity Entity",
+            "scopeNote": "Represents tradeable goods and raw materials that are subject to global market forces, price volatility, and complex supply-demand dynamics influenced by geopolitical events, weather patterns, and economic cycles. Commodity entities require sophisticated analysis integrating market data, supply chain intelligence, and external factors. Lambda implementations must support: (1) Real-time commodity market data integration with major exchanges (CBOT, ICE, LME) including futures pricing, volatility calculations, and basis differentials for location-specific pricing, (2) Commodity price forecasting models incorporating supply-demand fundamentals, technical analysis, and external factor correlation (weather, geopolitical risk, currency fluctuations), (3) Supply chain risk assessment for commodity sourcing including producer concentration analysis, geographic diversification evaluation, and alternative sourcing scenario modeling, (4) Quality and grading systems integration with automated quality assessment, certification tracking, and premium/discount calculations based on quality specifications, (5) Hedging strategy optimization with financial instrument evaluation (futures, options, swaps) and risk management portfolio analysis. Consider implementing commodity digital twins that model the entire value chain from production through consumption with scenario planning capabilities for strategic procurement and risk management decisions."
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#Constraint",
+            "label": "Constraint",
+            "scopeNote": "Represents limitations, restrictions, or requirements that constrain solution design and implementation approaches. Constraints are not obstacles to avoid but design parameters that shape optimal solutions within feasible boundaries. Lambda implementations must support: (1) Constraint satisfaction programming with multi-objective optimization balancing competing constraints (cost vs. speed vs. quality), (2) Dynamic constraint validation during solution design with real-time feasibility checking and constraint violation alerts, (3) Constraint relaxation algorithms that identify minimum constraint modifications to enable otherwise infeasible solutions, (4) Constraint impact analysis showing how individual constraints affect solution space and trade-offs, (5) Constraint monitoring during implementation with automated alerts when operational metrics approach constraint boundaries. Architecture should implement constraint-aware code generation where constraints are compiled into validation rules, resource allocation policies, and runtime governance mechanisms. Consider constraint hierarchies where critical constraints are non-negotiable while flexible constraints can be optimized through negotiation and trade-off analysis."
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/sow#CrossDomainOpportunity",
+            "label": "Cross Domain Opportunity",
+            "scopeNote": "Represents sophisticated analytical opportunities that integrate insights across traditionally separate business domains, requiring synthesis of heterogeneous data sources, domain expertise, and analytical methodologies. These opportunities typically deliver exponentially higher business value through systemic insights that single-domain analysis cannot reveal. Lambda implementations must architect for: (1) Domain-agnostic data integration with semantic harmonization across different ontologies, data models, and business vocabularies using knowledge graphs and entity resolution, (2) Multi-modal analytics pipelines combining structured data (databases), unstructured data (documents, social media), and external signals (market data, weather, geopolitical events), (3) Federated machine learning enabling model training across domains without data sharing, preserving privacy and security boundaries while capturing cross-domain patterns, (4) Causal inference and correlation analysis with domain expertise integration to distinguish spurious correlations from actionable insights, (5) Explainable AI frameworks that can articulate cross-domain dependencies in business-friendly terms for executive decision-making. Consider implementing digital twin architectures for complex system modeling and scenario planning across multiple business domains."
+          }
+        ],
+        "query": "\n                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n                PREFIX sow: <https://agentic-data-scraper.com/ontology/complete-sow#>\n\n                SELECT ?concept ?label ?scopeNote WHERE {\n                    ?concept rdfs:label ?label ;\n                            skos:scopeNote ?scopeNote .\n\n                    # Filter for concepts with Lambda implementation guidance\n                    FILTER(CONTAINS(?scopeNote, \"Lambda\") &&\n                           STRLEN(?scopeNote) > 500)\n                }\n                ORDER BY ?label\n                "
+      },
+      {
+        "name": "Find Architecture Guidance",
+        "description": "Get architectural guidance from scope notes",
+        "use_case": "Architecture and pattern guidance",
+        "lambda_application": "Guide architectural decisions",
+        "success": true,
+        "message": "Query returned 17 results",
+        "result_count": 17,
+        "expected_results": 8,
+        "meets_expectations": true,
+        "results": [
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#BusinessChallenge",
+            "label": "Business Challenge",
+            "scopeNote": "Represents the root business problem that drives data solution requirements, requiring both diagnostic analysis (what's wrong) and prescriptive solution design (how to fix it). Business Challenges are complex, multi-faceted problems that often span organizational boundaries and require interdisciplinary solutions. Lambda implementations must support: (1) Problem decomposition algorithms that break complex challenges into addressable sub-problems with dependency analysis and solution prioritization, (2) Root cause analysis capabilities using correlation analysis, statistical hypothesis testing, and domain expert knowledge integration, (3) Solution space exploration with constraint satisfaction programming to identify viable solution approaches within budget, timeline, and technical limitations, (4) Impact quantification models that measure both direct effects (primary metrics) and indirect effects (spillover benefits) of proposed solutions, (5) Stakeholder impact analysis identifying all parties affected by the challenge and proposed solutions. Consider implementing problem-solution fit validation frameworks with hypothesis-driven development and iterative solution refinement based on measurable business outcomes."
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/sow#BusinessRequirement",
+            "label": "Business Requirement",
+            "scopeNote": "Represents explicitly stated requirements from business stakeholders that form the foundation for automated analytical opportunity inference. These requirements must be parsed, analyzed, and semantically enriched to trigger appropriate SWRL inference rules. Lambda implementations must support: (1) Natural language processing pipelines with named entity recognition, relationship extraction, and intent classification to structure unstructured requirement text, (2) Requirement validation frameworks ensuring completeness, consistency, and feasibility with automated gap analysis and stakeholder feedback loops, (3) Requirement traceability systems linking generated capabilities back to source requirements for impact analysis and change management, (4) Semantic annotation engines that tag requirements with domain ontology concepts to enable inference rule activation, (5) Requirement versioning and evolution tracking supporting iterative refinement and change impact analysis. Architecture should implement requirements-driven code generation where each business requirement maps to specific data pipeline components, quality checks, and monitoring capabilities with full bidirectional traceability."
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/sow#CommodityEntity",
+            "label": "Commodity Entity",
+            "scopeNote": "Represents tradeable goods and raw materials that are subject to global market forces, price volatility, and complex supply-demand dynamics influenced by geopolitical events, weather patterns, and economic cycles. Commodity entities require sophisticated analysis integrating market data, supply chain intelligence, and external factors. Lambda implementations must support: (1) Real-time commodity market data integration with major exchanges (CBOT, ICE, LME) including futures pricing, volatility calculations, and basis differentials for location-specific pricing, (2) Commodity price forecasting models incorporating supply-demand fundamentals, technical analysis, and external factor correlation (weather, geopolitical risk, currency fluctuations), (3) Supply chain risk assessment for commodity sourcing including producer concentration analysis, geographic diversification evaluation, and alternative sourcing scenario modeling, (4) Quality and grading systems integration with automated quality assessment, certification tracking, and premium/discount calculations based on quality specifications, (5) Hedging strategy optimization with financial instrument evaluation (futures, options, swaps) and risk management portfolio analysis. Consider implementing commodity digital twins that model the entire value chain from production through consumption with scenario planning capabilities for strategic procurement and risk management decisions."
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/complete-sow#Constraint",
+            "label": "Constraint",
+            "scopeNote": "Represents limitations, restrictions, or requirements that constrain solution design and implementation approaches. Constraints are not obstacles to avoid but design parameters that shape optimal solutions within feasible boundaries. Lambda implementations must support: (1) Constraint satisfaction programming with multi-objective optimization balancing competing constraints (cost vs. speed vs. quality), (2) Dynamic constraint validation during solution design with real-time feasibility checking and constraint violation alerts, (3) Constraint relaxation algorithms that identify minimum constraint modifications to enable otherwise infeasible solutions, (4) Constraint impact analysis showing how individual constraints affect solution space and trade-offs, (5) Constraint monitoring during implementation with automated alerts when operational metrics approach constraint boundaries. Architecture should implement constraint-aware code generation where constraints are compiled into validation rules, resource allocation policies, and runtime governance mechanisms. Consider constraint hierarchies where critical constraints are non-negotiable while flexible constraints can be optimized through negotiation and trade-off analysis."
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/sow#CrossDomainOpportunity",
+            "label": "Cross Domain Opportunity",
+            "scopeNote": "Represents sophisticated analytical opportunities that integrate insights across traditionally separate business domains, requiring synthesis of heterogeneous data sources, domain expertise, and analytical methodologies. These opportunities typically deliver exponentially higher business value through systemic insights that single-domain analysis cannot reveal. Lambda implementations must architect for: (1) Domain-agnostic data integration with semantic harmonization across different ontologies, data models, and business vocabularies using knowledge graphs and entity resolution, (2) Multi-modal analytics pipelines combining structured data (databases), unstructured data (documents, social media), and external signals (market data, weather, geopolitical events), (3) Federated machine learning enabling model training across domains without data sharing, preserving privacy and security boundaries while capturing cross-domain patterns, (4) Causal inference and correlation analysis with domain expertise integration to distinguish spurious correlations from actionable insights, (5) Explainable AI frameworks that can articulate cross-domain dependencies in business-friendly terms for executive decision-making. Consider implementing digital twin architectures for complex system modeling and scenario planning across multiple business domains."
+          }
+        ],
+        "query": "\n                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n\n                SELECT ?concept ?label ?scopeNote WHERE {\n                    ?concept rdfs:label ?label ;\n                            skos:scopeNote ?scopeNote .\n\n                    # Filter for architectural guidance\n                    FILTER(CONTAINS(LCASE(?scopeNote), \"architecture\") ||\n                           CONTAINS(LCASE(?scopeNote), \"implementation\") ||\n                           CONTAINS(LCASE(?scopeNote), \"pattern\") ||\n                           CONTAINS(LCASE(?scopeNote), \"framework\"))\n                }\n                ORDER BY ?label\n                "
+      },
+      {
+        "name": "Build Complete Executive Taxonomy Tree",
+        "description": "Build complete hierarchy for Executive Strategy Taxonomy",
+        "use_case": "Build executive taxonomy navigation",
+        "lambda_application": "Create executive strategy concept browser",
+        "success": true,
+        "message": "Query returned 3 results",
+        "result_count": 3,
+        "expected_results": 6,
+        "meets_expectations": false,
+        "results": [
+          {
+            "parent": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#ExecutiveTarget",
+            "parentLabel": "Executive Target",
+            "child": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#StrategicAlignmentScore",
+            "childLabel": "Strategic Alignment Score"
+          },
+          {
+            "parent": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#ExecutiveTargetOwner",
+            "parentLabel": "Executive Target Owner"
+          },
+          {
+            "parent": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#StrategicAlignmentScore",
+            "parentLabel": "Strategic Alignment Score"
+          }
+        ],
+        "query": "\n                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n                PREFIX bridge: <https://agentic-data-scraper.com/ontology/gist-dbc-bridge#>\n\n                SELECT ?parent ?parentLabel ?child ?childLabel ?grandchild ?grandchildLabel WHERE {\n                    # Find concepts in Executive Taxonomy\n                    ?parent skos:inScheme bridge:ExecutiveTaxonomy ;\n                           rdfs:label ?parentLabel .\n\n                    # Find direct children\n                    OPTIONAL {\n                        ?parent skos:narrower ?child .\n                        ?child rdfs:label ?childLabel .\n\n                        # Find grandchildren\n                        OPTIONAL {\n                            ?child skos:narrower ?grandchild .\n                            ?grandchild rdfs:label ?grandchildLabel .\n                        }\n                    }\n                }\n                ORDER BY ?parentLabel ?childLabel ?grandchildLabel\n                "
+      },
+      {
+        "name": "Taxonomy Quality Assessment",
+        "description": "Assess overall taxonomy quality and completeness",
+        "use_case": "Assess taxonomy completeness",
+        "lambda_application": "Generate taxonomy quality reports",
+        "success": true,
+        "message": "Query returned 1 results",
+        "result_count": 1,
+        "expected_results": 1,
+        "meets_expectations": true,
+        "results": [
+          {
+            "schemeCount": "5",
+            "conceptCount": "25",
+            "hierarchicalRelCount": "5",
+            "relatedRelCount": "20",
+            "conceptsWithExamples": "45",
+            "conceptsWithScopeNotes": "17"
+          }
+        ],
+        "query": "\n                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n\n                SELECT\n                    (COUNT(DISTINCT ?scheme) AS ?schemeCount)\n                    (COUNT(DISTINCT ?concept) AS ?conceptCount)\n                    (COUNT(DISTINCT ?broader) AS ?hierarchicalRelCount)\n                    (COUNT(DISTINCT ?related) AS ?relatedRelCount)\n                    (COUNT(DISTINCT ?withExample) AS ?conceptsWithExamples)\n                    (COUNT(DISTINCT ?withScope) AS ?conceptsWithScopeNotes)\n                WHERE {\n                    ?scheme a skos:ConceptScheme .\n\n                    OPTIONAL {\n                        ?concept skos:inScheme ?scheme .\n                    }\n\n                    OPTIONAL {\n                        ?concept skos:broader ?broader .\n                    }\n\n                    OPTIONAL {\n                        ?concept skos:related ?related .\n                    }\n\n                    OPTIONAL {\n                        ?withExample skos:example ?example .\n                    }\n\n                    OPTIONAL {\n                        ?withScope skos:scopeNote ?scopeNote .\n                    }\n                }\n                "
+      },
+      {
+        "name": "Semantic Search for Data Assets",
+        "description": "Find concepts related to data assets and their properties",
+        "use_case": "Find data-related concepts",
+        "lambda_application": "Semantic search for data concepts",
+        "success": true,
+        "message": "Query returned 20 results",
+        "result_count": 20,
+        "expected_results": 6,
+        "meets_expectations": true,
+        "results": [
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#CustomerSegment",
+            "label": "Customer Segment",
+            "example": "Mid-size Mediterranean food manufacturers (50-500 employees) requiring supply chain transparency for premium olive oil procurement and regulatory compliance"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#CustomerSegment",
+            "label": "Customer Segment",
+            "example": "Mid-size Mediterranean food manufacturers (50-500 employees) requiring supply chain transparency for premium olive oil procurement and regulatory compliance"
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataAsset",
+            "label": "Data Asset",
+            "example": "Turkish olive oil supplier database with GPS coordinates, harvest yield history, quality certifications, and real-time delivery performance metrics stored in Parquet format",
+            "scopeNote": "Represents data resources that have been curated, governed, and productized for business consumption, distinct from raw data sources. Data Assets must maintain business context, semantic meaning, and operational metadata throughout their lifecycle. Lambda implementations require: (1) Data asset registry with semantic annotations, business glossary integration, and impact analysis capabilities, (2) Multi-tiered storage architecture optimizing for access patterns (hot/warm/cold with automated lifecycle policies), (3) Data quality monitoring with configurable rules, anomaly detection, and business impact assessment, (4) Comprehensive data lineage tracking from source systems through transformations to consumption endpoints, (5) Access control integration with corporate identity systems and fine-grained permission management. Consider implementing data mesh principles with domain-owned data products, standardized data contracts for interoperability, and federated governance balancing autonomy with enterprise consistency. Storage formats should optimize for both analytical queries (columnar formats like Parquet/ORC) and operational access patterns (key-value, document, graph as appropriate)."
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessCanvas",
+            "label": "Data Business Canvas",
+            "example": "Supply chain visibility platform for Turkish olive oil producers with predictive analytics for seasonal demand forecasting and real-time supplier performance dashboards",
+            "scopeNote": "This concept extends traditional Business Model Canvas methodology to emphasize data assets and intelligence capabilities as core business components. Unlike generic business models that treat data as supporting infrastructure, this model positions data assets as primary value drivers and revenue generators. Lambda implementations must consider: (1) Data lineage tracking from ingestion to business value creation, (2) Multi-tenant data governance with role-based access controls, (3) Real-time data quality monitoring with automated alerts, (4) Cross-functional data product lifecycle management, (5) Semantic data discovery through ontology-based cataloging. Implementation requires event-driven architecture supporting both batch and streaming data processing, with data contracts enforcing schema evolution and backward compatibility. Consider serverless data mesh patterns for scalable domain-driven data architecture."
+          },
+          {
+            "concept": "https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessTaxonomy",
+            "label": "Data Business Canvas Taxonomy"
+          }
+        ],
+        "query": "\n                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n                PREFIX bridge: <https://agentic-data-scraper.com/ontology/gist-dbc-bridge#>\n\n                SELECT ?concept ?label ?example ?scopeNote WHERE {\n                    {\n                        ?concept rdfs:label ?label .\n                        FILTER(CONTAINS(LCASE(?label), \"data\"))\n                    }\n                    UNION\n                    {\n                        ?concept skos:related bridge:DataAsset ;\n                                rdfs:label ?label .\n                    }\n                    UNION\n                    {\n                        bridge:DataAsset skos:related ?concept .\n                        ?concept rdfs:label ?label .\n                    }\n\n                    OPTIONAL { ?concept skos:example ?example }\n                    OPTIONAL { ?concept skos:scopeNote ?scopeNote }\n                }\n                ORDER BY ?label\n                "
+      }
+    ],
+    "overall_success": true,
+    "success_rate": 100.0,
+    "expectation_rate": 71.42857142857143
+  },
+  "lambda_assessment": null,
+  "overall_success": false,
+  "summary": {
+    "overall_status": "\u274c NOT READY FOR LAMBDA DEPLOYMENT",
+    "components": [
+      {
+        "name": "SPARQL Queries",
+        "status": "\u2705 PASS",
+        "score": 100.0
+      }
+    ]
+  }
+}

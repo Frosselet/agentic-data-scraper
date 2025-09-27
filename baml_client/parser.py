@@ -22,6 +22,12 @@ class LlmResponseParser:
     def __init__(self, options: DoNotUseDirectlyCallManager):
         self.__options = options
 
+    def AnalyzeSourceFitness(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> typing.Dict[str, str]:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="AnalyzeSourceFitness", llm_response=llm_response, mode="request")
+        return typing.cast(typing.Dict[str, str], result)
+
     def BusinessContextAgent(
         self, llm_response: str, baml_options: BamlCallOptions = {},
     ) -> types.BusinessContext:
@@ -33,6 +39,12 @@ class LlmResponseParser:
     ) -> typing.List["types.CongestionAlert"]:
         result = self.__options.merge_options(baml_options).parse_response(function_name="CongestionManagementAgent", llm_response=llm_response, mode="request")
         return typing.cast(typing.List["types.CongestionAlert"], result)
+
+    def CreateTargetTemplate(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> typing.Dict[str, str]:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="CreateTargetTemplate", llm_response=llm_response, mode="request")
+        return typing.cast(typing.Dict[str, str], result)
 
     def DataFetcherAgent(
         self, llm_response: str, baml_options: BamlCallOptions = {},
@@ -58,6 +70,18 @@ class LlmResponseParser:
         result = self.__options.merge_options(baml_options).parse_response(function_name="DecisionSupportAgent", llm_response=llm_response, mode="request")
         return typing.cast(str, result)
 
+    def DiscoverFromScratch(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> types.DiscoveryResult:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="DiscoverFromScratch", llm_response=llm_response, mode="request")
+        return typing.cast(types.DiscoveryResult, result)
+
+    def DiscoverKnownSources(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> typing.List["types.DataSourceMetadata"]:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="DiscoverKnownSources", llm_response=llm_response, mode="request")
+        return typing.cast(typing.List["types.DataSourceMetadata"], result)
+
     def EconomicOptimizationAgent(
         self, llm_response: str, baml_options: BamlCallOptions = {},
     ) -> typing.List["types.MarketOpportunity"]:
@@ -69,6 +93,12 @@ class LlmResponseParser:
     ) -> types.FeasibilityAnalysis:
         result = self.__options.merge_options(baml_options).parse_response(function_name="FeasibilityAnalyzerAgent", llm_response=llm_response, mode="request")
         return typing.cast(types.FeasibilityAnalysis, result)
+
+    def GenerateAlignmentFeedback(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> typing.Dict[str, str]:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="GenerateAlignmentFeedback", llm_response=llm_response, mode="request")
+        return typing.cast(typing.Dict[str, str], result)
 
     def HydrologicalRiskAgent(
         self, llm_response: str, baml_options: BamlCallOptions = {},
@@ -88,6 +118,12 @@ class LlmResponseParser:
         result = self.__options.merge_options(baml_options).parse_response(function_name="NavigationIntelligenceAgent", llm_response=llm_response, mode="request")
         return typing.cast(types.NavigationRecommendation, result)
 
+    def ParseExecutiveTarget(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> types.TargetParsingResult:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="ParseExecutiveTarget", llm_response=llm_response, mode="request")
+        return typing.cast(types.TargetParsingResult, result)
+
     def PersonaResponseAgent(
         self, llm_response: str, baml_options: BamlCallOptions = {},
     ) -> str:
@@ -100,6 +136,12 @@ class LlmResponseParser:
         result = self.__options.merge_options(baml_options).parse_response(function_name="PlatformCapabilityAgent", llm_response=llm_response, mode="request")
         return typing.cast(typing.Dict[str, float], result)
 
+    def PrepareWorkflowData(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> types.WorkflowPrepopulation:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="PrepareWorkflowData", llm_response=llm_response, mode="request")
+        return typing.cast(types.WorkflowPrepopulation, result)
+
     def SOWGeneratorAgent(
         self, llm_response: str, baml_options: BamlCallOptions = {},
     ) -> types.SOWContract:
@@ -111,6 +153,12 @@ class LlmResponseParser:
     ) -> types.DataContract:
         result = self.__options.merge_options(baml_options).parse_response(function_name="SOWInterpreterAgent", llm_response=llm_response, mode="request")
         return typing.cast(types.DataContract, result)
+
+    def ScoreStrategicAlignment(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> types.AlignmentScore:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="ScoreStrategicAlignment", llm_response=llm_response, mode="request")
+        return typing.cast(types.AlignmentScore, result)
 
     def SecurityDecisionAgent(
         self, llm_response: str, baml_options: BamlCallOptions = {},
@@ -144,6 +192,12 @@ class LlmStreamParser:
     def __init__(self, options: DoNotUseDirectlyCallManager):
         self.__options = options
 
+    def AnalyzeSourceFitness(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> typing.Dict[str, str]:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="AnalyzeSourceFitness", llm_response=llm_response, mode="stream")
+        return typing.cast(typing.Dict[str, str], result)
+
     def BusinessContextAgent(
         self, llm_response: str, baml_options: BamlCallOptions = {},
     ) -> stream_types.BusinessContext:
@@ -155,6 +209,12 @@ class LlmStreamParser:
     ) -> typing.List["stream_types.CongestionAlert"]:
         result = self.__options.merge_options(baml_options).parse_response(function_name="CongestionManagementAgent", llm_response=llm_response, mode="stream")
         return typing.cast(typing.List["stream_types.CongestionAlert"], result)
+
+    def CreateTargetTemplate(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> typing.Dict[str, str]:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="CreateTargetTemplate", llm_response=llm_response, mode="stream")
+        return typing.cast(typing.Dict[str, str], result)
 
     def DataFetcherAgent(
         self, llm_response: str, baml_options: BamlCallOptions = {},
@@ -180,6 +240,18 @@ class LlmStreamParser:
         result = self.__options.merge_options(baml_options).parse_response(function_name="DecisionSupportAgent", llm_response=llm_response, mode="stream")
         return typing.cast(str, result)
 
+    def DiscoverFromScratch(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> stream_types.DiscoveryResult:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="DiscoverFromScratch", llm_response=llm_response, mode="stream")
+        return typing.cast(stream_types.DiscoveryResult, result)
+
+    def DiscoverKnownSources(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> typing.List["stream_types.DataSourceMetadata"]:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="DiscoverKnownSources", llm_response=llm_response, mode="stream")
+        return typing.cast(typing.List["stream_types.DataSourceMetadata"], result)
+
     def EconomicOptimizationAgent(
         self, llm_response: str, baml_options: BamlCallOptions = {},
     ) -> typing.List["stream_types.MarketOpportunity"]:
@@ -191,6 +263,12 @@ class LlmStreamParser:
     ) -> stream_types.FeasibilityAnalysis:
         result = self.__options.merge_options(baml_options).parse_response(function_name="FeasibilityAnalyzerAgent", llm_response=llm_response, mode="stream")
         return typing.cast(stream_types.FeasibilityAnalysis, result)
+
+    def GenerateAlignmentFeedback(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> typing.Dict[str, str]:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="GenerateAlignmentFeedback", llm_response=llm_response, mode="stream")
+        return typing.cast(typing.Dict[str, str], result)
 
     def HydrologicalRiskAgent(
         self, llm_response: str, baml_options: BamlCallOptions = {},
@@ -210,6 +288,12 @@ class LlmStreamParser:
         result = self.__options.merge_options(baml_options).parse_response(function_name="NavigationIntelligenceAgent", llm_response=llm_response, mode="stream")
         return typing.cast(stream_types.NavigationRecommendation, result)
 
+    def ParseExecutiveTarget(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> stream_types.TargetParsingResult:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="ParseExecutiveTarget", llm_response=llm_response, mode="stream")
+        return typing.cast(stream_types.TargetParsingResult, result)
+
     def PersonaResponseAgent(
         self, llm_response: str, baml_options: BamlCallOptions = {},
     ) -> str:
@@ -222,6 +306,12 @@ class LlmStreamParser:
         result = self.__options.merge_options(baml_options).parse_response(function_name="PlatformCapabilityAgent", llm_response=llm_response, mode="stream")
         return typing.cast(typing.Dict[str, float], result)
 
+    def PrepareWorkflowData(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> stream_types.WorkflowPrepopulation:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="PrepareWorkflowData", llm_response=llm_response, mode="stream")
+        return typing.cast(stream_types.WorkflowPrepopulation, result)
+
     def SOWGeneratorAgent(
         self, llm_response: str, baml_options: BamlCallOptions = {},
     ) -> stream_types.SOWContract:
@@ -233,6 +323,12 @@ class LlmStreamParser:
     ) -> stream_types.DataContract:
         result = self.__options.merge_options(baml_options).parse_response(function_name="SOWInterpreterAgent", llm_response=llm_response, mode="stream")
         return typing.cast(stream_types.DataContract, result)
+
+    def ScoreStrategicAlignment(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> stream_types.AlignmentScore:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="ScoreStrategicAlignment", llm_response=llm_response, mode="stream")
+        return typing.cast(stream_types.AlignmentScore, result)
 
     def SecurityDecisionAgent(
         self, llm_response: str, baml_options: BamlCallOptions = {},

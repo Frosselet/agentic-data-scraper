@@ -9,6 +9,7 @@ from rich.console import Console
 from rich.table import Table
 
 from agentic_data_scraper import __version__
+from .canvas_cli import app as canvas_app
 
 # Initialize Typer app
 app = typer.Typer(
@@ -16,6 +17,9 @@ app = typer.Typer(
     help="A multi-agentic Python solution for building standardized data pipelines",
     add_completion=False,
 )
+
+# Add canvas sub-command
+app.add_typer(canvas_app, name="canvas")
 
 # Initialize Rich console
 console = Console()

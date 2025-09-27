@@ -2,7 +2,7 @@
 SOW/Contract Interpreter Agent - Parses Statement of Work documents and extracts structured requirements.
 """
 
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from pydantic import BaseModel, Field
 from .base import BaseAgent
 import asyncio

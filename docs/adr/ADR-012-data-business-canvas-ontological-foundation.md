@@ -100,6 +100,79 @@ dbc:createsBusinessValue a owl:ObjectProperty ;
     rdfs:range bmc:ValueProposition .
 ```
 
+## The 9+3+E Data Business Canvas Framework
+
+### Executive Target Integration (E Extension)
+
+Building on the core 9+3 framework, the +E extension provides enterprise-specific executive target alignment, ensuring every data initiative directly supports strategic objectives with measurable alignment and continuous feedback.
+
+```owl
+# Executive Target Integration Ontology
+dbc:ExecutiveTarget a owl:Class ;
+    rdfs:subClassOf sow:BusinessObjective ;
+    rdfs:label "Executive Target" ;
+    rdfs:comment "Enterprise-specific strategic objective with measurable outcomes" .
+
+dbc:TargetCategory a owl:Class ;
+    rdfs:label "Target Category" ;
+    rdfs:comment "Classification of executive targets (Revenue, Market, Operational, etc.)" .
+
+dbc:AlignmentScore a owl:Class ;
+    rdfs:subClassOf sow:QualityMetric ;
+    rdfs:label "Strategic Alignment Score" ;
+    rdfs:comment "Quantified measure of data initiative alignment with executive targets" .
+
+# Properties for Dynamic Target Management
+dbc:hasExecutiveTarget a owl:ObjectProperty ;
+    rdfs:domain dbc:DataBusinessModel ;
+    rdfs:range dbc:ExecutiveTarget ;
+    rdfs:label "has executive target" .
+
+dbc:alignsWithTarget a owl:ObjectProperty ;
+    rdfs:domain dbc:DataAsset ;
+    rdfs:range dbc:ExecutiveTarget ;
+    rdfs:label "aligns with target" .
+
+dbc:hasAlignmentScore a owl:ObjectProperty ;
+    rdfs:domain dbc:DataBusinessModel ;
+    rdfs:range dbc:AlignmentScore ;
+    rdfs:label "has alignment score" .
+
+# Dynamic Target Properties
+dbc:targetDescription a owl:DatatypeProperty ;
+    rdfs:domain dbc:ExecutiveTarget ;
+    rdfs:range xsd:string ;
+    rdfs:label "target description" ;
+    rdfs:comment "Natural language description of strategic objective" .
+
+dbc:targetDeadline a owl:DatatypeProperty ;
+    rdfs:domain dbc:ExecutiveTarget ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "target deadline" .
+
+dbc:targetOwner a owl:DatatypeProperty ;
+    rdfs:domain dbc:ExecutiveTarget ;
+    rdfs:range xsd:string ;
+    rdfs:label "target owner" ;
+    rdfs:comment "Executive responsible for target achievement" .
+
+dbc:alignmentValue a owl:DatatypeProperty ;
+    rdfs:domain dbc:AlignmentScore ;
+    rdfs:range xsd:float ;
+    rdfs:label "alignment value" ;
+    rdfs:comment "Quantified alignment score (0.0-1.0)" .
+```
+
+### Enterprise-Adaptive Scoring Framework
+
+The +E extension implements contextual alignment scoring that adapts to enterprise-specific strategic language and evolving priorities:
+
+1. **Dynamic Target Parsing**: Extract key themes, metrics, timelines from natural language executive targets
+2. **Contextual Mapping**: Map data initiative components to target domains using semantic analysis
+3. **Impact Assessment**: Quantify potential contribution with confidence scoring
+4. **Risk Evaluation**: Assess alignment risks and dependencies
+5. **Timeline Analysis**: Validate feasibility against strategic deadlines
+
 ## The 9+3 Data Business Canvas Framework
 
 ### Canvas Structure (Extending, Not Replacing BMC)

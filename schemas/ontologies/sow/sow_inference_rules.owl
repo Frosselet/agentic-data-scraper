@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns="https://agentic-data-scraper.com/ontology/sow#"
+         xml:base="https://agentic-data-scraper.com/ontology/sow"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+         xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+  <owl:Ontology rdf:about="https://agentic-data-scraper.com/ontology/sow">
+    <owl:versionIRI rdf:resource="https://agentic-data-scraper.com/ontology/sow/v1.0"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+    <owl:imports rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <rdfs:label>SOW Inference Rules Ontology</rdfs:label>
+    <rdfs:comment>OWL ontology defining intelligent inference rules for Semantic Statement of Work processing, connected to Gist upper ontology via DBC bridge</rdfs:comment>
+    <dcterms:title>SOW Inference Rules Ontology</dcterms:title>
+    <dcterms:description>Intelligent inference rules for automated discovery of analytical opportunities from business requirements in Statement of Work documents</dcterms:description>
+    <dcterms:creator>Agentic Data Scraper Project</dcterms:creator>
+    <dcterms:created rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2025-09-24</dcterms:created>
+    <dcterms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2025-09-24</dcterms:modified>
+    <dcterms:license rdf:resource="https://agentic-data-scraper.com/license"/>
+  </owl:Ontology>
+
+  <!-- ====================================================================== -->
+  <!-- SKOS CONCEPT SCHEMES FOR TAXONOMIC BROWSING                           -->
+  <!-- ====================================================================== -->
+
+  <!-- AI Inference Taxonomy ConceptScheme -->
+  <skos:ConceptScheme rdf:about="#InferenceTaxonomy">
+    <rdfs:label>AI Inference Taxonomy</rdfs:label>
+    <rdfs:comment>Classification of AI-inferred opportunities and domain entities</rdfs:comment>
+    <dcterms:description>Hierarchical organization of business requirements, inference rules, and automatically discovered analytical opportunities across spatial, temporal, network, and cross-domain analysis patterns</dcterms:description>
+    <rdfs:seeAlso rdf:resource="#BusinessRequirement"/>
+    <rdfs:seeAlso rdf:resource="#InferredOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#SpatialAnalysisOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#TemporalAnalysisOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#NetworkAnalysisOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#CrossDomainOpportunity"/>
+  </skos:ConceptScheme>
+
+  <!-- Core Classes -->
+  <owl:Class rdf:about="#BusinessRequirement">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <skos:inScheme rdf:resource="#InferenceTaxonomy"/>
+    <rdfs:label>Business Requirement</rdfs:label>
+    <rdfs:comment>A requirement explicitly stated by business stakeholders in a Statement of Work document, representing the direct needs and constraints of the business that must be satisfied by the data pipeline solution</rdfs:comment>
+    <skos:scopeNote>Represents explicitly stated requirements from business stakeholders that form the foundation for automated analytical opportunity inference. These requirements must be parsed, analyzed, and semantically enriched to trigger appropriate SWRL inference rules. Lambda implementations must support: (1) Natural language processing pipelines with named entity recognition, relationship extraction, and intent classification to structure unstructured requirement text, (2) Requirement validation frameworks ensuring completeness, consistency, and feasibility with automated gap analysis and stakeholder feedback loops, (3) Requirement traceability systems linking generated capabilities back to source requirements for impact analysis and change management, (4) Semantic annotation engines that tag requirements with domain ontology concepts to enable inference rule activation, (5) Requirement versioning and evolution tracking supporting iterative refinement and change impact analysis. Architecture should implement requirements-driven code generation where each business requirement maps to specific data pipeline components, quality checks, and monitoring capabilities with full bidirectional traceability.</skos:scopeNote>
+    <skos:example>"Monitor supplier performance for all olive oil vendors in Turkey and Greece with weekly quality assessments and cost tracking" - directly stated requirement from procurement team</skos:example>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <rdfs:seeAlso rdf:resource="#InferredOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow#BusinessChallenge"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow#DesiredOutcome"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessCanvas"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Demand"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/requires"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="#InferredOpportunity">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <skos:inScheme rdf:resource="#InferenceTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:narrower rdf:resource="#SpatialAnalysisOpportunity"/>
+    <skos:narrower rdf:resource="#TemporalAnalysisOpportunity"/>
+    <skos:narrower rdf:resource="#NetworkAnalysisOpportunity"/>
+    <skos:narrower rdf:resource="#CrossDomainOpportunity"/>
+    <rdfs:label>Inferred Opportunity</rdfs:label>
+    <rdfs:comment>An analytical opportunity automatically inferred from business requirements using SWRL reasoning rules, representing unstated but valuable analysis possibilities that align with business goals</rdfs:comment>
+    <skos:scopeNote>Represents analytical capabilities that emerge from semantic reasoning over explicit business requirements, revealing valuable but unstated analysis opportunities that significantly enhance business value. These opportunities are discovered through SWRL rule execution and domain expertise encoded in inference patterns. Lambda implementations must support: (1) Inference confidence scoring and validation mechanisms with domain expert review workflows and business impact assessment, (2) Automated code generation for inferred analytical capabilities with appropriate data processing patterns, algorithms, and performance optimization, (3) Business value quantification models that estimate ROI and strategic impact of implementing inferred opportunities versus explicit requirements only, (4) Inference explanation systems providing transparent reasoning traces that business stakeholders can validate and approve, (5) Iterative inference refinement with machine learning to improve inference accuracy based on stakeholder feedback and business outcome measurement. Consider implementing active learning systems where successful inferences improve rule confidence scores and failed inferences trigger rule refinement or human expert consultation.</skos:scopeNote>
+    <skos:example>From requirement "track supplier costs" system infers opportunity for "temporal cost trend analysis with seasonal pattern detection" - unstated analytics that add business value</skos:example>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <rdfs:seeAlso rdf:resource="#BusinessRequirement"/>
+    <rdfs:seeAlso rdf:resource="#SpatialAnalysisOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#TemporalAnalysisOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#NetworkAnalysisOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#CrossDomainOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow#AnalyticalOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#IntelligenceCapability"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#ValueProposition"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Opportunity"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/type"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="#SpatialAnalysisOpportunity">
+    <rdfs:subClassOf rdf:resource="#InferredOpportunity"/>
+    <skos:inScheme rdf:resource="#InferenceTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:broader rdf:resource="#InferredOpportunity"/>
+    <skos:related rdf:resource="#SupplyChainEntity"/>
+    <rdfs:label>Spatial Analysis Opportunity</rdfs:label>
+    <rdfs:comment>An inferred analytical opportunity involving geographic or location-based analysis, such as regional risk assessment, geographic cost variations, or spatial distribution patterns</rdfs:comment>
+    <skos:scopeNote>Encompasses location-aware analytics that reveal geographic patterns, spatial relationships, and regional insights critical for supply chain optimization, risk assessment, and market expansion strategies. Spatial analysis often uncovers non-obvious relationships between geography and business performance. Lambda implementations require: (1) Geospatial data processing capabilities with coordinate system transformations, spatial indexing (R-tree, Quadtree), and geographic information system (GIS) integration for map-based visualizations, (2) Spatial analysis algorithms including clustering (DBSCAN), hotspot analysis (Getis-Ord Gi*), spatial interpolation (kriging), and geographic weighted regression for location-dependent modeling, (3) Multi-resolution spatial analysis from building-level to continental-scale with automated scale selection based on data density and business context, (4) Real-time location tracking and geofencing with mobile device integration, GPS/RFID data streams, and location-based event triggering, (5) Spatial optimization algorithms for facility location, route optimization, territory design, and service area planning with constraint satisfaction programming. Consider implementing spatial-temporal analysis for dynamic location patterns and predictive spatial modeling for expansion planning and risk assessment.</skos:scopeNote>
+    <skos:example>Geographic clustering analysis of Turkish olive oil suppliers to identify optimal logistics hubs and regional quality patterns based on Aegean vs Mediterranean coastal production zones</skos:example>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <rdfs:seeAlso rdf:resource="#SupplyChainEntity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow#SpatialContext"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/GeoCoordinates"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Place"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="#TemporalAnalysisOpportunity">
+    <rdfs:subClassOf rdf:resource="#InferredOpportunity"/>
+    <skos:inScheme rdf:resource="#InferenceTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:broader rdf:resource="#InferredOpportunity"/>
+    <skos:related rdf:resource="#FinancialEntity"/>
+    <rdfs:label>Temporal Analysis Opportunity</rdfs:label>
+    <rdfs:comment>An inferred analytical opportunity involving time-based analysis, such as trend detection, seasonality patterns, historical comparisons, or temporal forecasting</rdfs:comment>
+    <skos:scopeNote>Encompasses time-series analysis, trend detection, seasonality modeling, and predictive forecasting that reveal temporal patterns essential for strategic planning, resource allocation, and risk management. Temporal analysis transforms historical data into forward-looking strategic intelligence. Lambda implementations require: (1) Time-series data processing pipelines with automatic frequency detection, missing data imputation, and outlier detection using statistical methods (IQR, Z-score) and domain-specific rules, (2) Advanced forecasting algorithms including ARIMA, Prophet, LSTM neural networks, and ensemble methods with automated model selection based on cross-validation performance and business context, (3) Seasonality decomposition and pattern recognition with automatic seasonal adjustment, holiday effect modeling, and external factor integration (weather, economic indicators, geopolitical events), (4) Real-time anomaly detection with dynamic baseline adjustment and contextual alerting based on business calendars and operational patterns, (5) Multi-horizon forecasting with uncertainty quantification providing confidence intervals and scenario analysis for strategic decision-making. Consider implementing temporal feature engineering for machine learning models and temporal data fusion combining multiple time-series sources for comprehensive temporal intelligence.</skos:scopeNote>
+    <skos:example>Seasonal trend analysis of olive oil prices and harvest yields to predict optimal procurement timing with 3-month forecasting based on Mediterranean climate patterns</skos:example>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <rdfs:seeAlso rdf:resource="#FinancialEntity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow#TemporalContext"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/DateTime"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/temporal"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/2006/time#TemporalEntity"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="#NetworkAnalysisOpportunity">
+    <rdfs:subClassOf rdf:resource="#InferredOpportunity"/>
+    <skos:inScheme rdf:resource="#InferenceTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:broader rdf:resource="#InferredOpportunity"/>
+    <rdfs:label>Network Analysis Opportunity</rdfs:label>
+    <rdfs:comment>An inferred analytical opportunity involving relationship or connectivity analysis, such as regulatory networks, compliance dependencies, or organizational relationship mapping</rdfs:comment>
+    <skos:scopeNote>Encompasses graph-based analytics including social networks, supply chain networks, regulatory compliance networks, and organizational relationship structures. These analyses reveal emergent properties, critical paths, influence patterns, and systemic risks that are invisible in traditional tabular analysis. Lambda implementations require: (1) Graph database technologies (Neo4j, Amazon Neptune) optimized for traversal algorithms and pattern matching queries, (2) Scalable graph processing frameworks supporting distributed computation for large-scale network analysis (Apache Spark GraphX, Graph Neural Networks), (3) Network visualization and interactive exploration tools with force-directed layouts, hierarchical clustering, and community detection algorithms, (4) Real-time graph streaming for dynamic network evolution tracking with temporal network analysis capabilities, (5) Graph machine learning pipelines for node classification, link prediction, and graph embedding generation. Consider implementing graph-based feature engineering for traditional ML models, network-aware anomaly detection for fraud/compliance monitoring, and centrality-based influence ranking for stakeholder management and risk assessment.</skos:scopeNote>
+    <skos:example>EU organic certification compliance network analysis mapping regulatory dependencies between Turkish suppliers, certification bodies, and European import requirements</skos:example>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow#RegulatoryConstraint"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Organization"/>
+    <rdfs:seeAlso rdf:resource="http://xmlns.com/foaf/0.1/knows"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/relation"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="#CrossDomainOpportunity">
+    <rdfs:subClassOf rdf:resource="#InferredOpportunity"/>
+    <skos:inScheme rdf:resource="#InferenceTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:broader rdf:resource="#InferredOpportunity"/>
+    <skos:related rdf:resource="#SupplyChainEntity"/>
+    <skos:related rdf:resource="#FinancialEntity"/>
+    <skos:related rdf:resource="#CommodityEntity"/>
+    <rdfs:label>Cross Domain Opportunity</rdfs:label>
+    <rdfs:comment>An inferred analytical opportunity spanning multiple business domains, such as combining supply chain and financial analysis, or integrating commodity trends with geopolitical risk assessment</rdfs:comment>
+    <skos:scopeNote>Represents sophisticated analytical opportunities that integrate insights across traditionally separate business domains, requiring synthesis of heterogeneous data sources, domain expertise, and analytical methodologies. These opportunities typically deliver exponentially higher business value through systemic insights that single-domain analysis cannot reveal. Lambda implementations must architect for: (1) Domain-agnostic data integration with semantic harmonization across different ontologies, data models, and business vocabularies using knowledge graphs and entity resolution, (2) Multi-modal analytics pipelines combining structured data (databases), unstructured data (documents, social media), and external signals (market data, weather, geopolitical events), (3) Federated machine learning enabling model training across domains without data sharing, preserving privacy and security boundaries while capturing cross-domain patterns, (4) Causal inference and correlation analysis with domain expertise integration to distinguish spurious correlations from actionable insights, (5) Explainable AI frameworks that can articulate cross-domain dependencies in business-friendly terms for executive decision-making. Consider implementing digital twin architectures for complex system modeling and scenario planning across multiple business domains.</skos:scopeNote>
+    <skos:example>Integrated analysis combining Turkish supplier logistics costs with olive oil commodity price fluctuations and EUR/TRY exchange rate risks for comprehensive procurement planning</skos:example>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <rdfs:seeAlso rdf:resource="#SupplyChainEntity"/>
+    <rdfs:seeAlso rdf:resource="#FinancialEntity"/>
+    <rdfs:seeAlso rdf:resource="#CommodityEntity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow#CrossDomainOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow#DomainContext"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#IntelligenceCapability"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+  </owl:Class>
+
+  <!-- Domain-Specific Classes -->
+  <owl:Class rdf:about="#SupplyChainEntity">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <skos:inScheme rdf:resource="#InferenceTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:related rdf:resource="#FinancialEntity"/>
+    <skos:related rdf:resource="#CommodityEntity"/>
+    <rdfs:label>Supply Chain Entity</rdfs:label>
+    <rdfs:comment>Any entity mentioned in a supply chain context within business requirements, including suppliers, warehouses, logistics providers, distribution centers, or inventory management systems</rdfs:comment>
+    <skos:scopeNote>Represents physical and logical entities within supply chain networks that require tracking, optimization, and integration across multiple dimensions (spatial, temporal, financial, operational). Supply chain entities are inherently complex with multiple identities, relationships, and data sources that must be unified for comprehensive analysis. Lambda implementations require: (1) Entity resolution and master data management to unify supplier identities across systems (ERP, procurement, logistics, financial) with fuzzy matching and duplicate detection, (2) Multi-tiered supplier relationship mapping including direct suppliers, sub-suppliers, and alternative suppliers with risk assessment and qualification status tracking, (3) Real-time supply chain visibility with IoT integration for shipment tracking, warehouse operations, and inventory levels across the network, (4) Supply chain risk modeling including geographic concentration risk, single-source dependencies, financial stability assessment, and regulatory compliance status, (5) Dynamic supplier performance scoring with multi-dimensional KPIs including quality, delivery, cost, sustainability, and innovation metrics. Consider implementing digital supply chain twin architectures with event-driven simulation capabilities for scenario planning and risk mitigation strategy evaluation.</skos:scopeNote>
+    <skos:example>"Anatolia Olive Cooperative" supplier entity with warehouse locations in Izmir and Ayvalik, logistics partner DHL Express, and inventory management system tracking 500MT monthly capacity</skos:example>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <rdfs:seeAlso rdf:resource="#SpatialAnalysisOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#CrossDomainOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#FinancialEntity"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Organization"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Place"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/goodrelations/v1#BusinessEntity"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="#FinancialEntity">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <skos:inScheme rdf:resource="#InferenceTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:related rdf:resource="#SupplyChainEntity"/>
+    <skos:related rdf:resource="#CommodityEntity"/>
+    <rdfs:label>Financial Entity</rdfs:label>
+    <rdfs:comment>Any entity mentioned in a financial context within business requirements, including cost centers, revenue streams, budget items, financial metrics, or accounting systems</rdfs:comment>
+    <skos:scopeNote>Represents financial constructs including cost centers, revenue streams, budget allocations, financial instruments, and accounting entities that require integration with operational data for comprehensive business performance analysis. Financial entities are subject to complex regulatory requirements, multi-currency considerations, and time-sensitive calculations requiring high precision and auditability. Lambda implementations must support: (1) Financial data integration across multiple systems (ERP, budgeting, treasury, tax) with reconciliation capabilities and audit trail preservation, (2) Multi-currency processing with real-time exchange rates, historical rate tracking, and currency risk assessment for global operations, (3) Financial performance attribution analysis linking operational metrics to financial outcomes with cost allocation models and profitability analysis, (4) Regulatory compliance automation for financial reporting (IFRS, GAAP) with automated journal entry generation and variance analysis, (5) Financial forecasting and scenario modeling with sensitivity analysis and Monte Carlo simulation for risk assessment. Consider implementing financial data mesh architectures with domain-specific financial data products, automated financial close processes, and real-time financial performance monitoring with exception-based alerting.</skos:scopeNote>
+    <skos:example>"Mediterranean Procurement Budget 2025" cost center with €2.5M allocation tracked through SAP system with KPIs for cost-per-ton and currency hedging performance</skos:example>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <rdfs:seeAlso rdf:resource="#TemporalAnalysisOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#CrossDomainOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#SupplyChainEntity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#CostEvent"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#RevenueEvent"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/MonetaryAmount"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/goodrelations/v1#PriceSpecification"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="#CommodityEntity">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <skos:inScheme rdf:resource="#InferenceTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:related rdf:resource="#SupplyChainEntity"/>
+    <skos:related rdf:resource="#FinancialEntity"/>
+    <rdfs:label>Commodity Entity</rdfs:label>
+    <rdfs:comment>Any entity mentioned in a commodities context within business requirements, including raw materials, energy resources, agricultural products, precious metals, or commodity trading markets</rdfs:comment>
+    <skos:scopeNote>Represents tradeable goods and raw materials that are subject to global market forces, price volatility, and complex supply-demand dynamics influenced by geopolitical events, weather patterns, and economic cycles. Commodity entities require sophisticated analysis integrating market data, supply chain intelligence, and external factors. Lambda implementations must support: (1) Real-time commodity market data integration with major exchanges (CBOT, ICE, LME) including futures pricing, volatility calculations, and basis differentials for location-specific pricing, (2) Commodity price forecasting models incorporating supply-demand fundamentals, technical analysis, and external factor correlation (weather, geopolitical risk, currency fluctuations), (3) Supply chain risk assessment for commodity sourcing including producer concentration analysis, geographic diversification evaluation, and alternative sourcing scenario modeling, (4) Quality and grading systems integration with automated quality assessment, certification tracking, and premium/discount calculations based on quality specifications, (5) Hedging strategy optimization with financial instrument evaluation (futures, options, swaps) and risk management portfolio analysis. Consider implementing commodity digital twins that model the entire value chain from production through consumption with scenario planning capabilities for strategic procurement and risk management decisions.</skos:scopeNote>
+    <skos:example>"Extra Virgin Olive Oil Grade A" commodity tracked through London International Financial Futures Exchange (LIFFE) with benchmarks tied to Mediterranean harvest yields and quality certifications</skos:example>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <rdfs:seeAlso rdf:resource="#CrossDomainOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#SupplyChainEntity"/>
+    <rdfs:seeAlso rdf:resource="#FinancialEntity"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Product"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/goodrelations/v1#ProductOrService"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/subject"/>
+  </owl:Class>
+
+  <!-- Properties -->
+  <owl:ObjectProperty rdf:about="#mentionsEntity">
+    <rdfs:label>mentions entity</rdfs:label>
+    <rdfs:comment>Indicates that a business requirement explicitly mentions or references a specific entity (supply chain, financial, or commodity entity) that may trigger cross-domain inference rules</rdfs:comment>
+    <rdfs:domain rdf:resource="#BusinessRequirement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <skos:example>ProcurementRequirement mentionsEntity AnatoliaOliveCooperative - business requirement explicitly references a supply chain entity triggering spatial analysis rules</skos:example>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isMentionedBy">
+    <owl:inverseOf rdf:resource="#mentionsEntity"/>
+    <rdfs:label>is mentioned by</rdfs:label>
+    <rdfs:comment>Inverse of mentionsEntity - indicates that an entity is mentioned by a business requirement</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="#BusinessRequirement"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#infersOpportunity">
+    <rdfs:label>infers opportunity</rdfs:label>
+    <rdfs:comment>Relates a business requirement to an analytical opportunity that was automatically inferred through SWRL reasoning rules, establishing the provenance of inferred knowledge</rdfs:comment>
+    <rdfs:domain rdf:resource="#BusinessRequirement"/>
+    <rdfs:range rdf:resource="#InferredOpportunity"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <skos:example>CostTrackingRequirement infersOpportunity TemporalTrendAnalysis - requirement to track costs automatically triggers temporal analysis capability generation</skos:example>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isOpportunityInferredFrom">
+    <owl:inverseOf rdf:resource="#infersOpportunity"/>
+    <rdfs:label>is opportunity inferred from</rdfs:label>
+    <rdfs:comment>Inverse of infersOpportunity - relates an inferred opportunity back to the business requirement it was inferred from</rdfs:comment>
+    <rdfs:domain rdf:resource="#InferredOpportunity"/>
+    <rdfs:range rdf:resource="#BusinessRequirement"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+  </owl:ObjectProperty>
+
+  <owl:DatatypeProperty rdf:about="#confidenceLevel">
+    <rdfs:label>confidence level</rdfs:label>
+    <rdfs:comment>A decimal value between 0.0 and 1.0 indicating the confidence level of an inferred opportunity, based on the strength of the reasoning pattern and domain expertise</rdfs:comment>
+    <rdfs:domain rdf:resource="#InferredOpportunity"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <skos:example>GeographicRiskAnalysis confidenceLevel "0.87" - high confidence that supplier mentions warrant spatial analysis based on domain expertise and rule strength</skos:example>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#reasoningTrace">
+    <rdfs:label>reasoning trace</rdfs:label>
+    <rdfs:comment>A human-readable explanation of the reasoning process that led to the inference of this opportunity, providing transparency and auditability for automated decision-making</rdfs:comment>
+    <rdfs:domain rdf:resource="#InferredOpportunity"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#containsKeyword">
+    <rdfs:label>contains keyword</rdfs:label>
+    <rdfs:comment>Indicates that a business requirement contains a specific keyword or phrase that triggers inference rules, used for pattern matching in SWRL rules</rdfs:comment>
+    <rdfs:domain rdf:resource="#BusinessRequirement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <skos:example>SupplierTrackingRequirement containsKeyword "supplier" - keyword triggers SWRL rule generating spatial analysis opportunities for geographic risk assessment</skos:example>
+  </owl:DatatypeProperty>
+
+  <!-- SWRL Inference Rules -->
+
+  <!-- Rule 1: Supplier Performance → Geographic Risk Analysis -->
+  <swrl:Imp rdf:about="#SupplierPerformanceRule">
+    <rdfs:label>Supplier Performance to Geographic Risk Analysis Rule</rdfs:label>
+    <rdfs:comment>This inference rule automatically detects when business requirements mention supplier-related entities (suppliers, vendor performance, supplier quality, etc.) and infers the need for geographic risk analysis. The reasoning is that supplier management inherently involves geographic considerations: suppliers are distributed across regions, each region has different risk profiles (political stability, natural disasters, infrastructure quality), and understanding spatial distribution of suppliers is critical for risk mitigation and supply chain resilience. This rule helps uncover unstated analytical needs that are implicit in supplier management requirements.</rdfs:comment>
+    <skos:example>INPUT: Business requirement states "Track supplier performance metrics for all vendors"
+INFERRED OUTPUT: SpatialAnalysisOpportunity with reasoning "Supplier mentions imply geographic risk analysis needs" (confidence: 0.85)
+BUSINESS VALUE: Lambda function can now generate geographic heatmaps showing supplier risk distribution, regional performance comparisons, and identify geographic concentration risks that weren't explicitly requested but are valuable for supply chain resilience.</skos:example>
+    <swrl:body>
+      <swrl:AtomList>
+        <rdf:first>
+          <swrl:ClassAtom>
+            <swrl:classPredicate rdf:resource="#BusinessRequirement"/>
+            <swrl:argument1 rdf:resource="#req"/>
+          </swrl:ClassAtom>
+        </rdf:first>
+        <rdf:rest>
+          <swrl:AtomList>
+            <rdf:first>
+              <swrl:DatavaluedPropertyAtom>
+                <swrl:propertyPredicate rdf:resource="#containsKeyword"/>
+                <swrl:argument1 rdf:resource="#req"/>
+                <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">supplier</swrl:argument2>
+              </swrl:DatavaluedPropertyAtom>
+            </rdf:first>
+            <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+          </swrl:AtomList>
+        </rdf:rest>
+      </swrl:AtomList>
+    </swrl:body>
+    <swrl:head>
+      <swrl:AtomList>
+        <rdf:first>
+          <swrl:ClassAtom>
+            <swrl:classPredicate rdf:resource="#SpatialAnalysisOpportunity"/>
+            <swrl:argument1 rdf:resource="#spatialOpp"/>
+          </swrl:ClassAtom>
+        </rdf:first>
+        <rdf:rest>
+          <swrl:AtomList>
+            <rdf:first>
+              <swrl:IndividualPropertyAtom>
+                <swrl:propertyPredicate rdf:resource="#infersOpportunity"/>
+                <swrl:argument1 rdf:resource="#req"/>
+                <swrl:argument2 rdf:resource="#spatialOpp"/>
+              </swrl:IndividualPropertyAtom>
+            </rdf:first>
+            <rdf:rest>
+              <swrl:AtomList>
+                <rdf:first>
+                  <swrl:DatavaluedPropertyAtom>
+                    <swrl:propertyPredicate rdf:resource="#confidenceLevel"/>
+                    <swrl:argument1 rdf:resource="#spatialOpp"/>
+                    <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.85</swrl:argument2>
+                  </swrl:DatavaluedPropertyAtom>
+                </rdf:first>
+                <rdf:rest>
+                  <swrl:AtomList>
+                    <rdf:first>
+                      <swrl:DatavaluedPropertyAtom>
+                        <swrl:propertyPredicate rdf:resource="#reasoningTrace"/>
+                        <swrl:argument1 rdf:resource="#spatialOpp"/>
+                        <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Supplier mentions imply geographic risk analysis needs</swrl:argument2>
+                      </swrl:DatavaluedPropertyAtom>
+                    </rdf:first>
+                    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                  </swrl:AtomList>
+                </rdf:rest>
+              </swrl:AtomList>
+            </rdf:rest>
+          </swrl:AtomList>
+        </rdf:rest>
+      </swrl:AtomList>
+    </swrl:head>
+  </swrl:Imp>
+
+  <!-- Rule 2: Cost Tracking → Temporal Trend Analysis -->
+  <swrl:Imp rdf:about="#CostTrackingRule">
+    <rdfs:label>Cost Tracking to Temporal Trend Analysis Rule</rdfs:label>
+    <rdfs:comment>This inference rule detects when business requirements mention cost-related entities (cost tracking, cost analysis, expense monitoring, budget management, etc.) and automatically infers the need for temporal trend analysis. The reasoning is that cost data is inherently time-dependent: costs fluctuate over time, exhibit seasonal patterns, respond to market conditions, and require historical comparison for meaningful insights. When stakeholders request cost tracking, they implicitly need to understand cost evolution, identify anomalies, forecast future costs, and detect temporal patterns. This rule ensures that temporal analytical capabilities are included even when not explicitly stated in the SOW.</rdfs:comment>
+    <skos:example>INPUT: Business requirement states "Monitor and report on operational costs"
+INFERRED OUTPUT: TemporalAnalysisOpportunity with reasoning "Cost tracking implies temporal trend analysis and spatial cost variations" (confidence: 0.90)
+BUSINESS VALUE: Lambda function will generate time-series analyses showing cost trends over months/quarters/years, seasonal patterns, anomaly detection, and forecasting capabilities that provide deeper insights than simple cost reporting.</skos:example>
+    <swrl:body>
+      <swrl:AtomList>
+        <rdf:first>
+          <swrl:ClassAtom>
+            <swrl:classPredicate rdf:resource="#BusinessRequirement"/>
+            <swrl:argument1 rdf:resource="#req"/>
+          </swrl:ClassAtom>
+        </rdf:first>
+        <rdf:rest>
+          <swrl:AtomList>
+            <rdf:first>
+              <swrl:DatavaluedPropertyAtom>
+                <swrl:propertyPredicate rdf:resource="#containsKeyword"/>
+                <swrl:argument1 rdf:resource="#req"/>
+                <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cost</swrl:argument2>
+              </swrl:DatavaluedPropertyAtom>
+            </rdf:first>
+            <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+          </swrl:AtomList>
+        </rdf:rest>
+      </swrl:AtomList>
+    </swrl:body>
+    <swrl:head>
+      <swrl:AtomList>
+        <rdf:first>
+          <swrl:ClassAtom>
+            <swrl:classPredicate rdf:resource="#TemporalAnalysisOpportunity"/>
+            <swrl:argument1 rdf:resource="#temporalOpp"/>
+          </swrl:ClassAtom>
+        </rdf:first>
+        <rdf:rest>
+          <swrl:AtomList>
+            <rdf:first>
+              <swrl:IndividualPropertyAtom>
+                <swrl:propertyPredicate rdf:resource="#infersOpportunity"/>
+                <swrl:argument1 rdf:resource="#req"/>
+                <swrl:argument2 rdf:resource="#temporalOpp"/>
+              </swrl:IndividualPropertyAtom>
+            </rdf:first>
+            <rdf:rest>
+              <swrl:AtomList>
+                <rdf:first>
+                  <swrl:DatavaluedPropertyAtom>
+                    <swrl:propertyPredicate rdf:resource="#confidenceLevel"/>
+                    <swrl:argument1 rdf:resource="#temporalOpp"/>
+                    <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.90</swrl:argument2>
+                  </swrl:DatavaluedPropertyAtom>
+                </rdf:first>
+                <rdf:rest>
+                  <swrl:AtomList>
+                    <rdf:first>
+                      <swrl:DatavaluedPropertyAtom>
+                        <swrl:propertyPredicate rdf:resource="#reasoningTrace"/>
+                        <swrl:argument1 rdf:resource="#temporalOpp"/>
+                        <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cost tracking implies temporal trend analysis and spatial cost variations</swrl:argument2>
+                      </swrl:DatavaluedPropertyAtom>
+                    </rdf:first>
+                    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                  </swrl:AtomList>
+                </rdf:rest>
+              </swrl:AtomList>
+            </rdf:rest>
+          </swrl:AtomList>
+        </rdf:rest>
+      </swrl:AtomList>
+    </swrl:head>
+  </swrl:Imp>
+
+  <!-- Rule 3: Compliance → Regulatory Network Analysis -->
+  <swrl:Imp rdf:about="#ComplianceRule">
+    <rdfs:label>Compliance to Regulatory Network Analysis Rule</rdfs:label>
+    <rdfs:comment>This inference rule identifies when business requirements mention compliance-related entities (regulatory compliance, audit requirements, policy adherence, legal compliance, etc.) and infers the need for regulatory network analysis. The reasoning is that compliance requirements exist within complex networks of relationships: regulations reference other regulations, compliance in one area affects compliance in another, regulatory bodies have hierarchical structures, and compliance obligations cascade through organizational networks. Understanding these interconnections is critical for comprehensive compliance management. This rule reveals the implicit need to map and analyze regulatory dependency networks, even when stakeholders only request basic compliance tracking.</rdfs:comment>
+    <skos:example>INPUT: Business requirement states "Ensure compliance with industry regulations"
+INFERRED OUTPUT: NetworkAnalysisOpportunity with reasoning "Compliance requirements infer regulatory network analysis needs" (confidence: 0.88)
+BUSINESS VALUE: Lambda function can generate regulatory dependency graphs, identify compliance gaps through network analysis, trace regulatory cascades, and provide impact analysis when regulations change - capabilities that go beyond simple compliance checklists.</skos:example>
+    <swrl:body>
+      <swrl:AtomList>
+        <rdf:first>
+          <swrl:ClassAtom>
+            <swrl:classPredicate rdf:resource="#BusinessRequirement"/>
+            <swrl:argument1 rdf:resource="#req"/>
+          </swrl:ClassAtom>
+        </rdf:first>
+        <rdf:rest>
+          <swrl:AtomList>
+            <rdf:first>
+              <swrl:DatavaluedPropertyAtom>
+                <swrl:propertyPredicate rdf:resource="#containsKeyword"/>
+                <swrl:argument1 rdf:resource="#req"/>
+                <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compliance</swrl:argument2>
+              </swrl:DatavaluedPropertyAtom>
+            </rdf:first>
+            <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+          </swrl:AtomList>
+        </rdf:rest>
+      </swrl:AtomList>
+    </swrl:body>
+    <swrl:head>
+      <swrl:AtomList>
+        <rdf:first>
+          <swrl:ClassAtom>
+            <swrl:classPredicate rdf:resource="#NetworkAnalysisOpportunity"/>
+            <swrl:argument1 rdf:resource="#networkOpp"/>
+          </swrl:ClassAtom>
+        </rdf:first>
+        <rdf:rest>
+          <swrl:AtomList>
+            <rdf:first>
+              <swrl:IndividualPropertyAtom>
+                <swrl:propertyPredicate rdf:resource="#infersOpportunity"/>
+                <swrl:argument1 rdf:resource="#req"/>
+                <swrl:argument2 rdf:resource="#networkOpp"/>
+              </swrl:IndividualPropertyAtom>
+            </rdf:first>
+            <rdf:rest>
+              <swrl:AtomList>
+                <rdf:first>
+                  <swrl:DatavaluedPropertyAtom>
+                    <swrl:propertyPredicate rdf:resource="#confidenceLevel"/>
+                    <swrl:argument1 rdf:resource="#networkOpp"/>
+                    <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.88</swrl:argument2>
+                  </swrl:DatavaluedPropertyAtom>
+                </rdf:first>
+                <rdf:rest>
+                  <swrl:AtomList>
+                    <rdf:first>
+                      <swrl:DatavaluedPropertyAtom>
+                        <swrl:propertyPredicate rdf:resource="#reasoningTrace"/>
+                        <swrl:argument1 rdf:resource="#networkOpp"/>
+                        <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Compliance requirements infer regulatory network analysis needs</swrl:argument2>
+                      </swrl:DatavaluedPropertyAtom>
+                    </rdf:first>
+                    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                  </swrl:AtomList>
+                </rdf:rest>
+              </swrl:AtomList>
+            </rdf:rest>
+          </swrl:AtomList>
+        </rdf:rest>
+      </swrl:AtomList>
+    </swrl:head>
+  </swrl:Imp>
+
+  <!-- Rule 4: Inventory → Supply Chain Flow Analysis -->
+  <swrl:Imp rdf:about="#InventoryRule">
+    <rdfs:label>Inventory to Supply Chain Flow Analysis Rule</rdfs:label>
+    <rdfs:comment>This inference rule detects when business requirements mention inventory-related entities (inventory management, stock levels, warehouse operations, inventory optimization, etc.) and infers the need for comprehensive supply chain flow analysis spanning multiple analytical domains. The reasoning is that inventory is a cross-domain concern: it represents the intersection of supply chain operations (flow, logistics), temporal patterns (seasonality, reorder cycles), and financial impact (holding costs, opportunity costs). Inventory management implicitly requires understanding the entire supply chain flow from suppliers through warehouses to customers, identifying bottlenecks, optimizing stock levels across the network, and analyzing the financial implications of inventory decisions. This rule ensures a holistic cross-domain analytical approach to inventory requirements.</rdfs:comment>
+    <skos:example>INPUT: Business requirement states "Track inventory levels across all warehouses"
+INFERRED OUTPUT: CrossDomainOpportunity with reasoning "Inventory tracking infers supply chain flow analysis + temporal patterns + financial impact" (confidence: 0.92)
+BUSINESS VALUE: Lambda function will provide integrated analysis showing inventory flow through the supply chain network, seasonal demand patterns, reorder optimization, holding cost analysis, and stockout risk assessment - a comprehensive cross-domain solution that addresses the full complexity of inventory management.</skos:example>
+    <swrl:body>
+      <swrl:AtomList>
+        <rdf:first>
+          <swrl:ClassAtom>
+            <swrl:classPredicate rdf:resource="#BusinessRequirement"/>
+            <swrl:argument1 rdf:resource="#req"/>
+          </swrl:ClassAtom>
+        </rdf:first>
+        <rdf:rest>
+          <swrl:AtomList>
+            <rdf:first>
+              <swrl:DatavaluedPropertyAtom>
+                <swrl:propertyPredicate rdf:resource="#containsKeyword"/>
+                <swrl:argument1 rdf:resource="#req"/>
+                <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">inventory</swrl:argument2>
+              </swrl:DatavaluedPropertyAtom>
+            </rdf:first>
+            <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+          </swrl:AtomList>
+        </rdf:rest>
+      </swrl:AtomList>
+    </swrl:body>
+    <swrl:head>
+      <swrl:AtomList>
+        <rdf:first>
+          <swrl:ClassAtom>
+            <swrl:classPredicate rdf:resource="#CrossDomainOpportunity"/>
+            <swrl:argument1 rdf:resource="#crossOpp"/>
+          </swrl:ClassAtom>
+        </rdf:first>
+        <rdf:rest>
+          <swrl:AtomList>
+            <rdf:first>
+              <swrl:IndividualPropertyAtom>
+                <swrl:propertyPredicate rdf:resource="#infersOpportunity"/>
+                <swrl:argument1 rdf:resource="#req"/>
+                <swrl:argument2 rdf:resource="#crossOpp"/>
+              </swrl:IndividualPropertyAtom>
+            </rdf:first>
+            <rdf:rest>
+              <swrl:AtomList>
+                <rdf:first>
+                  <swrl:DatavaluedPropertyAtom>
+                    <swrl:propertyPredicate rdf:resource="#confidenceLevel"/>
+                    <swrl:argument1 rdf:resource="#crossOpp"/>
+                    <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.92</swrl:argument2>
+                  </swrl:DatavaluedPropertyAtom>
+                </rdf:first>
+                <rdf:rest>
+                  <swrl:AtomList>
+                    <rdf:first>
+                      <swrl:DatavaluedPropertyAtom>
+                        <swrl:propertyPredicate rdf:resource="#reasoningTrace"/>
+                        <swrl:argument1 rdf:resource="#crossOpp"/>
+                        <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Inventory tracking infers supply chain flow analysis + temporal patterns + financial impact</swrl:argument2>
+                      </swrl:DatavaluedPropertyAtom>
+                    </rdf:first>
+                    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                  </swrl:AtomList>
+                </rdf:rest>
+              </swrl:AtomList>
+            </rdf:rest>
+          </swrl:AtomList>
+        </rdf:rest>
+      </swrl:AtomList>
+    </swrl:head>
+  </swrl:Imp>
+
+  <!-- Rule 5: Cross-Domain Discovery: Supply Chain → Financial Analytics -->
+  <swrl:Imp rdf:about="#SupplyChainFinanceRule">
+    <rdfs:label>Supply Chain to Financial Analytics Cross-Domain Rule</rdfs:label>
+    <rdfs:comment>This advanced cross-domain inference rule detects when business requirements mention supply chain entities (logistics, warehouses, distribution, procurement, etc.) and automatically infers opportunities for financial impact analysis. The reasoning is that every supply chain decision has financial consequences: logistics choices affect transportation costs, warehouse locations impact inventory holding costs, supplier selection influences procurement expenses and payment terms, and distribution strategies determine delivery costs and working capital requirements. While stakeholders may focus on operational supply chain metrics, the financial implications are always present and critical for decision-making. This rule bridges the supply chain and finance domains to ensure comprehensive analytical coverage.</rdfs:comment>
+    <skos:example>INPUT: Business requirement states "Optimize warehouse distribution network"
+INFERRED OUTPUT: CrossDomainOpportunity with reasoning "Supply chain analysis reveals financial impact analysis opportunities" (confidence: not specified in rule)
+BUSINESS VALUE: Lambda function will generate financial impact assessments for supply chain decisions, including total cost of ownership analysis, ROI calculations for distribution network changes, working capital implications, and cost-benefit analysis of logistics alternatives - financial insights that weren't explicitly requested but are essential for strategic decision-making.</skos:example>
+    <swrl:body>
+      <swrl:AtomList>
+        <rdf:first>
+          <swrl:ClassAtom>
+            <swrl:classPredicate rdf:resource="#BusinessRequirement"/>
+            <swrl:argument1 rdf:resource="#req"/>
+          </swrl:ClassAtom>
+        </rdf:first>
+        <rdf:rest>
+          <swrl:AtomList>
+            <rdf:first>
+              <swrl:IndividualPropertyAtom>
+                <swrl:propertyPredicate rdf:resource="#mentionsEntity"/>
+                <swrl:argument1 rdf:resource="#req"/>
+                <swrl:argument2 rdf:resource="#supplyEntity"/>
+              </swrl:IndividualPropertyAtom>
+            </rdf:first>
+            <rdf:rest>
+              <swrl:AtomList>
+                <rdf:first>
+                  <swrl:ClassAtom>
+                    <swrl:classPredicate rdf:resource="#SupplyChainEntity"/>
+                    <swrl:argument1 rdf:resource="#supplyEntity"/>
+                  </swrl:ClassAtom>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+              </swrl:AtomList>
+            </rdf:rest>
+          </swrl:AtomList>
+        </rdf:rest>
+      </swrl:AtomList>
+    </swrl:body>
+    <swrl:head>
+      <swrl:AtomList>
+        <rdf:first>
+          <swrl:ClassAtom>
+            <swrl:classPredicate rdf:resource="#CrossDomainOpportunity"/>
+            <swrl:argument1 rdf:resource="#financeOpp"/>
+          </swrl:ClassAtom>
+        </rdf:first>
+        <rdf:rest>
+          <swrl:AtomList>
+            <rdf:first>
+              <swrl:IndividualPropertyAtom>
+                <swrl:propertyPredicate rdf:resource="#infersOpportunity"/>
+                <swrl:argument1 rdf:resource="#req"/>
+                <swrl:argument2 rdf:resource="#financeOpp"/>
+              </swrl:IndividualPropertyAtom>
+            </rdf:first>
+            <rdf:rest>
+              <swrl:AtomList>
+                <rdf:first>
+                  <swrl:DatavaluedPropertyAtom>
+                    <swrl:propertyPredicate rdf:resource="#reasoningTrace"/>
+                    <swrl:argument1 rdf:resource="#financeOpp"/>
+                    <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Supply chain analysis reveals financial impact analysis opportunities</swrl:argument2>
+                  </swrl:DatavaluedPropertyAtom>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+              </swrl:AtomList>
+            </rdf:rest>
+          </swrl:AtomList>
+        </rdf:rest>
+      </swrl:AtomList>
+    </swrl:head>
+  </swrl:Imp>
+
+  <!-- Rule 6: Commodities → Geopolitical Correlation Analysis -->
+  <swrl:Imp rdf:about="#CommoditiesGeopoliticalRule">
+    <rdfs:label>Commodities to Geopolitical Correlation Analysis Rule</rdfs:label>
+    <rdfs:comment>This sophisticated cross-domain inference rule identifies when business requirements mention commodity entities (raw materials, energy resources, agricultural products, precious metals, commodity trading, etc.) and infers the need for geopolitical correlation analysis. The reasoning is that commodity markets are fundamentally influenced by geopolitical factors: political instability affects supply chains, trade policies impact commodity flows, sanctions alter market dynamics, currency fluctuations affect pricing, and international relations influence resource access. Commodity analysis without geopolitical context is incomplete and potentially misleading. This rule ensures that when stakeholders request commodity tracking or analysis, the solution includes geopolitical risk assessment, correlation analysis between political events and commodity prices, and strategic insights about how global events impact commodity availability and costs.</rdfs:comment>
+    <skos:example>INPUT: Business requirement states "Analyze commodity price trends for procurement planning"
+INFERRED OUTPUT: CrossDomainOpportunity with reasoning "Commodities analysis uncovers geopolitical correlation analysis opportunities" (confidence: 0.87)
+BUSINESS VALUE: Lambda function will correlate commodity price movements with geopolitical events, identify geopolitical risk factors affecting commodity availability, analyze the impact of trade policies on procurement costs, and provide early warning signals based on political developments - strategic intelligence that transforms basic commodity tracking into comprehensive geopolitical risk-aware procurement planning.</skos:example>
+    <swrl:body>
+      <swrl:AtomList>
+        <rdf:first>
+          <swrl:ClassAtom>
+            <swrl:classPredicate rdf:resource="#BusinessRequirement"/>
+            <swrl:argument1 rdf:resource="#req"/>
+          </swrl:ClassAtom>
+        </rdf:first>
+        <rdf:rest>
+          <swrl:AtomList>
+            <rdf:first>
+              <swrl:IndividualPropertyAtom>
+                <swrl:propertyPredicate rdf:resource="#mentionsEntity"/>
+                <swrl:argument1 rdf:resource="#req"/>
+                <swrl:argument2 rdf:resource="#commodityEntity"/>
+              </swrl:IndividualPropertyAtom>
+            </rdf:first>
+            <rdf:rest>
+              <swrl:AtomList>
+                <rdf:first>
+                  <swrl:ClassAtom>
+                    <swrl:classPredicate rdf:resource="#CommodityEntity"/>
+                    <swrl:argument1 rdf:resource="#commodityEntity"/>
+                  </swrl:ClassAtom>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+              </swrl:AtomList>
+            </rdf:rest>
+          </swrl:AtomList>
+        </rdf:rest>
+      </swrl:AtomList>
+    </swrl:body>
+    <swrl:head>
+      <swrl:AtomList>
+        <rdf:first>
+          <swrl:ClassAtom>
+            <swrl:classPredicate rdf:resource="#CrossDomainOpportunity"/>
+            <swrl:argument1 rdf:resource="#geopolOpp"/>
+          </swrl:ClassAtom>
+        </rdf:first>
+        <rdf:rest>
+          <swrl:AtomList>
+            <rdf:first>
+              <swrl:IndividualPropertyAtom>
+                <swrl:propertyPredicate rdf:resource="#infersOpportunity"/>
+                <swrl:argument1 rdf:resource="#req"/>
+                <swrl:argument2 rdf:resource="#geopolOpp"/>
+              </swrl:IndividualPropertyAtom>
+            </rdf:first>
+            <rdf:rest>
+              <swrl:AtomList>
+                <rdf:first>
+                  <swrl:DatavaluedPropertyAtom>
+                    <swrl:propertyPredicate rdf:resource="#confidenceLevel"/>
+                    <swrl:argument1 rdf:resource="#geopolOpp"/>
+                    <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.87</swrl:argument2>
+                  </swrl:DatavaluedPropertyAtom>
+                </rdf:first>
+                <rdf:rest>
+                  <swrl:AtomList>
+                    <rdf:first>
+                      <swrl:DatavaluedPropertyAtom>
+                        <swrl:propertyPredicate rdf:resource="#reasoningTrace"/>
+                        <swrl:argument1 rdf:resource="#geopolOpp"/>
+                        <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Commodities analysis uncovers geopolitical correlation analysis opportunities</swrl:argument2>
+                      </swrl:DatavaluedPropertyAtom>
+                    </rdf:first>
+                    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                  </swrl:AtomList>
+                </rdf:rest>
+              </swrl:AtomList>
+            </rdf:rest>
+          </swrl:AtomList>
+        </rdf:rest>
+      </swrl:AtomList>
+    </swrl:head>
+  </swrl:Imp>
+
+</rdf:RDF>

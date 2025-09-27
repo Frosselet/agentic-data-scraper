@@ -13,27 +13,35 @@ from .data_transformer import DataTransformerAgent, TransformationStrategy
 from .semantic_integrator import SemanticIntegratorAgent, SemanticAnnotation
 from .supervisor import SupervisorAgent, GeneratedPipeline
 from .security_decision import SecurityDecisionAgent, SecurityDecision
+from .data_discovery import DataDiscoveryAgent, DataSource as DiscoveredDataSource, DiscoveryContext
+from .source_recommender import SourceRecommendationEngine, SourceRecommendation, ExecutiveSummary
 
 __all__ = [
     # Base classes
     "BaseAgent",
     "AgentResult",
-    
+
     # Specialist agents
     "SOWInterpreterAgent",
-    "DataFetcherAgent", 
+    "DataFetcherAgent",
     "DataParserAgent",
     "DataTransformerAgent",
     "SemanticIntegratorAgent",
     "SupervisorAgent",
     "SecurityDecisionAgent",
-    
+    "DataDiscoveryAgent",
+    "SourceRecommendationEngine",
+
     # Data models
     "DataContract",
     "DataSource",
-    "ParsedData", 
+    "ParsedData",
     "TransformationStrategy",
     "SemanticAnnotation",
     "GeneratedPipeline",
     "SecurityDecision",
+    "DiscoveredDataSource",
+    "DiscoveryContext",
+    "SourceRecommendation",
+    "ExecutiveSummary",
 ]

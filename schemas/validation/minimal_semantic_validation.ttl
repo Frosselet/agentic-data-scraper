@@ -1,0 +1,114 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Gist imports
+@prefix gist: <https://w3id.org/semanticarts/ontology/gistCore#> .
+
+# Our ontology imports
+@prefix bridge: <https://agentic-data-scraper.com/ontology/gist-dbc-bridge#> .
+@prefix sow: <https://agentic-data-scraper.com/ontology/sow#> .
+@prefix csow: <https://agentic-data-scraper.com/ontology/complete-sow#> .
+
+# Test namespace
+@prefix test: <https://agentic-data-scraper.com/test/semantic-validation#> .
+
+# ======================================================================
+# MINIMAL SEMANTIC VALIDATION INSTANCES
+# ======================================================================
+# Purpose: Validate that the 4-level ontological bridge works correctly
+# Gist → DBC → SOW → Data Contract
+
+# LEVEL 1: Gist Foundation
+test:ExampleOrganization a gist:Organization ;
+    rdfs:label "Example Organization" ;
+    bridge:hasBusinessModel test:ExampleCanvas .
+
+test:ExamplePerson a gist:Person ;
+    rdfs:label "Example Person" .
+
+test:ExampleEvent a gist:Event ;
+    rdfs:label "Example Event" .
+
+test:ExampleAgreement a gist:Agreement ;
+    rdfs:label "Example Agreement" .
+
+test:ExampleCategory a gist:Category ;
+    rdfs:label "Example Category" .
+
+# LEVEL 2: Data Business Canvas
+test:ExampleCanvas a bridge:DataBusinessCanvas ;
+    rdfs:label "Example Data Business Canvas" ;
+    bridge:implementedBySOW test:ExampleSOW ;
+    bridge:alignsWithTarget test:ExampleTarget .
+
+test:ExampleDataAsset a bridge:DataAsset ;
+    rdfs:label "Example Data Asset" ;
+    bridge:providesValueTo test:ExamplePerson ;
+    bridge:hasSemanticMapping test:ExampleCategory .
+
+test:ExampleValueProp a bridge:ValueProposition ;
+    rdfs:label "Example Value Proposition" .
+
+test:ExampleTarget a bridge:ExecutiveTarget ;
+    rdfs:label "Example Executive Target" ;
+    bridge:ownedBy test:ExamplePerson .
+
+# LEVEL 3: SOW Contract
+test:ExampleSOW a csow:SemanticStatementOfWork ;
+    rdfs:label "Example Semantic SOW" ;
+    csow:hasBusinessChallenge test:ExampleChallenge ;
+    csow:realizesAsContract test:ExampleDataContract ;
+    bridge:implementsCanvas test:ExampleCanvas .
+
+test:ExampleChallenge a csow:BusinessChallenge ;
+    rdfs:label "Example Business Challenge" ;
+    csow:challengeDescription "Example challenge description" .
+
+test:ExampleOpportunity a csow:AnalyticalOpportunity ;
+    rdfs:label "Example Analytical Opportunity" ;
+    csow:inferredFrom test:ExampleChallenge .
+
+# LEVEL 4: Data Contract
+test:ExampleDataContract a bridge:DataContract ;
+    rdfs:label "Example Data Contract" ;
+    bridge:executedByTask test:ExampleTask .
+
+test:ExampleTask a bridge:DataProcessingTask ;
+    rdfs:label "Example Data Processing Task" ;
+    bridge:createsBusinessValue test:ExampleValueProp .
+
+# ======================================================================
+# CROSS-LEVEL VALIDATION RELATIONSHIPS
+# ======================================================================
+
+# Gist → DBC
+test:ExampleOrganization bridge:hasBusinessModel test:ExampleCanvas .
+test:ExampleDataAsset bridge:providesValueTo test:ExamplePerson .
+
+# DBC → SOW
+test:ExampleCanvas bridge:implementedBySOW test:ExampleSOW .
+test:ExampleSOW bridge:requiresDataSource test:ExampleDataAsset .
+
+# SOW → Contract
+test:ExampleSOW bridge:realizesContract test:ExampleDataContract .
+test:ExampleDataContract bridge:executedByTask test:ExampleTask .
+
+# Full Value Chain
+test:ExampleTask bridge:createsBusinessValue test:ExampleValueProp .
+test:ExampleCanvas bridge:alignsWithTarget test:ExampleTarget .
+test:ExampleTarget bridge:ownedBy test:ExamplePerson .
+
+# SKOS Integration
+test:ExampleDataAsset bridge:hasSemanticMapping test:ExampleCategory .
+test:ExampleCategory bridge:hasPreferredLabel "example term"@en .
+
+# ======================================================================
+# METADATA
+# ======================================================================
+
+test:SemanticValidationDataset a owl:Ontology ;
+    rdfs:label "Minimal Semantic Validation Dataset" ;
+    rdfs:comment "Minimal test instances to validate 4-level ontological connectivity" ;
+    owl:versionInfo "1.0" .

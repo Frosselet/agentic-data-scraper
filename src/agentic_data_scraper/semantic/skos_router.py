@@ -17,6 +17,8 @@ from typing import Dict, Any, List, Optional
 import kuzu
 from datetime import datetime
 import logging
+import asyncio
+from .vocabulary_expander import SKOSVocabularyExpander
 
 logger = logging.getLogger(__name__)
 
@@ -27,15 +29,94 @@ class SKOSSemanticRouter:
     def __init__(self, kuzu_db_path: str, fuseki_endpoint: Optional[str] = None):
         """
         Initialize SKOS router with KuzuDB backend
-        
+
         Args:
             kuzu_db_path: Path to KuzuDB database
             fuseki_endpoint: Optional Fuseki triple store endpoint for SKOS synchronization
         """
-        self.db = kuzu.Database(kuzu_db_path)
-        self.conn = kuzu.Connection(self.db)
+        self.kuzu_db_path = kuzu_db_path
+        self.db = None
+        self.conn = None
         self.fuseki_endpoint = fuseki_endpoint
-        self.setup_skos_routing_tables()
+
+        # Initialize vocabulary expander for enhanced semantic coverage
+        self.vocabulary_expander = SKOSVocabularyExpander()
+
+        self._initialize_database_robust()
+
+    def _initialize_database_robust(self):
+        """Robustly initialize KuzuDB with lock handling and cleanup"""
+        import os
+        import time
+        from pathlib import Path
+
+        max_retries = 3
+        retry_delay = 1.0  # seconds
+
+        for attempt in range(max_retries):
+            try:
+                # Check if database directory exists
+                db_dir = Path(self.kuzu_db_path).parent
+                db_dir.mkdir(parents=True, exist_ok=True)
+
+                # Close any existing connections first
+                if self.conn is not None:
+                    try:
+                        self.conn.close()
+                    except:
+                        pass
+
+                if self.db is not None:
+                    try:
+                        self.db.close()
+                    except:
+                        pass
+
+                # Clean up potential lock files (KuzuDB creates .lock files)
+                lock_pattern = f"{self.kuzu_db_path}*.lock"
+                import glob
+                for lock_file in glob.glob(lock_pattern):
+                    try:
+                        os.remove(lock_file)
+                        logger.info(f"Removed stale lock file: {lock_file}")
+                    except:
+                        pass  # Ignore if we can't remove it
+
+                # Initialize database with fresh connection
+                self.db = kuzu.Database(self.kuzu_db_path)
+                self.conn = kuzu.Connection(self.db)
+
+                # Test the connection
+                self.conn.execute("RETURN 1")
+
+                logger.info(f"KuzuDB initialized successfully at: {self.kuzu_db_path}")
+                self.setup_skos_routing_tables()
+                return
+
+            except Exception as e:
+                logger.warning(f"Database initialization attempt {attempt + 1} failed: {e}")
+                if attempt < max_retries - 1:
+                    time.sleep(retry_delay)
+                    retry_delay *= 2  # Exponential backoff
+                else:
+                    logger.error(f"Failed to initialize KuzuDB after {max_retries} attempts")
+                    raise RuntimeError(f"Could not initialize KuzuDB: {e}")
+
+    def close(self):
+        """Properly close database connections"""
+        try:
+            if self.conn:
+                self.conn.close()
+                self.conn = None
+            if self.db:
+                self.db.close()
+                self.db = None
+        except Exception as e:
+            logger.warning(f"Error closing database connections: {e}")
+
+    def __del__(self):
+        """Cleanup database connections on deletion"""
+        self.close()
         
     def setup_skos_routing_tables(self):
         """Create KuzuDB tables for SKOS concept routing"""
@@ -59,7 +140,7 @@ class SKOSSemanticRouter:
                     concept_uri STRING,
                     label_text STRING,
                     language_code STRING,
-                    label_type STRING,  -- 'prefLabel', 'altLabel', 'hiddenLabel'
+                    label_type STRING,
                     PRIMARY KEY(label_id)
                 )
             """)
@@ -67,10 +148,11 @@ class SKOSSemanticRouter:
             # Alternative Labels table for multilingual routing
             self.conn.execute("""
                 CREATE NODE TABLE IF NOT EXISTS SKOSAltLabel(
+                    id STRING,
                     alt_label STRING,
                     language STRING,
                     concept_uri STRING,
-                    PRIMARY KEY(alt_label, language)
+                    PRIMARY KEY(id)
                 )
             """)
             
@@ -173,8 +255,13 @@ class SKOSSemanticRouter:
         for alt_label in alt_labels:
             try:
                 self.conn.execute(
-                    "CREATE (:SKOSAltLabel {alt_label: $label, language: $lang, concept_uri: $uri})",
-                    alt_label
+                    "CREATE (:SKOSAltLabel {id: $id, alt_label: $label, language: $lang, concept_uri: $uri})",
+                    {
+                        "id": f"{alt_label['alt_label']}_{alt_label['language']}",
+                        "label": alt_label['alt_label'],
+                        "lang": alt_label['language'],
+                        "uri": alt_label['concept_uri']
+                    }
                 )
             except Exception as e:
                 # Skip if already exists
@@ -257,10 +344,32 @@ class SKOSSemanticRouter:
             fuzzy_result = self._fuzzy_skos_match(normalized_term, source_language, target_language)
             if fuzzy_result:
                 return fuzzy_result
-                
+
+            # Fourth, try vocabulary expansion with public sources
+            try:
+                expanded_result = asyncio.run(self.vocabulary_expander.expand_term(
+                    original_term, target_language
+                ))
+                if expanded_result and expanded_result.confidence > 0.6:
+                    # Store expanded term in local SKOS for future use
+                    self._store_expanded_concept(expanded_result, source_language, target_language)
+
+                    return {
+                        'original_term': original_term,
+                        'preferred_label': expanded_result.preferred_label,
+                        'concept_uri': expanded_result.concept_uri,
+                        'definition': expanded_result.definition,
+                        'translation_confidence': expanded_result.confidence,
+                        'method': f'vocabulary_expansion_{expanded_result.source}',
+                        'language_source': source_language,
+                        'language_target': target_language
+                    }
+            except Exception as expand_error:
+                logger.debug(f"Vocabulary expansion failed for '{original_term}': {expand_error}")
+
         except Exception as e:
             logger.error(f"SKOS routing error for term '{original_term}': {e}")
-        
+
         # No SKOS match found
         return {
             'original_term': original_term,
@@ -351,8 +460,13 @@ class SKOSSemanticRouter:
             if alt_labels:
                 for alt_label in alt_labels:
                     self.conn.execute(
-                        "CREATE (:SKOSAltLabel {alt_label: $label, language: $lang, concept_uri: $uri})",
-                        {**alt_label, 'concept_uri': concept_data['concept_uri']}
+                        "CREATE (:SKOSAltLabel {id: $id, alt_label: $label, language: $lang, concept_uri: $uri})",
+                        {
+                            "id": f"{alt_label['alt_label']}_{alt_label['language']}",
+                            "label": alt_label['alt_label'],
+                            "lang": alt_label['language'],
+                            "uri": concept_data['concept_uri']
+                        }
                     )
                     
             logger.info(f"Added custom SKOS concept: {concept_data['concept_uri']}")
@@ -360,7 +474,49 @@ class SKOSSemanticRouter:
         except Exception as e:
             logger.error(f"Failed to add custom concept: {e}")
             raise
-    
+
+    def _store_expanded_concept(self, expanded_result, source_language: str, target_language: str):
+        """Store vocabulary expansion result in local SKOS for future use"""
+        try:
+            # Create concept with expanded information
+            concept_data = {
+                'concept_uri': expanded_result.concept_uri,
+                'scheme_uri': 'http://vocab.expanded.org/scheme',
+                'en': expanded_result.preferred_label,
+                'tr': '',  # Would need translation
+                'fr': '',
+                'es': '',
+                'def': expanded_result.definition or f"Term expanded from {expanded_result.source}",
+                'broader': ''
+            }
+
+            # Insert concept
+            self.conn.execute(
+                "CREATE (:SKOSConcept {concept_uri: $uri, scheme_uri: $scheme, "
+                "pref_label_en: $en, pref_label_tr: $tr, pref_label_fr: $fr, "
+                "pref_label_es: $es, definition: $def, broader_concept: $broader})",
+                concept_data
+            )
+
+            # Add alternative labels if available
+            if expanded_result.alt_labels:
+                for alt_label in expanded_result.alt_labels:
+                    self.conn.execute(
+                        "CREATE (:SKOSAltLabel {id: $id, alt_label: $label, language: $lang, concept_uri: $uri})",
+                        {
+                            "id": f"{alt_label}_{target_language}",
+                            "label": alt_label,
+                            "lang": target_language,
+                            "uri": expanded_result.concept_uri
+                        }
+                    )
+
+            logger.info(f"Stored expanded concept: {expanded_result.preferred_label} from {expanded_result.source}")
+
+        except Exception as e:
+            logger.debug(f"Failed to store expanded concept: {e}")
+            # Don't raise - this is just caching for future use
+
     def close(self):
         """Close database connections"""
         if hasattr(self, 'conn'):

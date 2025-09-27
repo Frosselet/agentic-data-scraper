@@ -1,0 +1,16 @@
+{
+    "python.pythonPath": "/Volumes/WD Green/dev/git/agentic-data-scraper/.venv/bin/python",
+    "python.defaultInterpreterPath": "/Volumes/WD Green/dev/git/agentic-data-scraper/.venv/bin/python",
+    "jupyter.defaultKernel": "/Volumes/WD Green/dev/git/agentic-data-scraper/.venv/bin/python",
+    "python.terminal.activateEnvironment": true,
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "jupyter.interactiveWindow.textEditor.executeSelection": true,
+    "notebook.defaultLanguage": "python",
+    "jupyter.askForKernelRestart": false,
+    "jupyter.kernels.trusted": [
+        "/Volumes/WD Green/dev/git/agentic-data-scraper/.venv/bin/python"
+    ],
+    "jupyter.kernels.excludePythonEnvironments": [
+        "/Volumes/WD Green/dev/git/agentic-data-scraper/.venv/bin/python"
+    ]
+}

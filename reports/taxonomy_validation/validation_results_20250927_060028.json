@@ -1,0 +1,44 @@
+{
+  "start_time": "2025-09-27T06:00:28.357778",
+  "components_run": [
+    "skos_validation"
+  ],
+  "skos_validation": {
+    "success": false,
+    "total_tests": 4,
+    "passed_tests": 3,
+    "failed_tests": 1,
+    "metrics": {
+      "concept_schemes_count": 5,
+      "concepts_count": 25,
+      "hierarchical_relationships_count": 28,
+      "related_relationships_count": 43,
+      "concepts_with_examples": 24,
+      "concepts_with_scope_notes": 16,
+      "max_hierarchy_depth": 2,
+      "avg_hierarchy_depth": 1.56,
+      "taxonomy_completeness_score": 75.0,
+      "navigation_readiness_score": 79.296875
+    },
+    "validation_results": [
+      "ValidationResult(test_name='ConceptScheme Navigation', passed=True, message='Found 5 ConceptSchemes, 0 with issues', details={'total_schemes': 5, 'issues': [], 'schemes': [{'uri': 'https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessTaxonomy', 'label': 'Data Business Canvas Taxonomy'}, {'uri': 'https://agentic-data-scraper.com/ontology/gist-dbc-bridge#ExecutiveTaxonomy', 'label': 'Executive Strategy Taxonomy'}, {'uri': 'https://agentic-data-scraper.com/ontology/complete-sow#SOWTaxonomy', 'label': 'Statement of Work Taxonomy'}, {'uri': 'https://agentic-data-scraper.com/ontology/complete-sow#AnalyticsTaxonomy', 'label': 'Analytics Opportunity Taxonomy'}, {'uri': 'https://agentic-data-scraper.com/ontology/sow#InferenceTaxonomy', 'label': 'AI Inference Taxonomy'}]}, score=100.0)",
+      "ValidationResult(test_name='Hierarchical Browsing', passed=False, message='Bidirectional relationships: 14/14, Orphaned concepts: 6', details={'bidirectional_relationships': 14, 'total_hierarchical_relationships': 14, 'orphaned_concepts': ['Executive Target Owner', 'Entity to Track', 'Business Requirement', 'Supply Chain Entity', 'Financial Entity', 'Commodity Entity'], 'issues': [], 'max_depth': 2, 'avg_depth': 1.56}, score=50.0)",
+      "ValidationResult(test_name='Related Concept Discovery', passed=True, message='Related concepts: 42, Cross-scheme: 3, Coverage: 84.0%', details={'valid_relations': 42, 'cross_scheme_relations': 3, 'relation_coverage': 84.0, 'concepts_with_relations': 21, 'issues': ['Data Business Canvas: related concept https://agentic-data-scraper.com/ontology/gist-dbc-bridge#SemanticSOWContract not found']}, score=90.0)",
+      "ValidationResult(test_name='Examples and Scope Notes', passed=True, message='Examples: 96.0%, Scope notes: 64.0%, Lambda-ready: 37.5%', details={'example_coverage': 96.0, 'scope_note_coverage': 64.0, 'detailed_scope_notes': 16, 'lambda_ready_examples': 9, 'detail_quality': 100.0, 'lambda_readiness': 37.5}, score=74.375)"
+    ],
+    "overall_score": 78.59375
+  },
+  "sparql_queries": null,
+  "lambda_assessment": null,
+  "overall_success": false,
+  "summary": {
+    "overall_status": "\u274c NOT READY FOR LAMBDA DEPLOYMENT",
+    "components": [
+      {
+        "name": "SKOS Validation",
+        "status": "\u274c FAIL",
+        "score": 78.59375
+      }
+    ]
+  }
+}

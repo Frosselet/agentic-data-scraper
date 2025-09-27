@@ -76,6 +76,21 @@ class BamlAsyncClient:
     def parse_stream(self):
       return self.__llm_stream_parser
     
+    async def AnalyzeSourceFitness(self, source_metadata: types.DataSourceMetadata,business_context: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> typing.Dict[str, str]:
+        # Check if on_tick is provided
+        if 'on_tick' in baml_options:
+            # Use streaming internally when on_tick is provided
+            stream = self.stream.AnalyzeSourceFitness(source_metadata=source_metadata,business_context=business_context,
+                baml_options=baml_options)
+            return await stream.get_final_response()
+        else:
+            # Original non-streaming code
+            result = await self.__options.merge_options(baml_options).call_function_async(function_name="AnalyzeSourceFitness", args={
+                "source_metadata": source_metadata,"business_context": business_context,
+            })
+            return typing.cast(typing.Dict[str, str], result.cast_to(types, types, stream_types, False, __runtime__))
     async def BusinessContextAgent(self, business_question: str,success_criteria: str,timeline: str,budget: str,risk_tolerance: str,persona_id: str,
         baml_options: BamlCallOptions = {},
     ) -> types.BusinessContext:
@@ -106,6 +121,21 @@ class BamlAsyncClient:
                 "current_traffic": current_traffic,"lock_queues": lock_queues,
             })
             return typing.cast(typing.List["types.CongestionAlert"], result.cast_to(types, types, stream_types, False, __runtime__))
+    async def CreateTargetTemplate(self, target_examples: typing.List[str],enterprise_domain: str,template_name: str,
+        baml_options: BamlCallOptions = {},
+    ) -> typing.Dict[str, str]:
+        # Check if on_tick is provided
+        if 'on_tick' in baml_options:
+            # Use streaming internally when on_tick is provided
+            stream = self.stream.CreateTargetTemplate(target_examples=target_examples,enterprise_domain=enterprise_domain,template_name=template_name,
+                baml_options=baml_options)
+            return await stream.get_final_response()
+        else:
+            # Original non-streaming code
+            result = await self.__options.merge_options(baml_options).call_function_async(function_name="CreateTargetTemplate", args={
+                "target_examples": target_examples,"enterprise_domain": enterprise_domain,"template_name": template_name,
+            })
+            return typing.cast(typing.Dict[str, str], result.cast_to(types, types, stream_types, False, __runtime__))
     async def DataFetcherAgent(self, data_sources: typing.List["types.DataSource"],security_requirements: typing.List[str],
         baml_options: BamlCallOptions = {},
     ) -> str:
@@ -166,6 +196,36 @@ class BamlAsyncClient:
                 "current_situation": current_situation,"available_options": available_options,"constraints": constraints,
             })
             return typing.cast(str, result.cast_to(types, types, stream_types, False, __runtime__))
+    async def DiscoverFromScratch(self, request: types.ZeroStartDiscovery,
+        baml_options: BamlCallOptions = {},
+    ) -> types.DiscoveryResult:
+        # Check if on_tick is provided
+        if 'on_tick' in baml_options:
+            # Use streaming internally when on_tick is provided
+            stream = self.stream.DiscoverFromScratch(request=request,
+                baml_options=baml_options)
+            return await stream.get_final_response()
+        else:
+            # Original non-streaming code
+            result = await self.__options.merge_options(baml_options).call_function_async(function_name="DiscoverFromScratch", args={
+                "request": request,
+            })
+            return typing.cast(types.DiscoveryResult, result.cast_to(types, types, stream_types, False, __runtime__))
+    async def DiscoverKnownSources(self, request: types.KnownSourceRequest,
+        baml_options: BamlCallOptions = {},
+    ) -> typing.List["types.DataSourceMetadata"]:
+        # Check if on_tick is provided
+        if 'on_tick' in baml_options:
+            # Use streaming internally when on_tick is provided
+            stream = self.stream.DiscoverKnownSources(request=request,
+                baml_options=baml_options)
+            return await stream.get_final_response()
+        else:
+            # Original non-streaming code
+            result = await self.__options.merge_options(baml_options).call_function_async(function_name="DiscoverKnownSources", args={
+                "request": request,
+            })
+            return typing.cast(typing.List["types.DataSourceMetadata"], result.cast_to(types, types, stream_types, False, __runtime__))
     async def EconomicOptimizationAgent(self, market_data: typing.Dict[str, float],transport_rates: typing.Dict[str, float],routing_options: typing.List["types.RouteOption"],
         baml_options: BamlCallOptions = {},
     ) -> typing.List["types.MarketOpportunity"]:
@@ -196,6 +256,21 @@ class BamlAsyncClient:
                 "business_context": business_context,"recommended_sources": recommended_sources,
             })
             return typing.cast(types.FeasibilityAnalysis, result.cast_to(types, types, stream_types, False, __runtime__))
+    async def GenerateAlignmentFeedback(self, target: types.ExecutiveTarget,canvas: types.DataBusinessCanvas,alignment_score: types.AlignmentScore,market_changes: typing.Dict[str, str],progress_data: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> typing.Dict[str, str]:
+        # Check if on_tick is provided
+        if 'on_tick' in baml_options:
+            # Use streaming internally when on_tick is provided
+            stream = self.stream.GenerateAlignmentFeedback(target=target,canvas=canvas,alignment_score=alignment_score,market_changes=market_changes,progress_data=progress_data,
+                baml_options=baml_options)
+            return await stream.get_final_response()
+        else:
+            # Original non-streaming code
+            result = await self.__options.merge_options(baml_options).call_function_async(function_name="GenerateAlignmentFeedback", args={
+                "target": target,"canvas": canvas,"alignment_score": alignment_score,"market_changes": market_changes,"progress_data": progress_data,
+            })
+            return typing.cast(typing.Dict[str, str], result.cast_to(types, types, stream_types, False, __runtime__))
     async def HydrologicalRiskAgent(self, waterway_segments: typing.List[str],forecast_period_days: int,
         baml_options: BamlCallOptions = {},
     ) -> typing.Dict[str, types.RiskLevel]:
@@ -241,6 +316,21 @@ class BamlAsyncClient:
                 "routing_request": routing_request,"current_conditions": current_conditions,
             })
             return typing.cast(types.NavigationRecommendation, result.cast_to(types, types, stream_types, False, __runtime__))
+    async def ParseExecutiveTarget(self, target_description: str,enterprise_context: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> types.TargetParsingResult:
+        # Check if on_tick is provided
+        if 'on_tick' in baml_options:
+            # Use streaming internally when on_tick is provided
+            stream = self.stream.ParseExecutiveTarget(target_description=target_description,enterprise_context=enterprise_context,
+                baml_options=baml_options)
+            return await stream.get_final_response()
+        else:
+            # Original non-streaming code
+            result = await self.__options.merge_options(baml_options).call_function_async(function_name="ParseExecutiveTarget", args={
+                "target_description": target_description,"enterprise_context": enterprise_context,
+            })
+            return typing.cast(types.TargetParsingResult, result.cast_to(types, types, stream_types, False, __runtime__))
     async def PersonaResponseAgent(self, base_response: str,persona_id: str,interaction_level: str,technical_depth: str,
         baml_options: BamlCallOptions = {},
     ) -> str:
@@ -271,6 +361,21 @@ class BamlAsyncClient:
                 "data_sources": data_sources,"requirements": requirements,
             })
             return typing.cast(typing.Dict[str, float], result.cast_to(types, types, stream_types, False, __runtime__))
+    async def PrepareWorkflowData(self, discovered_sources: typing.List["types.DataSourceMetadata"],canvas_data: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> types.WorkflowPrepopulation:
+        # Check if on_tick is provided
+        if 'on_tick' in baml_options:
+            # Use streaming internally when on_tick is provided
+            stream = self.stream.PrepareWorkflowData(discovered_sources=discovered_sources,canvas_data=canvas_data,
+                baml_options=baml_options)
+            return await stream.get_final_response()
+        else:
+            # Original non-streaming code
+            result = await self.__options.merge_options(baml_options).call_function_async(function_name="PrepareWorkflowData", args={
+                "discovered_sources": discovered_sources,"canvas_data": canvas_data,
+            })
+            return typing.cast(types.WorkflowPrepopulation, result.cast_to(types, types, stream_types, False, __runtime__))
     async def SOWGeneratorAgent(self, business_context: types.BusinessContext,selected_sources: typing.List["types.DataSourceRecommendation"],feasibility_analysis: types.FeasibilityAnalysis,
         baml_options: BamlCallOptions = {},
     ) -> types.SOWContract:
@@ -301,6 +406,21 @@ class BamlAsyncClient:
                 "sow_document": sow_document,"document_format": document_format,
             })
             return typing.cast(types.DataContract, result.cast_to(types, types, stream_types, False, __runtime__))
+    async def ScoreStrategicAlignment(self, target: types.ExecutiveTarget,canvas: types.DataBusinessCanvas,enterprise_context: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> types.AlignmentScore:
+        # Check if on_tick is provided
+        if 'on_tick' in baml_options:
+            # Use streaming internally when on_tick is provided
+            stream = self.stream.ScoreStrategicAlignment(target=target,canvas=canvas,enterprise_context=enterprise_context,
+                baml_options=baml_options)
+            return await stream.get_final_response()
+        else:
+            # Original non-streaming code
+            result = await self.__options.merge_options(baml_options).call_function_async(function_name="ScoreStrategicAlignment", args={
+                "target": target,"canvas": canvas,"enterprise_context": enterprise_context,
+            })
+            return typing.cast(types.AlignmentScore, result.cast_to(types, types, stream_types, False, __runtime__))
     async def SecurityDecisionAgent(self, operation_context: str,risk_assessment: str,data_sensitivity: str,
         baml_options: BamlCallOptions = {},
     ) -> types.SecurityDecision:
@@ -370,6 +490,18 @@ class BamlStreamClient:
     def __init__(self, options: DoNotUseDirectlyCallManager):
         self.__options = options
 
+    def AnalyzeSourceFitness(self, source_metadata: types.DataSourceMetadata,business_context: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[typing.Dict[str, str], typing.Dict[str, str]]:
+        ctx, result = self.__options.merge_options(baml_options).create_async_stream(function_name="AnalyzeSourceFitness", args={
+            "source_metadata": source_metadata,"business_context": business_context,
+        })
+        return baml_py.BamlStream[typing.Dict[str, str], typing.Dict[str, str]](
+          result,
+          lambda x: typing.cast(typing.Dict[str, str], x.cast_to(types, types, stream_types, True, __runtime__)),
+          lambda x: typing.cast(typing.Dict[str, str], x.cast_to(types, types, stream_types, False, __runtime__)),
+          ctx,
+        )
     def BusinessContextAgent(self, business_question: str,success_criteria: str,timeline: str,budget: str,risk_tolerance: str,persona_id: str,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.BamlStream[stream_types.BusinessContext, types.BusinessContext]:
@@ -392,6 +524,18 @@ class BamlStreamClient:
           result,
           lambda x: typing.cast(typing.List["stream_types.CongestionAlert"], x.cast_to(types, types, stream_types, True, __runtime__)),
           lambda x: typing.cast(typing.List["types.CongestionAlert"], x.cast_to(types, types, stream_types, False, __runtime__)),
+          ctx,
+        )
+    def CreateTargetTemplate(self, target_examples: typing.List[str],enterprise_domain: str,template_name: str,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[typing.Dict[str, str], typing.Dict[str, str]]:
+        ctx, result = self.__options.merge_options(baml_options).create_async_stream(function_name="CreateTargetTemplate", args={
+            "target_examples": target_examples,"enterprise_domain": enterprise_domain,"template_name": template_name,
+        })
+        return baml_py.BamlStream[typing.Dict[str, str], typing.Dict[str, str]](
+          result,
+          lambda x: typing.cast(typing.Dict[str, str], x.cast_to(types, types, stream_types, True, __runtime__)),
+          lambda x: typing.cast(typing.Dict[str, str], x.cast_to(types, types, stream_types, False, __runtime__)),
           ctx,
         )
     def DataFetcherAgent(self, data_sources: typing.List["types.DataSource"],security_requirements: typing.List[str],
@@ -442,6 +586,30 @@ class BamlStreamClient:
           lambda x: typing.cast(str, x.cast_to(types, types, stream_types, False, __runtime__)),
           ctx,
         )
+    def DiscoverFromScratch(self, request: types.ZeroStartDiscovery,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[stream_types.DiscoveryResult, types.DiscoveryResult]:
+        ctx, result = self.__options.merge_options(baml_options).create_async_stream(function_name="DiscoverFromScratch", args={
+            "request": request,
+        })
+        return baml_py.BamlStream[stream_types.DiscoveryResult, types.DiscoveryResult](
+          result,
+          lambda x: typing.cast(stream_types.DiscoveryResult, x.cast_to(types, types, stream_types, True, __runtime__)),
+          lambda x: typing.cast(types.DiscoveryResult, x.cast_to(types, types, stream_types, False, __runtime__)),
+          ctx,
+        )
+    def DiscoverKnownSources(self, request: types.KnownSourceRequest,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[typing.List["stream_types.DataSourceMetadata"], typing.List["types.DataSourceMetadata"]]:
+        ctx, result = self.__options.merge_options(baml_options).create_async_stream(function_name="DiscoverKnownSources", args={
+            "request": request,
+        })
+        return baml_py.BamlStream[typing.List["stream_types.DataSourceMetadata"], typing.List["types.DataSourceMetadata"]](
+          result,
+          lambda x: typing.cast(typing.List["stream_types.DataSourceMetadata"], x.cast_to(types, types, stream_types, True, __runtime__)),
+          lambda x: typing.cast(typing.List["types.DataSourceMetadata"], x.cast_to(types, types, stream_types, False, __runtime__)),
+          ctx,
+        )
     def EconomicOptimizationAgent(self, market_data: typing.Dict[str, float],transport_rates: typing.Dict[str, float],routing_options: typing.List["types.RouteOption"],
         baml_options: BamlCallOptions = {},
     ) -> baml_py.BamlStream[typing.List["stream_types.MarketOpportunity"], typing.List["types.MarketOpportunity"]]:
@@ -464,6 +632,18 @@ class BamlStreamClient:
           result,
           lambda x: typing.cast(stream_types.FeasibilityAnalysis, x.cast_to(types, types, stream_types, True, __runtime__)),
           lambda x: typing.cast(types.FeasibilityAnalysis, x.cast_to(types, types, stream_types, False, __runtime__)),
+          ctx,
+        )
+    def GenerateAlignmentFeedback(self, target: types.ExecutiveTarget,canvas: types.DataBusinessCanvas,alignment_score: types.AlignmentScore,market_changes: typing.Dict[str, str],progress_data: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[typing.Dict[str, str], typing.Dict[str, str]]:
+        ctx, result = self.__options.merge_options(baml_options).create_async_stream(function_name="GenerateAlignmentFeedback", args={
+            "target": target,"canvas": canvas,"alignment_score": alignment_score,"market_changes": market_changes,"progress_data": progress_data,
+        })
+        return baml_py.BamlStream[typing.Dict[str, str], typing.Dict[str, str]](
+          result,
+          lambda x: typing.cast(typing.Dict[str, str], x.cast_to(types, types, stream_types, True, __runtime__)),
+          lambda x: typing.cast(typing.Dict[str, str], x.cast_to(types, types, stream_types, False, __runtime__)),
           ctx,
         )
     def HydrologicalRiskAgent(self, waterway_segments: typing.List[str],forecast_period_days: int,
@@ -502,6 +682,18 @@ class BamlStreamClient:
           lambda x: typing.cast(types.NavigationRecommendation, x.cast_to(types, types, stream_types, False, __runtime__)),
           ctx,
         )
+    def ParseExecutiveTarget(self, target_description: str,enterprise_context: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[stream_types.TargetParsingResult, types.TargetParsingResult]:
+        ctx, result = self.__options.merge_options(baml_options).create_async_stream(function_name="ParseExecutiveTarget", args={
+            "target_description": target_description,"enterprise_context": enterprise_context,
+        })
+        return baml_py.BamlStream[stream_types.TargetParsingResult, types.TargetParsingResult](
+          result,
+          lambda x: typing.cast(stream_types.TargetParsingResult, x.cast_to(types, types, stream_types, True, __runtime__)),
+          lambda x: typing.cast(types.TargetParsingResult, x.cast_to(types, types, stream_types, False, __runtime__)),
+          ctx,
+        )
     def PersonaResponseAgent(self, base_response: str,persona_id: str,interaction_level: str,technical_depth: str,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.BamlStream[str, str]:
@@ -526,6 +718,18 @@ class BamlStreamClient:
           lambda x: typing.cast(typing.Dict[str, float], x.cast_to(types, types, stream_types, False, __runtime__)),
           ctx,
         )
+    def PrepareWorkflowData(self, discovered_sources: typing.List["types.DataSourceMetadata"],canvas_data: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[stream_types.WorkflowPrepopulation, types.WorkflowPrepopulation]:
+        ctx, result = self.__options.merge_options(baml_options).create_async_stream(function_name="PrepareWorkflowData", args={
+            "discovered_sources": discovered_sources,"canvas_data": canvas_data,
+        })
+        return baml_py.BamlStream[stream_types.WorkflowPrepopulation, types.WorkflowPrepopulation](
+          result,
+          lambda x: typing.cast(stream_types.WorkflowPrepopulation, x.cast_to(types, types, stream_types, True, __runtime__)),
+          lambda x: typing.cast(types.WorkflowPrepopulation, x.cast_to(types, types, stream_types, False, __runtime__)),
+          ctx,
+        )
     def SOWGeneratorAgent(self, business_context: types.BusinessContext,selected_sources: typing.List["types.DataSourceRecommendation"],feasibility_analysis: types.FeasibilityAnalysis,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.BamlStream[stream_types.SOWContract, types.SOWContract]:
@@ -548,6 +752,18 @@ class BamlStreamClient:
           result,
           lambda x: typing.cast(stream_types.DataContract, x.cast_to(types, types, stream_types, True, __runtime__)),
           lambda x: typing.cast(types.DataContract, x.cast_to(types, types, stream_types, False, __runtime__)),
+          ctx,
+        )
+    def ScoreStrategicAlignment(self, target: types.ExecutiveTarget,canvas: types.DataBusinessCanvas,enterprise_context: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[stream_types.AlignmentScore, types.AlignmentScore]:
+        ctx, result = self.__options.merge_options(baml_options).create_async_stream(function_name="ScoreStrategicAlignment", args={
+            "target": target,"canvas": canvas,"enterprise_context": enterprise_context,
+        })
+        return baml_py.BamlStream[stream_types.AlignmentScore, types.AlignmentScore](
+          result,
+          lambda x: typing.cast(stream_types.AlignmentScore, x.cast_to(types, types, stream_types, True, __runtime__)),
+          lambda x: typing.cast(types.AlignmentScore, x.cast_to(types, types, stream_types, False, __runtime__)),
           ctx,
         )
     def SecurityDecisionAgent(self, operation_context: str,risk_assessment: str,data_sensitivity: str,
@@ -606,6 +822,13 @@ class BamlHttpRequestClient:
     def __init__(self, options: DoNotUseDirectlyCallManager):
         self.__options = options
 
+    async def AnalyzeSourceFitness(self, source_metadata: types.DataSourceMetadata,business_context: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="AnalyzeSourceFitness", args={
+            "source_metadata": source_metadata,"business_context": business_context,
+        }, mode="request")
+        return result
     async def BusinessContextAgent(self, business_question: str,success_criteria: str,timeline: str,budget: str,risk_tolerance: str,persona_id: str,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.baml_py.HTTPRequest:
@@ -618,6 +841,13 @@ class BamlHttpRequestClient:
     ) -> baml_py.baml_py.HTTPRequest:
         result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="CongestionManagementAgent", args={
             "current_traffic": current_traffic,"lock_queues": lock_queues,
+        }, mode="request")
+        return result
+    async def CreateTargetTemplate(self, target_examples: typing.List[str],enterprise_domain: str,template_name: str,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="CreateTargetTemplate", args={
+            "target_examples": target_examples,"enterprise_domain": enterprise_domain,"template_name": template_name,
         }, mode="request")
         return result
     async def DataFetcherAgent(self, data_sources: typing.List["types.DataSource"],security_requirements: typing.List[str],
@@ -648,6 +878,20 @@ class BamlHttpRequestClient:
             "current_situation": current_situation,"available_options": available_options,"constraints": constraints,
         }, mode="request")
         return result
+    async def DiscoverFromScratch(self, request: types.ZeroStartDiscovery,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="DiscoverFromScratch", args={
+            "request": request,
+        }, mode="request")
+        return result
+    async def DiscoverKnownSources(self, request: types.KnownSourceRequest,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="DiscoverKnownSources", args={
+            "request": request,
+        }, mode="request")
+        return result
     async def EconomicOptimizationAgent(self, market_data: typing.Dict[str, float],transport_rates: typing.Dict[str, float],routing_options: typing.List["types.RouteOption"],
         baml_options: BamlCallOptions = {},
     ) -> baml_py.baml_py.HTTPRequest:
@@ -660,6 +904,13 @@ class BamlHttpRequestClient:
     ) -> baml_py.baml_py.HTTPRequest:
         result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="FeasibilityAnalyzerAgent", args={
             "business_context": business_context,"recommended_sources": recommended_sources,
+        }, mode="request")
+        return result
+    async def GenerateAlignmentFeedback(self, target: types.ExecutiveTarget,canvas: types.DataBusinessCanvas,alignment_score: types.AlignmentScore,market_changes: typing.Dict[str, str],progress_data: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="GenerateAlignmentFeedback", args={
+            "target": target,"canvas": canvas,"alignment_score": alignment_score,"market_changes": market_changes,"progress_data": progress_data,
         }, mode="request")
         return result
     async def HydrologicalRiskAgent(self, waterway_segments: typing.List[str],forecast_period_days: int,
@@ -683,6 +934,13 @@ class BamlHttpRequestClient:
             "routing_request": routing_request,"current_conditions": current_conditions,
         }, mode="request")
         return result
+    async def ParseExecutiveTarget(self, target_description: str,enterprise_context: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="ParseExecutiveTarget", args={
+            "target_description": target_description,"enterprise_context": enterprise_context,
+        }, mode="request")
+        return result
     async def PersonaResponseAgent(self, base_response: str,persona_id: str,interaction_level: str,technical_depth: str,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.baml_py.HTTPRequest:
@@ -697,6 +955,13 @@ class BamlHttpRequestClient:
             "data_sources": data_sources,"requirements": requirements,
         }, mode="request")
         return result
+    async def PrepareWorkflowData(self, discovered_sources: typing.List["types.DataSourceMetadata"],canvas_data: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="PrepareWorkflowData", args={
+            "discovered_sources": discovered_sources,"canvas_data": canvas_data,
+        }, mode="request")
+        return result
     async def SOWGeneratorAgent(self, business_context: types.BusinessContext,selected_sources: typing.List["types.DataSourceRecommendation"],feasibility_analysis: types.FeasibilityAnalysis,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.baml_py.HTTPRequest:
@@ -709,6 +974,13 @@ class BamlHttpRequestClient:
     ) -> baml_py.baml_py.HTTPRequest:
         result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="SOWInterpreterAgent", args={
             "sow_document": sow_document,"document_format": document_format,
+        }, mode="request")
+        return result
+    async def ScoreStrategicAlignment(self, target: types.ExecutiveTarget,canvas: types.DataBusinessCanvas,enterprise_context: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="ScoreStrategicAlignment", args={
+            "target": target,"canvas": canvas,"enterprise_context": enterprise_context,
         }, mode="request")
         return result
     async def SecurityDecisionAgent(self, operation_context: str,risk_assessment: str,data_sensitivity: str,
@@ -747,6 +1019,13 @@ class BamlHttpStreamRequestClient:
     def __init__(self, options: DoNotUseDirectlyCallManager):
         self.__options = options
 
+    async def AnalyzeSourceFitness(self, source_metadata: types.DataSourceMetadata,business_context: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="AnalyzeSourceFitness", args={
+            "source_metadata": source_metadata,"business_context": business_context,
+        }, mode="stream")
+        return result
     async def BusinessContextAgent(self, business_question: str,success_criteria: str,timeline: str,budget: str,risk_tolerance: str,persona_id: str,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.baml_py.HTTPRequest:
@@ -759,6 +1038,13 @@ class BamlHttpStreamRequestClient:
     ) -> baml_py.baml_py.HTTPRequest:
         result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="CongestionManagementAgent", args={
             "current_traffic": current_traffic,"lock_queues": lock_queues,
+        }, mode="stream")
+        return result
+    async def CreateTargetTemplate(self, target_examples: typing.List[str],enterprise_domain: str,template_name: str,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="CreateTargetTemplate", args={
+            "target_examples": target_examples,"enterprise_domain": enterprise_domain,"template_name": template_name,
         }, mode="stream")
         return result
     async def DataFetcherAgent(self, data_sources: typing.List["types.DataSource"],security_requirements: typing.List[str],
@@ -789,6 +1075,20 @@ class BamlHttpStreamRequestClient:
             "current_situation": current_situation,"available_options": available_options,"constraints": constraints,
         }, mode="stream")
         return result
+    async def DiscoverFromScratch(self, request: types.ZeroStartDiscovery,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="DiscoverFromScratch", args={
+            "request": request,
+        }, mode="stream")
+        return result
+    async def DiscoverKnownSources(self, request: types.KnownSourceRequest,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="DiscoverKnownSources", args={
+            "request": request,
+        }, mode="stream")
+        return result
     async def EconomicOptimizationAgent(self, market_data: typing.Dict[str, float],transport_rates: typing.Dict[str, float],routing_options: typing.List["types.RouteOption"],
         baml_options: BamlCallOptions = {},
     ) -> baml_py.baml_py.HTTPRequest:
@@ -801,6 +1101,13 @@ class BamlHttpStreamRequestClient:
     ) -> baml_py.baml_py.HTTPRequest:
         result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="FeasibilityAnalyzerAgent", args={
             "business_context": business_context,"recommended_sources": recommended_sources,
+        }, mode="stream")
+        return result
+    async def GenerateAlignmentFeedback(self, target: types.ExecutiveTarget,canvas: types.DataBusinessCanvas,alignment_score: types.AlignmentScore,market_changes: typing.Dict[str, str],progress_data: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="GenerateAlignmentFeedback", args={
+            "target": target,"canvas": canvas,"alignment_score": alignment_score,"market_changes": market_changes,"progress_data": progress_data,
         }, mode="stream")
         return result
     async def HydrologicalRiskAgent(self, waterway_segments: typing.List[str],forecast_period_days: int,
@@ -824,6 +1131,13 @@ class BamlHttpStreamRequestClient:
             "routing_request": routing_request,"current_conditions": current_conditions,
         }, mode="stream")
         return result
+    async def ParseExecutiveTarget(self, target_description: str,enterprise_context: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="ParseExecutiveTarget", args={
+            "target_description": target_description,"enterprise_context": enterprise_context,
+        }, mode="stream")
+        return result
     async def PersonaResponseAgent(self, base_response: str,persona_id: str,interaction_level: str,technical_depth: str,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.baml_py.HTTPRequest:
@@ -838,6 +1152,13 @@ class BamlHttpStreamRequestClient:
             "data_sources": data_sources,"requirements": requirements,
         }, mode="stream")
         return result
+    async def PrepareWorkflowData(self, discovered_sources: typing.List["types.DataSourceMetadata"],canvas_data: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="PrepareWorkflowData", args={
+            "discovered_sources": discovered_sources,"canvas_data": canvas_data,
+        }, mode="stream")
+        return result
     async def SOWGeneratorAgent(self, business_context: types.BusinessContext,selected_sources: typing.List["types.DataSourceRecommendation"],feasibility_analysis: types.FeasibilityAnalysis,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.baml_py.HTTPRequest:
@@ -850,6 +1171,13 @@ class BamlHttpStreamRequestClient:
     ) -> baml_py.baml_py.HTTPRequest:
         result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="SOWInterpreterAgent", args={
             "sow_document": sow_document,"document_format": document_format,
+        }, mode="stream")
+        return result
+    async def ScoreStrategicAlignment(self, target: types.ExecutiveTarget,canvas: types.DataBusinessCanvas,enterprise_context: typing.Dict[str, str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="ScoreStrategicAlignment", args={
+            "target": target,"canvas": canvas,"enterprise_context": enterprise_context,
         }, mode="stream")
         return result
     async def SecurityDecisionAgent(self, operation_context: str,risk_assessment: str,data_sensitivity: str,

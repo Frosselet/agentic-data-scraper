@@ -11,6 +11,12 @@ from pathlib import Path
 
 # Import BAML generated client (will be available after baml build)
 try:
+    import sys
+    from pathlib import Path
+    # Add project root to path for baml_client import
+    project_root = Path(__file__).parent.parent.parent.parent
+    sys.path.insert(0, str(project_root))
+
     from baml_client import b
     BAML_AVAILABLE = True
 except ImportError:

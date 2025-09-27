@@ -147,7 +147,7 @@ Once setup is complete:
 1. Open `notebooks/mississippi_river_etkl_workflow.ipynb`
 2. Run cells sequentially to see ET(K)L in action
 3. Explore the semantic collectors in `src/agentic_data_scraper/collectors/`
-4. Try the BAML agents in `baml_src/navigation_agents.baml`
+4. Try the BAML agents in `schemas/agents/baml_src/navigation_agents.baml`
 5. Review the production architecture documentation
 
 The key innovation: **Semantic enrichment happens during data acquisition, not after!** 🧠⚡

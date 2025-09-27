@@ -1,0 +1,26 @@
+{
+  "start_time": "2025-09-27T06:00:44.622674",
+  "components_run": [
+    "sparql_queries"
+  ],
+  "skos_validation": null,
+  "sparql_queries": {
+    "overall_success": false,
+    "error": "SPARQLQuery.__init__() got an unexpected keyword argument 'Lambda_application'. Did you mean 'lambda_application'?",
+    "total_queries": 0,
+    "successful_queries": 0,
+    "failed_queries": 0
+  },
+  "lambda_assessment": null,
+  "overall_success": false,
+  "summary": {
+    "overall_status": "\u274c NOT READY FOR LAMBDA DEPLOYMENT",
+    "components": [
+      {
+        "name": "SPARQL Queries",
+        "status": "\u274c FAIL",
+        "score": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,854 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns="https://agentic-data-scraper.com/ontology/complete-sow#"
+         xml:base="https://agentic-data-scraper.com/ontology/complete-sow"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:gist="https://w3id.org/semanticarts/ontology/gistCore#"
+         xmlns:bridge="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#"
+         xmlns:sow="https://agentic-data-scraper.com/ontology/sow#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:dct="http://purl.org/dc/terms/"
+         xmlns:prov="http://www.w3.org/ns/prov#">
+
+  <owl:Ontology rdf:about="https://agentic-data-scraper.com/ontology/complete-sow">
+    <owl:versionIRI rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow/v1.0"/>
+    <owl:imports rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge"/>
+    <owl:imports rdf:resource="https://agentic-data-scraper.com/ontology/sow"/>
+    <rdfs:label>Complete Semantic SOW Ontology</rdfs:label>
+    <rdfs:comment>Complete OWL representation of Semantic Statement of Work, extending Gist upper ontology</rdfs:comment>
+  </owl:Ontology>
+
+  <!-- ====================================================================== -->
+  <!-- SKOS CONCEPT SCHEMES FOR TAXONOMIC BROWSING                           -->
+  <!-- ====================================================================== -->
+
+  <!-- SOW Taxonomy ConceptScheme -->
+  <skos:ConceptScheme rdf:about="#SOWTaxonomy">
+    <rdfs:label>Statement of Work Taxonomy</rdfs:label>
+    <rdfs:comment>Hierarchical classification of SOW implementation concepts</rdfs:comment>
+    <dct:description>Enables browsable navigation of statement of work components from business challenges through desired outcomes to analytical opportunities and implementation constraints</dct:description>
+    <rdfs:seeAlso rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:seeAlso rdf:resource="#BusinessChallenge"/>
+    <rdfs:seeAlso rdf:resource="#DesiredOutcome"/>
+    <rdfs:seeAlso rdf:resource="#EntityToTrack"/>
+  </skos:ConceptScheme>
+
+  <!-- Analytics Opportunity Taxonomy ConceptScheme -->
+  <skos:ConceptScheme rdf:about="#AnalyticsTaxonomy">
+    <rdfs:label>Analytics Opportunity Taxonomy</rdfs:label>
+    <rdfs:comment>Classification of analytical opportunities and capabilities</rdfs:comment>
+    <dct:description>Hierarchical organization of analytical opportunities including predictive, optimization, and cross-domain analysis capabilities discovered through SOW inference</dct:description>
+    <rdfs:seeAlso rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#CrossDomainOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#PredictiveOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#OptimizationOpportunity"/>
+  </skos:ConceptScheme>
+
+  <!-- ====================================================================== -->
+  <!-- CORE SOW CLASSES (Extending Gist)                                     -->
+  <!-- ====================================================================== -->
+
+  <!-- Semantic Statement of Work as Gist Agreement -->
+  <owl:Class rdf:about="#SemanticStatementOfWork">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Agreement"/>
+    <rdfs:subClassOf rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#SemanticSOWContract"/>
+    <skos:inScheme rdf:resource="#SOWTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:narrower rdf:resource="#BusinessChallenge"/>
+    <skos:narrower rdf:resource="#DesiredOutcome"/>
+    <skos:related rdf:resource="#EntityToTrack"/>
+    <rdfs:label>Semantic Statement of Work</rdfs:label>
+    <rdfs:comment>Complete SOW extending Gist Agreement with semantic inference capabilities</rdfs:comment>
+    <skos:scopeNote>Represents a semantically-enriched Statement of Work that goes beyond traditional contract documentation to include machine-readable business requirements, automated opportunity discovery, and semantic linkage to execution artifacts. This concept bridges human-readable business intent with machine-executable data pipeline specifications. Lambda implementations require: (1) Natural language processing capabilities to extract structured requirements from unstructured SOW documents with named entity recognition and relationship extraction, (2) Semantic reasoning engines using SWRL rules to infer unstated analytical opportunities from explicit business requirements, (3) Automated code generation pipelines that translate semantic requirements into deployable AWS Lambda functions with data contracts and quality checks, (4) Bidirectional traceability linking generated code artifacts back to source SOW requirements for impact analysis and change management, (5) Compliance verification systems ensuring generated solutions meet regulatory and business policy constraints. Architecture should support iterative refinement with human-in-the-loop validation of inferred requirements and automated testing of generated code against business acceptance criteria.</skos:scopeNote>
+    <skos:example>Comprehensive SOW for Mediterranean olive oil supply chain optimization requiring real-time supplier tracking, quality monitoring, and cost analysis across Turkish and Greek production regions</skos:example>
+    <rdfs:seeAlso rdf:resource="#BusinessChallenge"/>
+    <rdfs:seeAlso rdf:resource="#DesiredOutcome"/>
+    <rdfs:seeAlso rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessCanvas"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataContract"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#BusinessRequirement"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Service"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/license"/>
+  </owl:Class>
+
+  <!-- Business Challenge as Gist Category -->
+  <owl:Class rdf:about="#BusinessChallenge">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <rdfs:subClassOf rdf:resource="https://agentic-data-scraper.com/ontology/sow#BusinessRequirement"/>
+    <skos:inScheme rdf:resource="#SOWTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:broader rdf:resource="#SemanticStatementOfWork"/>
+    <skos:related rdf:resource="#DesiredOutcome"/>
+    <skos:related rdf:resource="#EntityToTrack"/>
+    <rdfs:label>Business Challenge</rdfs:label>
+    <rdfs:comment>Core business challenge extending Gist Category</rdfs:comment>
+    <skos:scopeNote>Represents the root business problem that drives data solution requirements, requiring both diagnostic analysis (what's wrong) and prescriptive solution design (how to fix it). Business Challenges are complex, multi-faceted problems that often span organizational boundaries and require interdisciplinary solutions. Lambda implementations must support: (1) Problem decomposition algorithms that break complex challenges into addressable sub-problems with dependency analysis and solution prioritization, (2) Root cause analysis capabilities using correlation analysis, statistical hypothesis testing, and domain expert knowledge integration, (3) Solution space exploration with constraint satisfaction programming to identify viable solution approaches within budget, timeline, and technical limitations, (4) Impact quantification models that measure both direct effects (primary metrics) and indirect effects (spillover benefits) of proposed solutions, (5) Stakeholder impact analysis identifying all parties affected by the challenge and proposed solutions. Consider implementing problem-solution fit validation frameworks with hypothesis-driven development and iterative solution refinement based on measurable business outcomes.</skos:scopeNote>
+    <skos:example>Lack of real-time visibility into supplier performance across Turkish olive oil supply chain during peak harvest season, resulting in 25% cost overruns and quality inconsistencies</skos:example>
+    <rdfs:seeAlso rdf:resource="#DesiredOutcome"/>
+    <rdfs:seeAlso rdf:resource="#EntityToTrack"/>
+    <rdfs:seeAlso rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#SOWStakeholder"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#BusinessRequirement"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessCanvas"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Problem"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/subject"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+  </owl:Class>
+
+  <!-- Desired Outcome as Gist Category -->
+  <owl:Class rdf:about="#DesiredOutcome">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <skos:inScheme rdf:resource="#SOWTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:broader rdf:resource="#SemanticStatementOfWork"/>
+    <skos:related rdf:resource="#BusinessChallenge"/>
+    <skos:related rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:label>Desired Outcome</rdfs:label>
+    <rdfs:comment>Business outcome extending Gist Category</rdfs:comment>
+    <skos:example>Real-time dashboard showing supplier delivery times, quality scores, and geographical risk indicators for all active Turkish olive oil suppliers with automated alerts for performance deviations</skos:example>
+    <rdfs:seeAlso rdf:resource="#BusinessChallenge"/>
+    <rdfs:seeAlso rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#ValueProposition"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#ExecutiveTarget"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#InferredOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Goal"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/description"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+  </owl:Class>
+
+  <!-- Entity to Track as Gist Category -->
+  <owl:Class rdf:about="#EntityToTrack">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <skos:inScheme rdf:resource="#SOWTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:related rdf:resource="#SemanticStatementOfWork"/>
+    <skos:related rdf:resource="#BusinessChallenge"/>
+    <rdfs:label>Entity to Track</rdfs:label>
+    <rdfs:comment>Business entity that needs tracking, extending Gist Category</rdfs:comment>
+    <skos:example>Turkish olive oil suppliers including location coordinates, harvest capacity, certification status, delivery performance metrics, and quality ratings updated weekly</skos:example>
+    <rdfs:seeAlso rdf:resource="#BusinessChallenge"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataAsset"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#SupplyChainEntity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#FinancialEntity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#CommodityEntity"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Thing"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/subject"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+  </owl:Class>
+
+  <!-- ====================================================================== -->
+  <!-- CONTEXT CLASSES (4D Framework)                                        -->
+  <!-- ====================================================================== -->
+
+  <!-- Spatial Context as Gist Category -->
+  <owl:Class rdf:about="#SpatialContext">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <rdfs:subClassOf rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#SpatialBusinessContext"/>
+    <rdfs:label>Spatial Context</rdfs:label>
+    <rdfs:comment>Geographic context for business challenge</rdfs:comment>
+  </owl:Class>
+
+  <!-- Temporal Context as Gist Category -->
+  <owl:Class rdf:about="#TemporalContext">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <rdfs:label>Temporal Context</rdfs:label>
+    <rdfs:comment>Time-based context for business challenge</rdfs:comment>
+  </owl:Class>
+
+  <!-- Domain Context as Gist Category -->
+  <owl:Class rdf:about="#DomainContext">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <rdfs:label>Domain Context</rdfs:label>
+    <rdfs:comment>Business domain context for cross-domain analysis</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="#CrossDomainOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#KnowledgeContext"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/knowledgeAPI"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/subject"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+  </owl:Class>
+
+  <!-- Knowledge Context as Gist Category -->
+  <owl:Class rdf:about="#KnowledgeContext">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <rdfs:label>Knowledge Context</rdfs:label>
+    <rdfs:comment>Implicit knowledge and learning opportunities</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="#DomainContext"/>
+    <rdfs:seeAlso rdf:resource="#CrossDomainOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/knowledgeAPI"/>
+    <rdfs:seeAlso rdf:resource="http://xmlns.com/foaf/0.1/knows"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+  </owl:Class>
+
+  <!-- ====================================================================== -->
+  <!-- STAKEHOLDER CLASSES (Extending Gist Person)                           -->
+  <!-- ====================================================================== -->
+
+  <!-- SOW Stakeholder as Gist Person -->
+  <owl:Class rdf:about="#SOWStakeholder">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Person"/>
+    <rdfs:subClassOf rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#SOWStakeholder"/>
+    <rdfs:label>SOW Stakeholder</rdfs:label>
+    <rdfs:comment>Person involved in SOW business challenge</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="#BusinessAnalyst"/>
+    <rdfs:seeAlso rdf:resource="#DomainExpert"/>
+    <rdfs:seeAlso rdf:resource="#BusinessChallenge"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Person"/>
+    <rdfs:seeAlso rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/contributor"/>
+  </owl:Class>
+
+  <!-- Business Analyst as SOW Stakeholder -->
+  <owl:Class rdf:about="#BusinessAnalyst">
+    <rdfs:subClassOf rdf:resource="#SOWStakeholder"/>
+    <rdfs:label>Business Analyst</rdfs:label>
+    <rdfs:comment>Business analyst stakeholder in SOW process</rdfs:comment>
+  </owl:Class>
+
+  <!-- Domain Expert as SOW Stakeholder -->
+  <owl:Class rdf:about="#DomainExpert">
+    <rdfs:subClassOf rdf:resource="#SOWStakeholder"/>
+    <rdfs:label>Domain Expert</rdfs:label>
+    <rdfs:comment>Domain expert providing business context</rdfs:comment>
+  </owl:Class>
+
+  <!-- ====================================================================== -->
+  <!-- INFERENCE CLASSES (Extending SOW Inference Rules)                     -->
+  <!-- ====================================================================== -->
+
+  <!-- Analytical Opportunity as Inferred Opportunity -->
+  <owl:Class rdf:about="#AnalyticalOpportunity">
+    <rdfs:subClassOf rdf:resource="https://agentic-data-scraper.com/ontology/sow#InferredOpportunity"/>
+    <skos:inScheme rdf:resource="#AnalyticsTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:narrower rdf:resource="#CrossDomainOpportunity"/>
+    <skos:narrower rdf:resource="#PredictiveOpportunity"/>
+    <skos:narrower rdf:resource="#OptimizationOpportunity"/>
+    <rdfs:label>Analytical Opportunity</rdfs:label>
+    <rdfs:comment>Discovered analytical opportunity from SOW inference</rdfs:comment>
+    <skos:example>Machine learning opportunity to predict olive oil harvest yields based on weather patterns, soil conditions, and historical supplier performance data</skos:example>
+    <rdfs:seeAlso rdf:resource="#BusinessChallenge"/>
+    <rdfs:seeAlso rdf:resource="#DesiredOutcome"/>
+    <rdfs:seeAlso rdf:resource="#CrossDomainOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#PredictiveOpportunity"/>
+    <rdfs:seeAlso rdf:resource="#OptimizationOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#InferredOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#SpatialAnalysisOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#TemporalAnalysisOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#NetworkAnalysisOpportunity"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/Opportunity"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/type"/>
+  </owl:Class>
+
+  <!-- Cross-Domain Opportunity -->
+  <owl:Class rdf:about="#CrossDomainOpportunity">
+    <rdfs:subClassOf rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:subClassOf rdf:resource="https://agentic-data-scraper.com/ontology/sow#CrossDomainOpportunity"/>
+    <skos:inScheme rdf:resource="#AnalyticsTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:broader rdf:resource="#AnalyticalOpportunity"/>
+    <skos:related rdf:resource="#PredictiveOpportunity"/>
+    <skos:related rdf:resource="#OptimizationOpportunity"/>
+    <rdfs:label>Cross-Domain Opportunity</rdfs:label>
+    <rdfs:comment>Opportunity spanning multiple business domains</rdfs:comment>
+    <skos:scopeNote>Represents analytical opportunities that span multiple business domains or data sources, requiring integration across traditionally siloed systems and expertise areas. These opportunities often yield the highest ROI but require careful orchestration of data contracts, security boundaries, and domain expertise. Lambda implementations must address: (1) Cross-domain data integration with semantic harmonization across different business ontologies and data models, (2) Federated security and access control respecting domain-specific privacy and compliance requirements while enabling cross-domain analysis, (3) Distributed processing coordination with saga patterns for long-running cross-domain transactions, (4) Domain expert collaboration workflows with shared context and attribution across different business functions, (5) Conflict resolution mechanisms when domain-specific business rules or data definitions conflict. Architecture should implement domain-driven design principles with bounded contexts, event-driven communication between domains, and shared kernel patterns for common concepts. Consider implementing enterprise data fabric with semantic data virtualization for real-time cross-domain queries without data movement.</skos:scopeNote>
+    <skos:example>Integrated supply chain and financial analytics combining Turkish supplier performance data with commodity price forecasting and currency exchange risk assessment</skos:example>
+    <rdfs:seeAlso rdf:resource="#DomainContext"/>
+    <rdfs:seeAlso rdf:resource="#KnowledgeContext"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#SupplyChainEntity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#FinancialEntity"/>
+    <rdfs:seeAlso rdf:resource="https://agentic-data-scraper.com/ontology/sow#CommodityEntity"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+  </owl:Class>
+
+  <!-- Predictive Opportunity -->
+  <owl:Class rdf:about="#PredictiveOpportunity">
+    <rdfs:subClassOf rdf:resource="#AnalyticalOpportunity"/>
+    <skos:inScheme rdf:resource="#AnalyticsTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:broader rdf:resource="#AnalyticalOpportunity"/>
+    <skos:related rdf:resource="#CrossDomainOpportunity"/>
+    <skos:related rdf:resource="#OptimizationOpportunity"/>
+    <rdfs:label>Predictive Opportunity</rdfs:label>
+    <rdfs:comment>Predictive analytics opportunity identified through inference</rdfs:comment>
+    <skos:example>Time-series forecasting model predicting olive oil price fluctuations based on Mediterranean weather patterns, harvest yield data, and global commodity market trends</skos:example>
+  </owl:Class>
+
+  <!-- Optimization Opportunity -->
+  <owl:Class rdf:about="#OptimizationOpportunity">
+    <rdfs:subClassOf rdf:resource="#AnalyticalOpportunity"/>
+    <skos:inScheme rdf:resource="#AnalyticsTaxonomy"/>
+    <!-- Hierarchical SKOS relationships for taxonomic browsing -->
+    <skos:broader rdf:resource="#AnalyticalOpportunity"/>
+    <skos:related rdf:resource="#CrossDomainOpportunity"/>
+    <skos:related rdf:resource="#PredictiveOpportunity"/>
+    <rdfs:label>Optimization Opportunity</rdfs:label>
+    <rdfs:comment>Business optimization opportunity discovered through reasoning</rdfs:comment>
+    <skos:example>Supply chain route optimization algorithm to minimize transportation costs and delivery times by analyzing Turkish supplier locations, warehouse capacities, and customer demand patterns</skos:example>
+  </owl:Class>
+
+  <!-- ====================================================================== -->
+  <!-- ELICITATION CLASSES (Process Metadata)                                -->
+  <!-- ====================================================================== -->
+
+  <!-- Elicitation Session as Gist Event -->
+  <owl:Class rdf:about="#ElicitationSession">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Event"/>
+    <rdfs:label>Elicitation Session</rdfs:label>
+    <rdfs:comment>Business elicitation session event</rdfs:comment>
+  </owl:Class>
+
+  <!-- Elicitation Step as Gist Task -->
+  <owl:Class rdf:about="#ElicitationStep">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Task"/>
+    <rdfs:label>Elicitation Step</rdfs:label>
+    <rdfs:comment>Individual step in elicitation process</rdfs:comment>
+  </owl:Class>
+
+  <!-- Business Validation as Gist Event -->
+  <owl:Class rdf:about="#BusinessValidation">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Event"/>
+    <rdfs:label>Business Validation</rdfs:label>
+    <rdfs:comment>Business validation of inferred opportunities</rdfs:comment>
+  </owl:Class>
+
+  <!-- ====================================================================== -->
+  <!-- CONSTRAINT CLASSES                                                     -->
+  <!-- ====================================================================== -->
+
+  <!-- Constraint as Gist Category -->
+  <owl:Class rdf:about="#Constraint">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/semanticarts/ontology/gistCore#Category"/>
+    <rdfs:label>Constraint</rdfs:label>
+    <rdfs:comment>Business constraint affecting SOW implementation</rdfs:comment>
+    <skos:scopeNote>Represents limitations, restrictions, or requirements that constrain solution design and implementation approaches. Constraints are not obstacles to avoid but design parameters that shape optimal solutions within feasible boundaries. Lambda implementations must support: (1) Constraint satisfaction programming with multi-objective optimization balancing competing constraints (cost vs. speed vs. quality), (2) Dynamic constraint validation during solution design with real-time feasibility checking and constraint violation alerts, (3) Constraint relaxation algorithms that identify minimum constraint modifications to enable otherwise infeasible solutions, (4) Constraint impact analysis showing how individual constraints affect solution space and trade-offs, (5) Constraint monitoring during implementation with automated alerts when operational metrics approach constraint boundaries. Architecture should implement constraint-aware code generation where constraints are compiled into validation rules, resource allocation policies, and runtime governance mechanisms. Consider constraint hierarchies where critical constraints are non-negotiable while flexible constraints can be optimized through negotiation and trade-off analysis.</skos:scopeNote>
+    <rdfs:seeAlso rdf:resource="#BudgetConstraint"/>
+    <rdfs:seeAlso rdf:resource="#TimelineConstraint"/>
+    <rdfs:seeAlso rdf:resource="#TechnicalConstraint"/>
+    <rdfs:seeAlso rdf:resource="#RegulatoryConstraint"/>
+    <rdfs:seeAlso rdf:resource="https://schema.org/PropertyValue"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/dc/terms/requires"/>
+  </owl:Class>
+
+  <!-- Budget Constraint -->
+  <owl:Class rdf:about="#BudgetConstraint">
+    <rdfs:subClassOf rdf:resource="#Constraint"/>
+    <rdfs:label>Budget Constraint</rdfs:label>
+    <rdfs:comment>Financial constraint on SOW implementation</rdfs:comment>
+    <skos:example>Maximum budget allocation of €50,000 for AWS infrastructure and Lambda function development with monthly operational costs not exceeding €2,500</skos:example>
+  </owl:Class>
+
+  <!-- Timeline Constraint -->
+  <owl:Class rdf:about="#TimelineConstraint">
+    <rdfs:subClassOf rdf:resource="#Constraint"/>
+    <rdfs:label>Timeline Constraint</rdfs:label>
+    <rdfs:comment>Time-based constraint on SOW delivery</rdfs:comment>
+    <skos:example>MVP delivery required by October 15, 2025 to support Q4 olive oil procurement decisions, with full production deployment by December 1, 2025</skos:example>
+  </owl:Class>
+
+  <!-- Technical Constraint -->
+  <owl:Class rdf:about="#TechnicalConstraint">
+    <rdfs:subClassOf rdf:resource="#Constraint"/>
+    <rdfs:label>Technical Constraint</rdfs:label>
+    <rdfs:comment>Technical limitation affecting implementation</rdfs:comment>
+  </owl:Class>
+
+  <!-- Regulatory Constraint -->
+  <owl:Class rdf:about="#RegulatoryConstraint">
+    <rdfs:subClassOf rdf:resource="#Constraint"/>
+    <rdfs:label>Regulatory Constraint</rdfs:label>
+    <rdfs:comment>Regulatory compliance requirement</rdfs:comment>
+  </owl:Class>
+
+  <!-- ====================================================================== -->
+  <!-- CORE PROPERTIES (SOW Structure)                                        -->
+  <!-- ====================================================================== -->
+
+  <!-- SOW Core Properties -->
+  <owl:ObjectProperty rdf:about="#hasBusinessChallenge">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:range rdf:resource="#BusinessChallenge"/>
+    <rdfs:label>has business challenge</rdfs:label>
+    <rdfs:comment>Links SOW to its core business challenge</rdfs:comment>
+    <skos:example>OliveSupplyChainSOW hasBusinessChallenge SupplierVisibilityGap - connects the SOW to its primary business problem requiring solution</skos:example>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isBusinessChallengeOf">
+    <owl:inverseOf rdf:resource="#hasBusinessChallenge"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#BusinessChallenge"/>
+    <rdfs:range rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:label>is business challenge of</rdfs:label>
+    <rdfs:comment>Inverse of hasBusinessChallenge - links challenge back to its SOW</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasDesiredOutcome">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:range rdf:resource="#DesiredOutcome"/>
+    <rdfs:label>has desired outcome</rdfs:label>
+    <rdfs:comment>Links SOW to desired business outcomes</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isDesiredOutcomeOf">
+    <owl:inverseOf rdf:resource="#hasDesiredOutcome"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#DesiredOutcome"/>
+    <rdfs:range rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:label>is desired outcome of</rdfs:label>
+    <rdfs:comment>Inverse of hasDesiredOutcome - links outcome back to its SOW</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#tracksEntity">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#BusinessChallenge"/>
+    <rdfs:range rdf:resource="#EntityToTrack"/>
+    <rdfs:label>tracks entity</rdfs:label>
+    <rdfs:comment>Links business challenge to entities that need tracking</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isTrackedByChallenge">
+    <owl:inverseOf rdf:resource="#tracksEntity"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#EntityToTrack"/>
+    <rdfs:range rdf:resource="#BusinessChallenge"/>
+    <rdfs:label>is tracked by challenge</rdfs:label>
+    <rdfs:comment>Inverse of tracksEntity - links entity back to challenges that track it</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasStakeholder">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:range rdf:resource="#SOWStakeholder"/>
+    <rdfs:label>has stakeholder</rdfs:label>
+    <rdfs:comment>Links SOW to involved stakeholders</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isStakeholderOf">
+    <owl:inverseOf rdf:resource="#hasStakeholder"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SOWStakeholder"/>
+    <rdfs:range rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:label>is stakeholder of</rdfs:label>
+    <rdfs:comment>Inverse of hasStakeholder - links stakeholder back to SOW they are involved in</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <!-- Context Properties -->
+  <owl:ObjectProperty rdf:about="#hasSpatialContext">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#BusinessChallenge"/>
+    <rdfs:range rdf:resource="#SpatialContext"/>
+    <rdfs:label>has spatial context</rdfs:label>
+    <rdfs:comment>Links challenge to geographic context</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isSpatialContextOf">
+    <owl:inverseOf rdf:resource="#hasSpatialContext"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SpatialContext"/>
+    <rdfs:range rdf:resource="#BusinessChallenge"/>
+    <rdfs:label>is spatial context of</rdfs:label>
+    <rdfs:comment>Inverse of hasSpatialContext - links spatial context back to challenges it applies to</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasTemporalContext">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#BusinessChallenge"/>
+    <rdfs:range rdf:resource="#TemporalContext"/>
+    <rdfs:label>has temporal context</rdfs:label>
+    <rdfs:comment>Links challenge to time-based context</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isTemporalContextOf">
+    <owl:inverseOf rdf:resource="#hasTemporalContext"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#TemporalContext"/>
+    <rdfs:range rdf:resource="#BusinessChallenge"/>
+    <rdfs:label>is temporal context of</rdfs:label>
+    <rdfs:comment>Inverse of hasTemporalContext - links temporal context back to challenges it applies to</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasDomainContext">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:range rdf:resource="#DomainContext"/>
+    <rdfs:label>has domain context</rdfs:label>
+    <rdfs:comment>Links SOW to business domain context</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isDomainContextOf">
+    <owl:inverseOf rdf:resource="#hasDomainContext"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#DomainContext"/>
+    <rdfs:range rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:label>is domain context of</rdfs:label>
+    <rdfs:comment>Inverse of hasDomainContext - links domain context back to SOW it applies to</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasKnowledgeContext">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:range rdf:resource="#KnowledgeContext"/>
+    <rdfs:label>has knowledge context</rdfs:label>
+    <rdfs:comment>Links SOW to implicit knowledge context</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isKnowledgeContextOf">
+    <owl:inverseOf rdf:resource="#hasKnowledgeContext"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#KnowledgeContext"/>
+    <rdfs:range rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:label>is knowledge context of</rdfs:label>
+    <rdfs:comment>Inverse of hasKnowledgeContext - links knowledge context back to SOW it applies to</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <!-- Inference Properties -->
+  <owl:ObjectProperty rdf:about="#inferredFrom">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:range rdf:resource="#BusinessChallenge"/>
+    <rdfs:label>inferred from</rdfs:label>
+    <rdfs:comment>Links inferred opportunity to source business challenge</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#infersOpportunity">
+    <owl:inverseOf rdf:resource="#inferredFrom"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#BusinessChallenge"/>
+    <rdfs:range rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:label>infers opportunity</rdfs:label>
+    <rdfs:comment>Inverse of inferredFrom - links business challenge to opportunities it infers</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#discoversOpportunity">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:range rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:label>discovers opportunity</rdfs:label>
+    <rdfs:comment>Links SOW to discovered analytical opportunities</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isDiscoveredBySOW">
+    <owl:inverseOf rdf:resource="#discoversOpportunity"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:range rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:label>is discovered by SOW</rdfs:label>
+    <rdfs:comment>Inverse of discoversOpportunity - links opportunity back to SOW that discovered it</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <!-- Constraint Properties -->
+  <owl:ObjectProperty rdf:about="#hasConstraint">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:range rdf:resource="#Constraint"/>
+    <rdfs:label>has constraint</rdfs:label>
+    <rdfs:comment>Links SOW to business constraints</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isConstraintOf">
+    <owl:inverseOf rdf:resource="#hasConstraint"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#Constraint"/>
+    <rdfs:range rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:label>is constraint of</rdfs:label>
+    <rdfs:comment>Inverse of hasConstraint - links constraint back to SOW it constrains</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <!-- Elicitation Properties -->
+  <owl:ObjectProperty rdf:about="#elicitedIn">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:range rdf:resource="#ElicitationSession"/>
+    <rdfs:label>elicited in</rdfs:label>
+    <rdfs:comment>Links SOW to elicitation session</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#elicitsSOW">
+    <owl:inverseOf rdf:resource="#elicitedIn"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#ElicitationSession"/>
+    <rdfs:range rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:label>elicits SOW</rdfs:label>
+    <rdfs:comment>Inverse of elicitedIn - links elicitation session to SOW it elicits</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#hasElicitationStep">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#ElicitationSession"/>
+    <rdfs:range rdf:resource="#ElicitationStep"/>
+    <rdfs:label>has elicitation step</rdfs:label>
+    <rdfs:comment>Links session to individual elicitation steps</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isElicitationStepOf">
+    <owl:inverseOf rdf:resource="#hasElicitationStep"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#ElicitationStep"/>
+    <rdfs:range rdf:resource="#ElicitationSession"/>
+    <rdfs:label>is elicitation step of</rdfs:label>
+    <rdfs:comment>Inverse of hasElicitationStep - links step back to session it belongs to</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#validatedBy">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:range rdf:resource="#BusinessValidation"/>
+    <rdfs:label>validated by</rdfs:label>
+    <rdfs:comment>Links opportunity to business validation event</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#validatesOpportunity">
+    <owl:inverseOf rdf:resource="#validatedBy"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#BusinessValidation"/>
+    <rdfs:range rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:label>validates opportunity</rdfs:label>
+    <rdfs:comment>Inverse of validatedBy - links validation event to opportunity it validates</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <!-- Bridge to Data Business Canvas -->
+  <owl:ObjectProperty rdf:about="#implementsCanvas">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:range rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessCanvas"/>
+    <rdfs:label>implements canvas</rdfs:label>
+    <rdfs:comment>Links SOW to implementing Data Business Canvas</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isImplementedBySOW">
+    <owl:inverseOf rdf:resource="#implementsCanvas"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataBusinessCanvas"/>
+    <rdfs:range rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:label>is implemented by SOW</rdfs:label>
+    <rdfs:comment>Inverse of implementsCanvas - links canvas back to SOW that implements it</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <!-- Bridge to Data Contracts -->
+  <owl:ObjectProperty rdf:about="#realizesAsContract">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:range rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataContract"/>
+    <rdfs:label>realizes as contract</rdfs:label>
+    <rdfs:comment>Links SOW to operational data contracts</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="#isRealizedAsContractBy">
+    <owl:inverseOf rdf:resource="#realizesAsContract"/>
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="https://agentic-data-scraper.com/ontology/gist-dbc-bridge#DataContract"/>
+    <rdfs:range rdf:resource="#SemanticStatementOfWork"/>
+    <rdfs:label>is realized as contract by</rdfs:label>
+    <rdfs:comment>Inverse of realizesAsContract - links data contract back to SOW that realizes it</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <!-- ====================================================================== -->
+  <!-- DATATYPE PROPERTIES                                                   -->
+  <!-- ====================================================================== -->
+
+  <!-- Business Challenge Properties -->
+  <owl:DatatypeProperty rdf:about="#challengeDescription">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#BusinessChallenge"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>challenge description</rdfs:label>
+    <rdfs:comment>Natural language description of business challenge</rdfs:comment>
+    <skos:example>"Inability to track real-time delivery performance and quality metrics across 50+ Turkish olive oil suppliers results in procurement delays and 15-20% cost overruns during peak harvest season"</skos:example>
+  </owl:DatatypeProperty>
+
+  <!-- Entity Properties -->
+  <owl:DatatypeProperty rdf:about="#entityImportance">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#EntityToTrack"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>entity importance</rdfs:label>
+    <rdfs:comment>Importance level: critical, high, medium, low</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#semanticType">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#EntityToTrack"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>semantic type</rdfs:label>
+    <rdfs:comment>Semantic type classification for entity</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#businessContext">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#EntityToTrack"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>business context</rdfs:label>
+    <rdfs:comment>Business context for entity tracking</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <!-- Outcome Properties -->
+  <owl:DatatypeProperty rdf:about="#outcomeDescription">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#DesiredOutcome"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>outcome description</rdfs:label>
+    <rdfs:comment>Description of desired business outcome</rdfs:comment>
+    <skos:example>"Automated dashboard providing real-time supplier performance scores, predictive delivery alerts, and quality trend analysis for all Mediterranean olive oil suppliers"</skos:example>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#outcomePriority">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#DesiredOutcome"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>outcome priority</rdfs:label>
+    <rdfs:comment>Priority level: must-have, should-have, nice-to-have</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#businessValue">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#DesiredOutcome"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>business value</rdfs:label>
+    <rdfs:comment>Expected business value from outcome</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <!-- Stakeholder Properties -->
+  <owl:DatatypeProperty rdf:about="#stakeholderRole">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SOWStakeholder"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>stakeholder role</rdfs:label>
+    <rdfs:comment>Role of stakeholder in SOW process</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#department">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SOWStakeholder"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>department</rdfs:label>
+    <rdfs:comment>Department of stakeholder</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#decisionAuthority">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SOWStakeholder"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>decision authority</rdfs:label>
+    <rdfs:comment>Decision-making authority level: high, medium, low, none</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <!-- Context Properties -->
+  <owl:DatatypeProperty rdf:about="#geographicScope">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#SpatialContext"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>geographic scope</rdfs:label>
+    <rdfs:comment>Geographic scope: local, regional, national, international, global</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#timeHorizon">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#TemporalContext"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>time horizon</rdfs:label>
+    <rdfs:comment>Time horizon for business challenge</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <!-- Opportunity Properties -->
+  <owl:DatatypeProperty rdf:about="#opportunityTitle">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>opportunity title</rdfs:label>
+    <rdfs:comment>Title of analytical opportunity</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#opportunityDescription">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>opportunity description</rdfs:label>
+    <rdfs:comment>Detailed description of opportunity</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#implementationComplexity">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>implementation complexity</rdfs:label>
+    <rdfs:comment>Implementation complexity: low, medium, high</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#surpriseFactor">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>surprise factor</rdfs:label>
+    <rdfs:comment>Why this opportunity would surprise and delight business</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <!-- Inference Metadata Properties -->
+  <owl:DatatypeProperty rdf:about="#inferenceConfidence">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:label>inference confidence</rdfs:label>
+    <rdfs:comment>Confidence level of inference (0.0-1.0)</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#reasoningTrace">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#AnalyticalOpportunity"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>reasoning trace</rdfs:label>
+    <rdfs:comment>Trace of reasoning process leading to opportunity</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <!-- Elicitation Properties -->
+  <owl:DatatypeProperty rdf:about="#sessionId">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#ElicitationSession"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>session ID</rdfs:label>
+    <rdfs:comment>Unique identifier for elicitation session</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#sessionTimestamp">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#ElicitationSession"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdfs:label>session timestamp</rdfs:label>
+    <rdfs:comment>Timestamp of elicitation session</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#stepNumber">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#ElicitationStep"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <rdfs:label>step number</rdfs:label>
+    <rdfs:comment>Sequential number of elicitation step</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#questionType">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#ElicitationStep"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>question type</rdfs:label>
+    <rdfs:comment>Type of elicitation question</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#question">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#ElicitationStep"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>question</rdfs:label>
+    <rdfs:comment>Elicitation question asked</rdfs:comment>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="#response">
+    <rdfs:isDefinedBy rdf:resource="https://agentic-data-scraper.com/ontology/complete-sow"/>
+    <rdfs:domain rdf:resource="#ElicitationStep"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>response</rdfs:label>
+    <rdfs:comment>Response provided by stakeholder</rdfs:comment>
+  </owl:DatatypeProperty>
+
+</rdf:RDF>

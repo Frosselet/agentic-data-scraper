@@ -23,13 +23,27 @@ class StreamState(BaseModel, typing.Generic[StreamStateValueT]):
     value: StreamStateValueT
     state: typing_extensions.Literal["Pending", "Incomplete", "Complete"]
 # #########################################################################
-# Generated classes (21)
+# Generated classes (30)
 # #########################################################################
 
 class AgriculturePipelineConfig(BaseModel):
     ontologies: typing.List[str]
     data_sources: typing.List[str]
     quality_thresholds: typing.Dict[str, float]
+
+class AlignmentScore(BaseModel):
+    overall_score: typing.Optional[float] = None
+    confidence: typing.Optional[float] = None
+    strategic_fit: typing.Optional[float] = None
+    impact_potential: typing.Optional[float] = None
+    timeline_feasibility: typing.Optional[float] = None
+    resource_efficiency: typing.Optional[float] = None
+    risk_assessment: typing.Optional[float] = None
+    dependency_analysis: typing.Optional[float] = None
+    reasoning: typing.Optional[str] = None
+    key_factors: typing.List[str]
+    risk_factors: typing.List[str]
+    recommendations: typing.List[str]
 
 class BusinessContext(BaseModel):
     question: typing.Optional[str] = None
@@ -49,6 +63,24 @@ class CongestionAlert(BaseModel):
     alternative_routes: typing.List[str]
     cost_impact_percent: typing.Optional[float] = None
 
+class DataBusinessCanvas(BaseModel):
+    value_propositions: typing.List[str]
+    key_activities: typing.List[str]
+    key_resources: typing.List[str]
+    key_partnerships: typing.List[str]
+    customer_segments: typing.List[str]
+    customer_relationships: typing.List[str]
+    channels: typing.List[str]
+    cost_structure: typing.List[str]
+    revenue_streams: typing.List[str]
+    data_assets: typing.List[str]
+    intelligence_capabilities: typing.List[str]
+    competitive_advantages: typing.List[str]
+    business_domain: typing.Optional[str] = None
+    use_case_description: typing.Optional[str] = None
+    timeline: typing.Optional[str] = None
+    budget: typing.Optional[str] = None
+
 class DataContract(BaseModel):
     source_requirements: typing.List[str]
     validation_rules: typing.List[str]
@@ -65,6 +97,37 @@ class DataSource(BaseModel):
     rate_limits: typing.Optional[int] = None
     documentation_url: typing.Optional[str] = None
 
+class DataSourceMetadata(BaseModel):
+    name: typing.Optional[str] = None
+    url: typing.Optional[str] = None
+    description: typing.Optional[str] = None
+    source_type: typing.Optional[types.DataSourceType] = None
+    access_method: typing.Optional[str] = None
+    authentication_required: typing.Optional[bool] = None
+    authentication_method: typing.Optional[str] = None
+    rate_limits: typing.Optional[typing.Dict[str, str]] = None
+    data_formats: typing.List[str]
+    schema_available: typing.Optional[bool] = None
+    schema_url: typing.Optional[str] = None
+    sample_data_url: typing.Optional[str] = None
+    data_volume_estimate: typing.Optional[str] = None
+    update_frequency: typing.Optional[types.UpdateFrequency] = None
+    historical_data_available: typing.Optional[bool] = None
+    historical_range: typing.Optional[str] = None
+    data_quality_score: typing.Optional[float] = None
+    completeness_estimate: typing.Optional[float] = None
+    accuracy_indicators: typing.List[str]
+    known_data_issues: typing.List[str]
+    license_type: typing.Optional[str] = None
+    terms_of_use_url: typing.Optional[str] = None
+    privacy_considerations: typing.List[str]
+    compliance_standards: typing.List[str]
+    relevance_score: typing.Optional[float] = None
+    business_domains: typing.List[str]
+    use_cases: typing.List[str]
+    discovery_method: typing.Optional[str] = None
+    confidence_score: typing.Optional[float] = None
+
 class DataSourceRecommendation(BaseModel):
     name: typing.Optional[str] = None
     type: typing.Optional[str] = None
@@ -80,6 +143,34 @@ class DataSourceRecommendation(BaseModel):
     pros: typing.List[str]
     cons: typing.List[str]
     semantic_vocabularies: typing.List[str]
+
+class DiscoveryResult(BaseModel):
+    discovery_path: typing.Optional[types.DiscoveryPath] = None
+    discovered_sources: typing.List["DataSourceMetadata"]
+    total_sources_found: typing.Optional[int] = None
+    search_queries_used: typing.List[str]
+    discovery_duration_seconds: typing.Optional[float] = None
+    recommended_next_steps: typing.List[str]
+    prefilled_operations_data: typing.Dict[str, str]
+    prefilled_governance_data: typing.Dict[str, str]
+
+class ExecutiveTarget(BaseModel):
+    id: typing.Optional[str] = None
+    title: typing.Optional[str] = None
+    description: typing.Optional[str] = None
+    category: typing.Optional[types.TargetCategory] = None
+    priority: typing.Optional[types.TargetPriority] = None
+    owner: typing.Optional[str] = None
+    owner_role: typing.Optional[str] = None
+    deadline: typing.Optional[str] = None
+    success_metrics: typing.List[str]
+    target_value: typing.Optional[str] = None
+    baseline_value: typing.Optional[str] = None
+    business_domain: typing.Optional[str] = None
+    stakeholders: typing.List[str]
+    dependencies: typing.List[str]
+    constraints: typing.List[str]
+    status: typing.Optional[str] = None
 
 class FeasibilityAnalysis(BaseModel):
     overall_feasibility: typing.Optional[str] = None
@@ -98,6 +189,12 @@ class GeneratedPipeline(BaseModel):
     validation_code: typing.Optional[str] = None
     documentation: typing.Optional[str] = None
     test_cases: typing.List[str]
+
+class KnownSourceRequest(BaseModel):
+    source_urls: typing.List[str]
+    expected_source_type: typing.Optional[types.DataSourceType] = None
+    specific_datasets: typing.Optional[typing.List[str]] = None
+    collection_depth: typing.Optional[str] = None
 
 class MarketOpportunity(BaseModel):
     commodity: typing.Optional[str] = None
@@ -188,6 +285,20 @@ class SupplyChainPipelineConfig(BaseModel):
     data_sources: typing.List[str]
     quality_thresholds: typing.Dict[str, float]
 
+class TargetParsingResult(BaseModel):
+    key_themes: typing.List[str]
+    quantitative_targets: typing.List[str]
+    timeframes: typing.List[str]
+    stakeholders: typing.List[str]
+    success_indicators: typing.List[str]
+    suggested_category: typing.Optional[types.TargetCategory] = None
+    suggested_priority: typing.Optional[types.TargetPriority] = None
+    complexity_score: typing.Optional[float] = None
+    required_data_types: typing.List[str]
+    suggested_metrics: typing.List[str]
+    potential_data_sources: typing.List[str]
+    confidence: typing.Optional[float] = None
+
 class TradingPipelineConfig(BaseModel):
     ontologies: typing.List[str]
     data_sources: typing.List[str]
@@ -219,6 +330,26 @@ class WaterwayConditions(BaseModel):
     weather_impact: typing.Optional[str] = None
     lock_delays: typing.List[int]
     depth_restrictions: typing.List[float]
+
+class WorkflowPrepopulation(BaseModel):
+    operations_data: typing.Dict[str, str]
+    governance_data: typing.Dict[str, str]
+    review_data: typing.Dict[str, str]
+
+class ZeroStartDiscovery(BaseModel):
+    business_domain: typing.Optional[str] = None
+    use_case_description: typing.Optional[str] = None
+    required_data_types: typing.List[str]
+    geographic_scope: typing.Optional[str] = None
+    time_period_requirements: typing.Optional[str] = None
+    max_sources_to_find: typing.Optional[int] = None
+    preferred_source_types: typing.Optional[typing.List[types.DataSourceType]] = None
+    exclude_paid_sources: typing.Optional[bool] = None
+    require_api_access: typing.Optional[bool] = None
+    search_strategy: typing.Optional[str] = None
+    include_academic_sources: typing.Optional[bool] = None
+    include_government_sources: typing.Optional[bool] = None
+    include_commercial_sources: typing.Optional[bool] = None
 
 # #########################################################################
 # Generated type aliases (0)
