@@ -29,6 +29,10 @@ cd collectors && python debug_usgs_api.py 2>/dev/null || echo "ℹ️  Collector
 echo "⚡ Testing agentic-data-pipelines..."
 cd pipelines && python -c "import src.agentic_pipelines.parsers; print('✅ Pipeline parsers ready')" && cd ..
 
+# Graph middleware layer
+echo "📊 Testing agentic-graph-middleware..."
+cd graph && python -c "from src.agentic_graph_middleware.core.ontology_materializer import OntologyMaterializer; print('✅ KuzuDB ontology materializer ready')" && cd ..
+
 # Deployment layer
 echo "☁️  Testing agentic-aws-deployment..."
 cd deployment && echo "✅ Deployment configuration ready" && cd ..

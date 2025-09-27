@@ -16,13 +16,14 @@ agentic-data-scraper/                 # Main orchestrator
 ├── contracts/                       # → agentic-business-contracts
 ├── collectors/                      # → agentic-data-collectors
 ├── pipelines/                       # → agentic-data-pipelines
+├── graph/                           # → agentic-graph-middleware
 └── deployment/                      # → agentic-aws-deployment
 ```
 
 ### Cross-Repository Workflow
 - Each submodule has its own specialized CLAUDE.md with focused context
 - Main repository orchestrates integration and provides unified testing
-- Follow dependency hierarchy: ontologies → core → agents/contracts/collectors → pipelines → deployment
+- Follow dependency hierarchy: ontologies → core → agents/contracts/collectors → graph → pipelines → deployment
 
 ### Development Process
 - Follow ADR (Architecture Decision Records) methodology

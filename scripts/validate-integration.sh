@@ -7,7 +7,7 @@ echo "🔍 Validating submodule integration..."
 
 # Check submodule structure
 echo "📁 Checking submodule structure..."
-for module in ontologies core agents contracts collectors pipelines deployment; do
+for module in ontologies core agents contracts collectors pipelines graph deployment; do
     if [ -L "$module" ]; then
         echo "✅ $module -> $(readlink $module)"
     else
@@ -35,6 +35,7 @@ dependencies=(
     "agents:depends_on_core_ontologies"
     "contracts:depends_on_core_ontologies"
     "collectors:depends_on_core_ontologies"
+    "graph:depends_on_ontologies_core"
     "pipelines:depends_on_all_above"
     "deployment:depends_on_pipelines"
 )
@@ -52,7 +53,7 @@ done
 
 # Check CLAUDE.md files
 echo "📚 Checking CLAUDE.md files..."
-for module in ontologies core agents contracts collectors pipelines deployment; do
+for module in ontologies core agents contracts collectors pipelines graph deployment; do
     if [ -f "$module/CLAUDE.md" ]; then
         echo "✅ $module/CLAUDE.md exists"
     else

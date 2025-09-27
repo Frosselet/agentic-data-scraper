@@ -26,3 +26,7 @@
 	path = deployment
 	url = https://github.com/Frosselet/agentic-aws-deployment.git
 
+[submodule "graph"]
+	path = graph
+	url = https://github.com/Frosselet/agentic-graph-middleware.git
+
