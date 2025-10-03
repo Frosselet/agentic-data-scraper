@@ -8,10 +8,10 @@ echo "🔍 Validating submodule integration..."
 # Check submodule structure
 echo "📁 Checking submodule structure..."
 for module in ontologies core agents contracts collectors pipelines graph deployment; do
-    if [ -L "$module" ]; then
-        echo "✅ $module -> $(readlink $module)"
+    if [ -d "$module" ] && [ -f "$module/.git" ]; then
+        echo "✅ $module -> Git submodule"
     else
-        echo "❌ $module missing or not a symlink"
+        echo "❌ $module missing or not a Git submodule"
         exit 1
     fi
 done
